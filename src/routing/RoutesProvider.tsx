@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { UserContext } from "../utils/providers/UserContextProvider";
 import Layout from "@/components/custom/Layout/Layout";
+import MyStories from "@/pages/myStories/MyStories";
 
 const PrivateRoute = ({ children }: { children: any }) => {
   const state = useContext<any>(UserContext);
@@ -20,6 +21,30 @@ const RoutesProvider = () => {
       <Route path="/login" element={<Login />} />
       <Route
         path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/discover"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/my-stories"
+        element={
+          <PrivateRoute>
+            <MyStories />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/add-edit-story"
         element={
           <PrivateRoute>
             <Dashboard />

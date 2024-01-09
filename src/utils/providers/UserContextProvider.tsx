@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { createContext, useMemo } from "react";
+import { createContext, useMemo } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { API_URL } from "@/constants/api.constants";
 
@@ -51,7 +51,7 @@ const UserContextProvider = ({ children }: { children: any }) => {
 
   const logout = () => setUser(emptyUser);
 
-  const isLogged = Boolean(user?.id);
+  const isLogged = true; //Boolean(user?.id);
 
   const store = {
     user,

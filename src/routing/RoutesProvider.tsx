@@ -1,10 +1,14 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { UserContext } from "../utils/providers/UserContextProvider";
+import Layout from "@/components/custom/Layout/Layout";
 
 const PrivateRoute = ({ children }: { children: any }) => {
-  const { isLogged } = useContext<any>(UserContext);
-  return isLogged ? children : <Navigate to="/login" />;
+  const state = useContext<any>(UserContext);
+  if (!state.isLogged) {
+    return <Navigate to="/login" />;
+  }
+  return <Layout>{children}</Layout>
 }
 
 const Login = () => <div>Login Mock</div>
@@ -15,7 +19,7 @@ const RoutesProvider = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route
-        path="/"
+        path="/dashboard"
         element={
           <PrivateRoute>
             <Dashboard />

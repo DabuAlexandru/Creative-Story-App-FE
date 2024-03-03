@@ -3,6 +3,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { UserContext } from "../utils/providers/UserContextProvider";
 import Layout from "@/components/custom/Layout/Layout";
 import MyStories from "@/pages/myStories/MyStories";
+import Register from "@/pages/register/Register";
+import Login from "@/pages/login/Login";
 
 const PrivateRoute = ({ children }: { children: any }) => {
   const state = useContext<any>(UserContext);
@@ -12,13 +14,13 @@ const PrivateRoute = ({ children }: { children: any }) => {
   return <Layout>{children}</Layout>
 }
 
-const Login = () => <div>Login Mock</div>
 const Dashboard = () => <div>Dashboard Mock</div>
 
 const RoutesProvider = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route
         path="/dashboard"
         element={

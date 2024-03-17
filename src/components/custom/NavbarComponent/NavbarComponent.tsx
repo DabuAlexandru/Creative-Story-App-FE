@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import { Link } from "react-router-dom";
 import { cva } from "class-variance-authority";
+import { UserContext } from "@/utils/providers/UserContextProvider";
 
 const navigationMenuBarStyle = cva(
   "absolute top-0 left-0 w-full h-11 px-4 bg-slate-900 justify-between"
@@ -20,6 +21,8 @@ const navigationMenuBlankStyle = cva(
 )
 
 export function NavigationMenuDemo() {
+  const { user, logout } = React.useContext(UserContext)
+
   return (
     <NavigationMenu className={navigationMenuBarStyle()}>
       <NavigationMenuList>
@@ -44,9 +47,9 @@ export function NavigationMenuDemo() {
         <NavigationMenuItem>
           <NavigationMenuLink className={navigationMenuBlankStyle()}>
             <span>
-              Logged in as 
-              <span className="text-lime-400 font-bold"> User </span>
-              <span className="text-red-500 underline">Log out?</span>
+              Logged in as
+              <span className="text-lime-400 font-bold"> {user.penName} </span>
+              <span className="text-red-500 underline" onClick={logout}>Log out?</span>
             </span>
           </NavigationMenuLink>
         </NavigationMenuItem>

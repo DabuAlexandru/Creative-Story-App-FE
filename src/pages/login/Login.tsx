@@ -14,9 +14,18 @@ import {
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { Link } from 'react-router-dom'
+import { Link, redirect, useNavigate } from 'react-router-dom'
+import { useContext, useState } from 'react'
+import { UserContext } from '@/utils/providers/UserContextProvider'
+import { useToast } from '@/components/ui/use-toast'
+// import { toast, useToast } from 'react-toastify'
 
 const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const navigate = useNavigate()
+  const { login } = useContext(UserContext)
+  const { toast } = useToast()
+  
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -24,9 +33,19 @@ const LoginForm = () => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    console.log("?????")
-    console.log(values)
+  const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
+    setIsLoading(true)
+    const response = await login(values);
+    setIsLoading(false)
+    if(response.error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: response.message
+      })
+    } else {
+      navigate("/dashboard")
+    }
   }
 
   return (
@@ -39,7 +58,7 @@ const LoginForm = () => {
             <FormItem style={formFieldStyle}>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="Enter email" {...field} />
+                <Input disabled={isLoading} type="email" placeholder="Enter email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -52,7 +71,7 @@ const LoginForm = () => {
             <FormItem style={formFieldStyle}>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="*****" {...field} />
+                <Input disabled={isLoading} type="password" placeholder="*****" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -60,7 +79,7 @@ const LoginForm = () => {
         />
         <Separator />
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '8px' }}>
-          <Button type="submit">Submit</Button>
+          <Button  disabled={isLoading} type="submit">Submit</Button>
           <p className='text-sm text-muted-foreground'>
             You don't have an account? <Link to={'/register'} style={{ fontWeight: 600 }}>Register</Link>
           </p>

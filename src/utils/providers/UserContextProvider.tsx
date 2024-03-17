@@ -1,60 +1,73 @@
-import axios from "axios";
 import { createContext, useMemo } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { API_URL } from "@/constants/api.constants";
-
-const UserContext = createContext({});
+import { loginRequest } from "@/requests/auth.requests";
+import { APIResponseType } from "../types/general.types";
+import { redirect } from "react-router-dom";
 
 export type UserType = {
-  email: string;
-  firstName: string;
-  lastName: string;
   id: number;
-  phone: string;
+  email: string;
+  penName: string;
 };
 export const emptyUser: UserType = {
-  email: "",
-  firstName: "",
-  lastName: "",
   id: 0,
-  phone: "",
+  email: "",
+  penName: "",
 };
+
+type LoginProps = {
+  email: string
+  password: string
+}
+
+type UserContextProps = {
+  user: UserType
+  token: string
+  login: (props: LoginProps) => Promise<APIResponseType>
+  logout: () => void
+  isLogged: boolean
+}
+
+const UserContext = createContext<UserContextProps>({
+  user: emptyUser,
+  token: '',
+  login: (_) => new Promise(() => false),
+  logout: () => { },
+  isLogged: false
+});
+
 
 const UserContextProvider = ({ children }: { children: any }) => {
   // In the localStorage we will remember only the auth token after the API is integrated
   // The user is saved in the localStorage just for the Mocking stage, to have a pseudo-authentification system
   const [user, setUser] = useLocalStorage<UserType>("user", emptyUser);
+  const [token, setToken] = useLocalStorage<string>("jwt", '')
 
   const login = async ({
     email,
     password,
-  }: {
-    email: string;
-    password: string;
-  }) => {
-    const result = await axios
-      .post(`${API_URL}/users/login`, {
-        email,
-        password,
-      })
-      .then((res: any) => res)
-      .catch((err: any) => err);
+  }: LoginProps) => {
+    const result = await loginRequest({ email, password })
 
-    if (!Boolean(result) || !Boolean(result?.data) || result.status !== 200) {
-      return { error: true };
+    const loginResponse = result?.data;
+    if (loginResponse?.user) {
+      setUser(loginResponse.user);
+      setToken(loginResponse.token);
     }
-
-    const futureUser: UserType = result.data;
-    setUser(futureUser);
-    return { error: false };
+    return result;
   };
 
-  const logout = () => setUser(emptyUser);
+  const logout = () => {
+    setUser(emptyUser);
+    setToken('');
+    redirect("/login");
+  };
 
-  const isLogged = true; //Boolean(user?.id);
+  const isLogged = Boolean(user?.id);
 
-  const store = {
+  const store: UserContextProps = {
     user,
+    token,
     login,
     logout,
     isLogged,

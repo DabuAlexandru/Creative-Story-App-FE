@@ -16,8 +16,10 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Link } from 'react-router-dom'
+import { registerRequest } from '@/requests/auth.requests'
 
 const RegisterForm = () => {
+
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -26,9 +28,12 @@ const RegisterForm = () => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof registerFormSchema>) {
-    console.log("?????")
-    console.log(values)
+  const onSubmit = async (values: z.infer<typeof registerFormSchema>) => {
+    const response = await registerRequest(values)
+    if (response.error) {
+      // toast.error(`The account couldn't be created! ${response.message || ''}`)
+    }
+    // toast.success("Account succesfully created!")
   }
 
   return (

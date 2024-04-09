@@ -6,9 +6,11 @@ const axiosInstance = axios.create({
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(function (config) {
-  config.url
-  const token = JSON.parse(localStorage.getItem('jwt') || '');
-  config.headers.Authorization = `Bearer ${token}`
+  const authToken = localStorage.getItem('jwt')
+  if(authToken) {
+    const formattedToken = JSON.parse(authToken)
+    config.headers.Authorization = `Bearer ${formattedToken}`
+  }
   return config;
 }, (err) => Promise.reject(err));
 

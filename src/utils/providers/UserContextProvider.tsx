@@ -48,7 +48,6 @@ const UserContextProvider = ({ children }: { children: any }) => {
     password,
   }: LoginProps) => {
     const result = await loginRequest({ email, password })
-
     const loginResponse = result?.data;
     if (loginResponse?.user) {
       setUser(loginResponse.user);

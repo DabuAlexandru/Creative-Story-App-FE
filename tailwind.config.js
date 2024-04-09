@@ -57,6 +57,9 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        'underline': 'inset 0em -0.375em 0.125em -0.125em'
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

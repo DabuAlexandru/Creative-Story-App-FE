@@ -14,11 +14,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { Link, redirect, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import { UserContext } from '@/utils/providers/UserContextProvider'
 import { useToast } from '@/components/ui/use-toast'
-// import { toast, useToast } from 'react-toastify'
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)

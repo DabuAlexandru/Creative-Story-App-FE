@@ -1,10 +1,11 @@
+import { UserType } from "../providers/UserContextProvider"
 
 export type StoryBaseType = {
-  id: number
-  userId: number
+  id: Number
   title: string
   creationDate: Date
   lastModifiedDate: Date
+  user: UserType
 }
 export type StoryDisplayType = StoryBaseType & { description: string }
 export type StoryContentType = StoryBaseType & { content: string }
@@ -12,7 +13,6 @@ export type StoryContentType = StoryBaseType & { content: string }
 export const stories: (StoryDisplayType & StoryContentType)[] = [
   {
     id: 1,
-    userId: 101,
     title: "Exploring the Enchanted Forest",
     description: "Embark on a magical journey through the mystical Enchanted Forest.",
     content: `Once upon a time, in a land far, far away, there existed a mesmerizing Enchanted Forest. The trees whispered ancient secrets, and the air was filled with the sweet scent of blooming flowers. As the sun dipped below the horizon, casting a warm glow, a brave adventurer set forth to explore the wonders hidden within.
@@ -24,10 +24,10 @@ export const stories: (StoryDisplayType & StoryContentType)[] = [
     As night fell, the forest transformed into a mystical wonderland illuminated by the soft glow of fireflies. The adventurer marveled at the celestial display overhead, feeling a profound connection to the universe. With a heart full of gratitude, they decided to make camp under the ancient trees, eager to continue the exploration at the break of dawn.`,
     creationDate: new Date("2024-02-10"),
     lastModifiedDate: new Date("2024-02-10"),
+    user: { id: 101, email: "test@gmail.com", penName: "Arthur Himmoty" }
   },
   {
     id: 2,
-    userId: 101,
     title: "A Culinary Expedition: Flavors of the World",
     description: "Embark on a global gastronomic adventure, savoring the diverse flavors of the world.",
     content: `In a world where borders blur and cultures intertwine, culinary exploration becomes a passport to a myriad of flavors. This gastronomic expedition takes you on a journey across continents, indulging in the rich tapestry of tastes that define our global palate.
@@ -41,10 +41,10 @@ export const stories: (StoryDisplayType & StoryContentType)[] = [
     The expedition concludes on the shores of Peru, where ceviche reigns supreme. The marriage of citrus, spice, and fresh seafood creates a sensory symphony that lingers on the palate. The culinary globe-trotter, enriched by this flavorful odyssey, returns home with memories of a world united by the love of good food.`,
     creationDate: new Date("2024-02-10"),
     lastModifiedDate: new Date("2024-02-10"),
+    user: { id: 102, email: "test2@gmail.com", penName: "Benjamin Timmoty" }
   },
   {
     id: 3,
-    userId: 303,
     title: "Stargazing Nights: A Cosmic Adventure",
     description: "Embark on a celestial journey, exploring the wonders of the night sky.",
     content: `Beneath the vast canvas of the night sky, the cosmos unveils its secrets to those who dare to look up. This celestial adventure invites you to embrace the stillness of the night, gazing at the stars that have witnessed the eons unfold.
@@ -58,5 +58,6 @@ export const stories: (StoryDisplayType & StoryContentType)[] = [
     As dawn approaches, the stars gracefully yield to the gentle glow of the sunrise. The cosmic adventurer, enriched by the beauty of the night sky, carries the memories of this celestial journey into the new day, forever connected to the cosmos.`,
     creationDate: new Date("2024-02-10"),
     lastModifiedDate: new Date("2024-02-10"),
+    user: { id: 103, email: "test3@gmail.com", penName: "Roger Bimmoty" }
   },
 ];

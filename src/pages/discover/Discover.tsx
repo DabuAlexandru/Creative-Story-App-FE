@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { getAndSetStories } from './utils'
 import StoryCard from '../../components/custom/StoryCard/StoryCard'
 
-const MyStories = () => {
+const Discover = () => {
   const [stories, setStories] = useState<StoryDisplayType[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -19,15 +19,10 @@ const MyStories = () => {
 
   return (
     <Card>
-      <CardHeader>MyStories<Separator className='my-3' /></CardHeader>
+      <CardHeader>Discover<Separator className='my-3' /></CardHeader>
       <CardContent className='mb-4'>
         <div className='w-100 align-items-start'>
-          <span>Journal</span>
-          <div>Journal Entries</div>
-        </div>
-        <div className='w-100 align-items-start'>
           <span>Stories</span>
-          <div>Story Entries</div>
           <div className='flex flex-wrap justify-center gap-10'>
             {stories.map(story => <StoryCard story={story} />)}
           </div>
@@ -37,4 +32,4 @@ const MyStories = () => {
   )
 }
 
-export default MyStories
+export default Discover

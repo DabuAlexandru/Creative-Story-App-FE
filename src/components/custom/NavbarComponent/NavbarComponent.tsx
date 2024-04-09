@@ -8,52 +8,91 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { cva } from "class-variance-authority";
-import { UserContext } from "@/utils/providers/UserContextProvider";
+import { AvatarIcon, BellIcon, CaretDownIcon } from "@radix-ui/react-icons";
 
 const navigationMenuBarStyle = cva(
-  "absolute top-0 left-0 w-full h-11 px-4 bg-slate-900 justify-between"
+  "absolute top-0 left-0 w-full h-14 px-4 bg-slate-900 justify-between rounded-b-sm"
 )
 
 const navigationMenuBlankStyle = cva(
-  "group inline-flex h-9 w-max items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+  "group inline-flex h-full w-max items-center justify-start rounded-md px-4 py-2 text-lg font-bold data-[active]:bg-accent/50 data-[state=open]:bg-accent/50 bg-none text-white"
 )
 
-export function NavigationMenuDemo() {
-  const { user, logout } = React.useContext(UserContext)
+const navigationMenuNotificationsStyle = navigationMenuBlankStyle() + " px-[6px] py-[6px]"
+const BellMenuItem = () => {
+  return (
+    <NavigationMenuItem>
+      <NavigationMenuLink className={navigationMenuNotificationsStyle}>
+        <BellIcon className="w-6 h-6" />
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+  )
+}
 
+const navigatioMenuAvatarStyle = navigationMenuBlankStyle() + " pl-1 pr-2"
+const AvatarMenuItem = () => {
+  return (
+    <NavigationMenuItem className="flex items-center gap-1 justify-center">
+      <NavigationMenuLink className={navigatioMenuAvatarStyle}>
+        <AvatarIcon className="w-8 h-8" />
+        <CaretDownIcon className="w-4 h-4" />
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+  )
+}
+
+const RightSideMenuList = () => {
+  return (
+    <NavigationMenuList className="gap-2">
+      <BellMenuItem />
+      <AvatarMenuItem />
+    </NavigationMenuList>
+  )
+}
+
+const SelectablNavMenuItem = ({ route, label }: { route: string, label: string }) => {
+  const { pathname } = useLocation()
+  const isActive = React.useMemo(() => checkIsActive(pathname, route), [pathname, route])
+
+  return <NavigationMenuItem className={navigationMenuTriggerStyle()} data-active={isActive}>
+    <Link to={route} className="content-center h-full">{label}</Link>
+  </NavigationMenuItem>
+}
+
+const getCurrentUrl = (pathname: string) => {
+  return pathname.split(/[?#]/)[0]
+}
+
+const checkIsActive = (pathname: string, url: string) => {
+  const current = getCurrentUrl(pathname)
+  if (!current || !url) {
+    return false
+  }
+
+  if (current === url) {
+    return true
+  }
+
+  return false
+}
+
+
+export function NavigationMenuDemo() {
   return (
     <NavigationMenu className={navigationMenuBarStyle()}>
-      <NavigationMenuList>
+      <NavigationMenuList className="h-full">
         <NavigationMenuItem>
           <NavigationMenuLink className={navigationMenuBlankStyle()}>
             Creative App
           </NavigationMenuLink>
         </NavigationMenuItem>
-        <NavigationMenuItem className={navigationMenuTriggerStyle()}>
-          <Link to="/discover">
-            Discover Stories
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem className={navigationMenuTriggerStyle()}>
-          <Link to="/my-stories">
-            My Stories
-          </Link>
-        </NavigationMenuItem>
+        <SelectablNavMenuItem route="/discover" label="Discover Stories" />
+        <SelectablNavMenuItem route="/my-stories" label="My Stories" />
       </NavigationMenuList>
       {/* float right list */}
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuLink className={navigationMenuBlankStyle()}>
-            <span>
-              Logged in as
-              <span className="text-lime-400 font-bold"> {user.penName} </span>
-              <span className="text-red-500 underline" onClick={logout}>Log out?</span>
-            </span>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-      </NavigationMenuList>
+      <RightSideMenuList />
     </NavigationMenu>
   )
 }

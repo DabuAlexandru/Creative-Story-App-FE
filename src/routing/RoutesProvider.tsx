@@ -5,6 +5,7 @@ import Layout from "@/components/custom/Layout/Layout";
 import MyStories from "@/pages/myStories/MyStories";
 import Register from "@/pages/register/Register";
 import Login from "@/pages/login/Login";
+import Discover from "@/pages/discover/Discover";
 
 const PrivateRoute = ({ children }: { children: any }) => {
   const state = useContext<any>(UserContext);
@@ -33,7 +34,7 @@ const RoutesProvider = () => {
         path="/discover"
         element={
           <PrivateRoute>
-            <Dashboard />
+            <Discover />
           </PrivateRoute>
         }
       />

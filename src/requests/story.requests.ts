@@ -1,23 +1,23 @@
-import axiosInstance from "./axiosHandler/axios.config"
+import { RequestMethod, axiosRequest } from "./axiosHandler/axios.handler"
 
 type StoryType = any
 
 export const retrieveStoriesForAuthorRequest = async (userId: string | number) => {
-  return await axiosInstance.get(`/story/ofUser/${userId}`)
+  return await axiosRequest({ method: RequestMethod.GET, requestURL: `/story/ofUser/${userId}` })
 }
 
 export const retrieveStoryRequest = async (storyId: string | number) => {
-  return await axiosInstance.get(`/story/${storyId}`)
+  return await axiosRequest({ method: RequestMethod.GET, requestURL: `/story/${storyId}` })
 }
 
 export const retrieveStoryContentRequest = async (storyId: string | number) => {
-  return await axiosInstance.get(`/content/${storyId}`)
+  return await axiosRequest({ method: RequestMethod.GET, requestURL: `/content/${storyId}` })
 }
 
-export const createNewStoryRequest = async (newStory: StoryType) => {
-  return await axiosInstance.post(`/create`, newStory)
+export const createNewStoryRequest = async (payload: StoryType) => {
+  return await axiosRequest({ method: RequestMethod.POST, requestURL: `/create`, payload })
 }
 
-export const updateStoryRequest = async (storyId: string | number, updatedStory: StoryType) => {
-  return await axiosInstance.put(`/update/${storyId}`, updatedStory)
+export const updateStoryRequest = async (storyId: string | number, payload: StoryType) => {
+  return await axiosRequest({ method: RequestMethod.PUT, requestURL: `/update/${storyId}`, payload })
 }

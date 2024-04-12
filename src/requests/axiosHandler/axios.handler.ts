@@ -1,5 +1,5 @@
 import { APIResponseType, FlexibleObject } from "@/utils/types/general.types"
-import { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios"
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
 import axiosInstance from "./axios.config"
 
 type ApiResponseObjectType = {

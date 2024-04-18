@@ -1,16 +1,21 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { StoryDisplayType } from '@/utils/types/story.types'
-import { useEffect, useState } from 'react'
-import { getAndSetStories } from './utils'
-import StoryCard from '../../components/custom/StoryCard/StoryCard'
+import { useContext, useEffect, useState } from 'react'
+import StoryCard from './components/StoryCard/StoryCard'
+import { retrieveStoriesForAuthorRequest } from '@/requests/story.requests'
+import { UserContext } from '@/utils/providers/UserContextProvider'
+import { useToast } from '@/components/ui/use-toast'
+import { makeRequest } from '@/requests/request.handler'
 
 const MyStories = () => {
   const [stories, setStories] = useState<StoryDisplayType[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { user: { id: userId } } = useContext(UserContext)
+  const { toast } = useToast()
 
   useEffect(() => {
-    getAndSetStories({ setStories, setIsLoading })
+    makeRequest({ request: () => retrieveStoriesForAuthorRequest(userId), setObject: setStories, setIsLoading, toast })
   }, [])
 
   if (isLoading) {
@@ -19,7 +24,7 @@ const MyStories = () => {
 
   return (
     <Card>
-      <CardHeader>MyStories<Separator className='my-3' /></CardHeader>
+      <CardHeader className='text-2xl font-bold'>Your creations<Separator className='my-3' /></CardHeader>
       <CardContent className='mb-4'>
         <div className='w-100 align-items-start'>
           <span>Journal</span>
@@ -29,7 +34,7 @@ const MyStories = () => {
           <span>Stories</span>
           <div>Story Entries</div>
           <div className='flex flex-wrap justify-center gap-10'>
-            {stories.map(story => <StoryCard story={story} />)}
+            {(stories).map(story => <StoryCard story={story} />)}
           </div>
         </div>
       </CardContent>

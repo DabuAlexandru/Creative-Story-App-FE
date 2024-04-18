@@ -1,8 +1,8 @@
-// import { retrieveStoriesForAuthorRequest } from "@/requests/story.requests"
+import { retrieveAllStoriesPaginate } from "@/requests/story.requests"
 import { StateSetter } from "@/utils/types/general.types"
-import { StoryDisplayType, stories } from "@/utils/types/story.types"
+import { StoryDisplayType } from "@/utils/types/story.types"
 
-export const getAndSetStories = async ({
+export const getAndSetStoriesPaginate = async ({
   setStories,
   setIsLoading
 }: {
@@ -10,13 +10,14 @@ export const getAndSetStories = async ({
   setIsLoading: StateSetter<boolean>
 }) => {
   setIsLoading(true)
-  // const authorId = 101
-  const storiesResponse = stories //await retrieveStoriesForAuthorRequest(authorId)
+  const storiesResponse = await retrieveAllStoriesPaginate()
   
-  if(storiesResponse) {
-    setStories(storiesResponse)
+  if(storiesResponse.error) {
+    // display toast
   } else {
-    // display fail toast
+    setStories(storiesResponse.data || [])
+    // success toast
   }
+
   setIsLoading(false)
 }

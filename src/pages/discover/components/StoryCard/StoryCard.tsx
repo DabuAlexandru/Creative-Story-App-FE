@@ -1,3 +1,4 @@
+import DialogDisplayStory from '@/components/custom/DialogDisplayStory/DialogDisplayStory';
 import { Card } from '@/components/ui/card'
 import { AvatarIcon, DotsHorizontalIcon } from '@/components/ui/icons'
 import { StoryDisplayType } from '@/utils/types/story.types'
@@ -10,7 +11,7 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
         <div><AvatarIcon /></div>
         <div className='flex flex-col ml-[10px]'>
           <span className="leading-5 font-semibold">
-            {story.user.penName}
+            {story.author.penName}
           </span>
           <span className='text-sm opacity-60 mt-[-5px]'>
             Junior Writer
@@ -28,8 +29,10 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
           Unspecified
         </span>
       </div>
-      <span>{story.description}</span>
-      <div className='mt-4 opacity-60 text-sm'>{dayjs(story.lastModifiedDate).format('YYYY-MM-DD HH:mm')}</div>
+      <DialogDisplayStory story={story}>
+        <span>{story.description}</span>
+      </DialogDisplayStory>
+      <div className='mt-4 opacity-60 text-sm'>{dayjs(story.lastUpdatedOn).format('YYYY-MM-DD HH:mm')}</div>
     </Card>
   )
 }

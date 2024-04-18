@@ -62,7 +62,7 @@ const UserContextProvider = ({ children }: { children: any }) => {
     redirect("/login");
   };
 
-  const isLogged = Boolean(user?.id);
+  const isLogged = Boolean(token);
 
   const store: UserContextProps = {
     user,

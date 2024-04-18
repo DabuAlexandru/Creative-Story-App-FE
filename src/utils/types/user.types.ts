@@ -24,7 +24,8 @@ export type BaseUserProfileType = {
 export type UserProfileType = BaseUserProfileType & {
   favorites: FavoriteType[],
   readingLists: ReadLaterType[],
-  profilePicture: ProfilePictureType
+  profilePicture: ProfilePictureType,
+  profilePictureURL: string
 }
 
 export type ReducedUserProfileType = BaseUserProfileType & {

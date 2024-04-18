@@ -11,9 +11,10 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { cva } from "class-variance-authority";
 import { AvatarIcon, BellIcon, CaretDownIcon } from "@radix-ui/react-icons";
+import { DropdownMenuUser } from "../DropdownMenuUser/DropdownMenuUser";
 
 const navigationMenuBarStyle = cva(
-  "absolute top-0 left-0 w-full h-14 px-4 bg-slate-900 justify-between rounded-b-sm"
+  "absolute top-0 left-0 w-full h-14 px-8 bg-slate-900 justify-between rounded-b-sm fixed"
 )
 
 const navigationMenuBlankStyle = cva(
@@ -35,10 +36,12 @@ const navigatioMenuAvatarStyle = navigationMenuBlankStyle() + " pl-1 pr-2"
 const AvatarMenuItem = () => {
   return (
     <NavigationMenuItem className="flex items-center gap-1 justify-center">
-      <NavigationMenuLink className={navigatioMenuAvatarStyle}>
-        <AvatarIcon className="w-8 h-8" />
-        <CaretDownIcon className="w-4 h-4" />
-      </NavigationMenuLink>
+      <DropdownMenuUser>
+        <NavigationMenuLink className={navigatioMenuAvatarStyle}>
+          <AvatarIcon className="w-8 h-8" />
+          <CaretDownIcon className="w-4 h-4" />
+        </NavigationMenuLink>
+      </DropdownMenuUser>
     </NavigationMenuItem>
   )
 }

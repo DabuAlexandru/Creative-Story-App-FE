@@ -6,6 +6,8 @@ import MyStories from "@/pages/myStories/MyStories";
 import Register from "@/pages/register/Register";
 import Login from "@/pages/login/Login";
 import Discover from "@/pages/discover/Discover";
+import ViewProfile from "@/pages/viewProfile/ViewProfile";
+import EditProfile from "@/pages/editProfile/EditProfile";
 
 const PrivateRoute = ({ children }: { children: any }) => {
   const state = useContext<any>(UserContext);
@@ -51,6 +53,30 @@ const RoutesProvider = () => {
         element={
           <PrivateRoute>
             <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/view-profile/:profileId"
+        element={
+          <PrivateRoute>
+            <ViewProfile />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/view-profile"
+        element={
+          <PrivateRoute>
+            <ViewProfile />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/edit-profile"
+        element={
+          <PrivateRoute>
+            <EditProfile />
           </PrivateRoute>
         }
       />

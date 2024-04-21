@@ -8,6 +8,7 @@ import Login from "@/pages/login/Login";
 import Discover from "@/pages/discover/Discover";
 import ViewProfile from "@/pages/viewProfile/ViewProfile";
 import EditProfile from "@/pages/editProfile/EditProfile";
+import LandingPage from "@/pages/landingPage/LandingPage";
 
 const PrivateRoute = ({ children }: { children: any }) => {
   const state = useContext<any>(UserContext);
@@ -78,6 +79,12 @@ const RoutesProvider = () => {
           <PrivateRoute>
             <EditProfile />
           </PrivateRoute>
+        }
+      />
+      <Route
+        path="/"
+        element={
+          <LandingPage />
         }
       />
     </Routes>

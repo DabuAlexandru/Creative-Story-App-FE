@@ -5,17 +5,15 @@ import { useContext, useEffect, useState } from 'react'
 import StoryCard from './components/StoryCard/StoryCard'
 import { retrieveStoriesForAuthorRequest } from '@/requests/story.requests'
 import { UserContext } from '@/utils/providers/UserContextProvider'
-import { useToast } from '@/components/ui/use-toast'
 import { makeRequest } from '@/requests/request.handler'
 
 const MyStories = () => {
   const [stories, setStories] = useState<StoryDisplayType[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { user: { id: userId } } = useContext(UserContext)
-  const { toast } = useToast()
 
   useEffect(() => {
-    makeRequest({ request: () => retrieveStoriesForAuthorRequest(userId), setObject: setStories, setIsLoading, toast })
+    makeRequest({ request: () => retrieveStoriesForAuthorRequest(userId), setObject: setStories, setIsLoading })
   }, [])
 
   if (isLoading) {

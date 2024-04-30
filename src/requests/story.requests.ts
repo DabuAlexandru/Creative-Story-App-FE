@@ -4,11 +4,11 @@ type StoryType = any
 const baseURL = '/story'
 
 export const retrieveAllStoriesPaginate = async () => {
-  return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/getAll` })
+  return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get-all` })
 }
 
 export const retrieveStoriesForAuthorRequest = async (userId: string | number) => {
-  return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/ofAuthor/${userId}` })
+  return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/of-author/${userId}` })
 }
 
 export const retrieveStoryRequest = async (storyId: string | number) => {

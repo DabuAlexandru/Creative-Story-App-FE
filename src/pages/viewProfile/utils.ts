@@ -1,5 +1,6 @@
-import { retrieveFile } from "@/requests/file.requests";
+import { toast } from "@/components/ui/use-toast";
 import { getUserProfile } from "@/requests/user.profile.requests";
+import { getProfilePictureURL } from "@/utils/helpers/helper.file";
 import { StateSetter } from "@/utils/types/general.types";
 import { UserProfileType } from "@/utils/types/user.types";
 
@@ -7,14 +8,12 @@ export const getAndSetUserProfile = async ({
   userId,
   setIsLoading,
   setUserProfile,
-  setImageSrc,
-  toast
+  setImageSrc
 }: {
   userId: number | null | undefined
   setIsLoading: StateSetter<boolean>
   setUserProfile: StateSetter<UserProfileType | null>
   setImageSrc: StateSetter<string>
-  toast: Function
 }) => {
   if (!userId) {
   }
@@ -33,18 +32,8 @@ export const getAndSetUserProfile = async ({
   const userProfile: UserProfileType = userProfileResponse.data
   const profilePictureFilename = userProfile.profilePicture?.fileName;
   if (profilePictureFilename) {
-    const profilePictureResponse = await retrieveFile(profilePictureFilename);
-    if (profilePictureResponse.error) {
-      setIsLoading(false)
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: profilePictureResponse.message
-      })
-      return;
-    }
-    const imageUrl = URL.createObjectURL(new Blob([profilePictureResponse.data]));
-    setImageSrc(imageUrl)
+    const imageURL = await getProfilePictureURL(profilePictureFilename)
+    setImageSrc(imageURL)
   }
 
   setIsLoading(false)

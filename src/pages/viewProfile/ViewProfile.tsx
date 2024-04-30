@@ -2,7 +2,6 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { UserProfileType } from '@/utils/types/user.types'
 import { useEffect, useState } from 'react'
 import { getAndSetUserProfile } from './utils'
-import { useToast } from '@/components/ui/use-toast'
 import { AvatarIcon } from '@radix-ui/react-icons'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
@@ -40,10 +39,9 @@ const ViewProfile = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [userProfile, setUserProfile] = useState<UserProfileType | null>(null)
   const [imageSrc, setImageSrc] = useState<string>('');
-  const { toast } = useToast();
 
   useEffect(() => {
-    getAndSetUserProfile({ userId: null, setIsLoading, setUserProfile, setImageSrc, toast })
+    getAndSetUserProfile({ userId: null, setIsLoading, setUserProfile, setImageSrc })
   }, [])
 
   if (isLoading) {

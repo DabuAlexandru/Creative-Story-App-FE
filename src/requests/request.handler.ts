@@ -1,3 +1,4 @@
+import { toast } from "@/components/ui/use-toast";
 import { APIResponseType, StateSetter } from "@/utils/types/general.types";
 
 type EffectFunction = () => Promise<void>;
@@ -6,7 +7,6 @@ export const makeRequest = async <T>({
   request,
   setObject,
   setIsLoading,
-  toast,
   onReceiveResponse,
   onSuccessEffect,
   onFailEffect,
@@ -16,7 +16,6 @@ export const makeRequest = async <T>({
   request: () => Promise<APIResponseType>,
   setObject: StateSetter<T>,
   setIsLoading: StateSetter<boolean>,
-  toast: any,
   onReceiveResponse?: (data: T) => Promise<void>,
   onSuccessEffect?: EffectFunction,
   onFailEffect?: EffectFunction,
@@ -29,18 +28,18 @@ export const makeRequest = async <T>({
 
     if (response.error) {
       if (onFailEffect) await onFailEffect();
-      toast({ type: 'danger', title: 'There was an error!', message: response.message });
+      toast({ variant: 'destructive', title: 'There was an error!', description: response.message });
     } else {
       const responsePayload = response.data;
       if (setObject) setObject(responsePayload);
       if (onReceiveResponse) await onReceiveResponse(responsePayload);
       if (onSuccessEffect) await onSuccessEffect();
       if (displaySuccessMessage) {
-        toast({ message: successMessage || 'The request was successful!' });
+        toast({ description: successMessage || 'The request was successful!' });
       }
     }
   } catch (error) {
-    toast({ type: 'danger', message: 'An error occurred' });
+    toast({ variant: 'destructive', description: 'An error occurred' });
   } finally {
     setIsLoading(false);
   }

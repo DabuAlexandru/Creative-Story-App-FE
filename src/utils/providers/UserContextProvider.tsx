@@ -3,16 +3,15 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 import { loginRequest } from "@/requests/auth.requests";
 import { APIResponseType } from "../types/general.types";
 import { redirect } from "react-router-dom";
+import { FavoriteType, ReadLaterType } from "../types/user.types";
 
 export type UserType = {
   id: number;
   email: string;
-  penName: string;
 };
 export const emptyUser: UserType = {
   id: 0,
   email: "",
-  penName: "",
 };
 
 type LoginProps = {

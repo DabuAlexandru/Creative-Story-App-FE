@@ -17,13 +17,12 @@ import { Separator } from '@/components/ui/separator'
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import { UserContext } from '@/utils/providers/UserContextProvider'
-import { useToast } from '@/components/ui/use-toast'
+import { toast } from '@/components/ui/use-toast'
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const navigate = useNavigate()
   const { login } = useContext(UserContext)
-  const { toast } = useToast()
   
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),

@@ -15,17 +15,25 @@ export type ProfilePictureType = {
 }
 
 export type BaseUserProfileType = {
+  id: number | string,
+  penName: string,
+  headline: string,
   fullName: string,
   bio: string,
   location: string,
   website: string,
 }
 
+export type UserProfilePayloadType = Omit<BaseUserProfileType, 'id'> 
+
+export type UserProfileReferenceType = BaseUserProfileType & {
+  profilePicture: ProfilePictureType
+}
+
 export type UserProfileType = BaseUserProfileType & {
   favorites: FavoriteType[],
   readingLists: ReadLaterType[],
-  profilePicture: ProfilePictureType,
-  profilePictureURL: string
+  profilePicture: ProfilePictureType
 }
 
 export type ReducedUserProfileType = BaseUserProfileType & {

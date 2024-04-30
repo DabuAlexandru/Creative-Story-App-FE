@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-import { toast, useToast } from '@/components/ui/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { UserProfileType } from '@/utils/types/user.types';
 import { getAndSetUserProfile } from '../viewProfile/utils';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -55,6 +55,32 @@ const ProfileForm = ({
               <FormLabel>Full Name</FormLabel>
               <FormControl>
                 <Input disabled={isLoading} type="text" placeholder="Enter the Full Name..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="penName"
+          render={({ field }) => (
+            <FormItem style={formFieldStyle}>
+              <FormLabel>Pen Name</FormLabel>
+              <FormControl>
+                <Input disabled={isLoading} type="text" placeholder="Enter the Pen Name..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="headline"
+          render={({ field }) => (
+            <FormItem style={formFieldStyle}>
+              <FormLabel>Headline</FormLabel>
+              <FormControl>
+                <Input disabled={isLoading} type="text" placeholder="Enter the Headline..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -138,7 +164,7 @@ const ProfilePictureForm = ({
   };
 
   const handleSaveNewFile = async () => {
-    if(!selectedFile) {
+    if (!selectedFile) {
       return;
     }
 
@@ -196,10 +222,9 @@ const EditProfile = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [userProfile, setUserProfile] = useState<UserProfileType | null>(null)
   const [imageSrc, setImageSrc] = useState<string>('');
-  const { toast } = useToast();
 
   useEffect(() => {
-    getAndSetUserProfile({ userId: null, setIsLoading, setUserProfile, setImageSrc, toast })
+    getAndSetUserProfile({ userId: null, setIsLoading, setUserProfile, setImageSrc })
   }, [])
 
   if (isLoading) {

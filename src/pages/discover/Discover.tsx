@@ -3,7 +3,6 @@ import { Separator } from '@/components/ui/separator'
 import { StoryDisplayType } from '@/utils/types/story.types'
 import { useEffect, useState } from 'react'
 import StoryCard from './components/StoryCard/StoryCard'
-import { useToast } from '@/components/ui/use-toast'
 import { makeRequest } from '@/requests/request.handler'
 import { retrieveAllStoriesPaginate } from '@/requests/story.requests'
 import { Paginated, emptyPaginated } from '@/utils/types/general.types'
@@ -11,10 +10,9 @@ import { Paginated, emptyPaginated } from '@/utils/types/general.types'
 const Discover = () => {
   const [stories, setStories] = useState<Paginated<StoryDisplayType>>(emptyPaginated)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { toast } = useToast()
 
   useEffect(() => {
-    makeRequest({ request: retrieveAllStoriesPaginate, setObject: setStories, setIsLoading, toast })
+    makeRequest({ request: retrieveAllStoriesPaginate, setObject: setStories, setIsLoading })
   }, [])
 
   if (isLoading) {

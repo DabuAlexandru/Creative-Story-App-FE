@@ -1,6 +1,6 @@
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 import { StoryDisplayType } from '@/utils/types/story.types'
-import DisplayStoryCard from './DisplayStoryCard'
+import DisplayStoryCard from './components/DisplayStoryCard'
 
 const DialogDisplayStory = ({ story, children }: { story: StoryDisplayType, children: React.ReactNode }) => {
   return (
@@ -8,7 +8,7 @@ const DialogDisplayStory = ({ story, children }: { story: StoryDisplayType, chil
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-w-[65%] max-h-[80%] h-4/5">
+      <DialogContent className="max-w-[75%] max-h-[80%] h-4/5">
         <DisplayStoryCard story={story} />
       </DialogContent>
     </Dialog>

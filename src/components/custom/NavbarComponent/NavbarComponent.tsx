@@ -10,8 +10,13 @@ import {
 } from "@/components/ui/navigation-menu"
 import { Link, useLocation } from "react-router-dom";
 import { cva } from "class-variance-authority";
-import { AvatarIcon, BellIcon, CaretDownIcon } from "@radix-ui/react-icons";
+import { BellIcon, CaretDownIcon } from "@radix-ui/react-icons";
 import { DropdownMenuUser } from "../DropdownMenuUser/DropdownMenuUser";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserContext } from "@/utils/providers/UserContextProvider";
+import { extractSignatureFromString } from "@/utils/helpers/helper.string";
+import { PictureContext } from "@/utils/providers/ProfilePicturesProvider";
+import { getAndSetProfilePictureURL } from "@/utils/helpers/helper.file";
 
 const navigationMenuBarStyle = cva(
   "absolute top-0 left-0 w-full h-14 px-8 bg-slate-900 justify-between rounded-b-sm fixed"
@@ -34,11 +39,26 @@ const BellMenuItem = () => {
 
 const navigatioMenuAvatarStyle = navigationMenuBlankStyle() + " pl-1 pr-2"
 const AvatarMenuItem = () => {
+  const { profileInfo, profilePicture } = React.useContext(UserContext)
+  const { picturesDict } = React.useContext(PictureContext)
+  const [profilePictureUrl, setProfilePictureUrl] = React.useState('')
+
+  const signature = React.useMemo(() => extractSignatureFromString(profileInfo.penName), [profileInfo.penName])
+
+  React.useEffect(() => {
+    if (!profilePictureUrl && picturesDict) {
+      getAndSetProfilePictureURL({ picturesDict, profileId: profileInfo.id, fileName: profilePicture.fileName, setProfilePictureUrl })
+    }
+  }, [picturesDict])
+
   return (
     <NavigationMenuItem className="flex items-center gap-1 justify-center">
       <DropdownMenuUser>
         <NavigationMenuLink className={navigatioMenuAvatarStyle}>
-          <AvatarIcon className="w-8 h-8" />
+          <Avatar className='size-8'>
+            <AvatarImage src={profilePictureUrl} alt="@shadcn" />
+            <AvatarFallback>{signature}</AvatarFallback>
+          </Avatar>
           <CaretDownIcon className="w-4 h-4" />
         </NavigationMenuLink>
       </DropdownMenuUser>

@@ -172,7 +172,11 @@ const ProfilePictureForm = ({
     formData.append("file", selectedFile)
 
     const fileResponse = await updatePicture(formData)
-    console.log(fileResponse)
+    if (fileResponse.error) {
+      toast({ variant: 'destructive', title: 'File upload failed!', description: fileResponse.message })
+      return
+    }
+
     setSelectedFile(null)
     clearFileInput()
   }

@@ -5,9 +5,19 @@ import dayjs from 'dayjs'
 import DisplayStoryReviews from './DisplayStoryReviews'
 import { ScoreWrapper } from './ScoreWrapper'
 import { Button } from '@/components/ui/button'
+import { useContext } from 'react'
+import { UserContext } from '@/utils/providers/UserContextProvider'
+import { BookmarkFilledIcon, BookmarkIcon, MagnifyingGlassIcon, ReaderIcon } from '@radix-ui/react-icons'
+import { updateReadLaterList } from '../utils'
+import { getAndSetProfilePictureURL } from '@/utils/helpers/helper.file'
+import { extractSignatureFromString } from '@/utils/helpers/helper.string'
+import { PictureContext } from '@/utils/providers/ProfilePicturesProvider'
+import React from 'react'
 
 const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
   const { title, createdOn, lastUpdatedOn, description, content } = story
+  const { readLaterSet, setReadLater } = useContext(UserContext)
+  const storyBookmarked = readLaterSet.has(story.id)
 
   return (
     <div className='w-2/3 p-1'>
@@ -32,8 +42,22 @@ const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
             Last Modified Date: {dayjs(lastUpdatedOn).format('YYYY-MM-DD HH:mm')}
           </p>
           <div className='p-1 flex gap-2'>
-            <Button className='rounded-full'>Read Now</Button>
-            <Button className='rounded-full' variant='secondary'>Read Later</Button>
+            <Button className='rounded-full'>
+              <MagnifyingGlassIcon />
+              <span className='ml-1 pb-[1px]'>See More</span>
+            </Button>
+            <Button className='rounded-full'>
+              <ReaderIcon />
+              <span className='ml-1 pb-[1px]'>Read Now</span>
+            </Button> {/* redirect to read story page */}
+            <Button
+              className='rounded-full'
+              variant={storyBookmarked ? 'destructive' : 'secondary'}
+              onClick={() => updateReadLaterList({ storyId: story.id, setReadLater, setIsLoading: () => { }, isBookmarked: storyBookmarked })}
+            >
+              {storyBookmarked ? <BookmarkFilledIcon /> : <BookmarkIcon />}
+              <span className='ml-1 pb-[1px]'>{storyBookmarked ? 'Remove From' : 'Add To'} Read Later</span>
+            </Button>
           </div>
         </div>
       </div>
@@ -54,12 +78,24 @@ const SocialDetails = ({
   storyScore: StoryScoreType
   storyId: string | number
 }) => {
+  const { profileInfo, profilePicture } = React.useContext(UserContext)
+  const { picturesDict } = React.useContext(PictureContext)
+  const [profilePictureUrl, setProfilePictureUrl] = React.useState('')
+
+  const signature = React.useMemo(() => extractSignatureFromString(profileInfo.penName), [profileInfo.penName])
+
+  React.useEffect(() => {
+    if (!profilePictureUrl && picturesDict) {
+      getAndSetProfilePictureURL({ picturesDict, profileId: profileInfo.id, fileName: profilePicture.fileName, setProfilePictureUrl })
+    }
+  }, [picturesDict])
+
   return (
     <div className='w-1/3 p-1'>
       <div className="flex items-center mb-2">
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src={profilePictureUrl} alt="@shadcn" />
+          <AvatarFallback>{signature}</AvatarFallback>
         </Avatar>
         <div className='pl-2'>
           <p className="text-gray-200 font-semibold">{author.penName}</p>

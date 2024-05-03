@@ -1,19 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { getProfilePictureURL } from '@/utils/helpers/helper.file'
+import { getAndSetProfilePicture } from '@/utils/helpers/helper.file'
 import { extractSignatureFromString } from '@/utils/helpers/helper.string'
-import { StateSetter } from '@/utils/types/general.types'
 import { ReviewType } from '@/utils/types/story.types'
 import dayjs from 'dayjs'
 import { useEffect, useMemo, useState } from 'react'
 import { ScoreWrapper } from './ScoreWrapper'
-
-const getAndSetProfilePicture = async (filename: string, setProfilePicture: StateSetter<string>) => {
-  if (!filename) {
-    return;
-  }
-  const imageURL = await getProfilePictureURL(filename)
-  setProfilePicture(imageURL)
-}
 
 const ReviewCard = ({
   review

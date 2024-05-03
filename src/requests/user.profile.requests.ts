@@ -13,19 +13,19 @@ export const deletePicture = async (payload: FormData) => {
   return await axiosRequest({ method: RequestMethod.POST, requestURL: `/user-profile/delete-picture`, payload })
 }
 
-export const addFavorite = async (storyId: number) => {
+export const addFavorite = async (storyId: number | string) => {
   return await axiosRequest({ method: RequestMethod.PUT, requestURL: `/user-profile/favorite/add/${storyId}` })
 }
 
-export const removeFavorite = async (storyId: number) => {
+export const removeFavorite = async (storyId: number | string) => {
   return await axiosRequest({ method: RequestMethod.PUT, requestURL: `/user-profile/favorite/remove/${storyId}` })
 }
 
-export const addReadLater = async (storyId: number) => {
+export const addReadLater = async (storyId: number | string) => {
   return await axiosRequest({ method: RequestMethod.PUT, requestURL: `/user-profile/read-later/add/${storyId}` })
 }
 
-export const removeReadLater = async (storyId: number) => {
+export const removeReadLater = async (storyId: number | string) => {
   return await axiosRequest({ method: RequestMethod.PUT, requestURL: `/user-profile/read-later/remove/${storyId}` })
 }
 

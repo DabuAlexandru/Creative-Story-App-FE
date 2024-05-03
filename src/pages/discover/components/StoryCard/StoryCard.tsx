@@ -1,14 +1,35 @@
 import DialogDisplayStory from '@/components/custom/DialogDisplayStory/DialogDisplayStory';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card'
-import { AvatarIcon, DotsHorizontalIcon } from '@/components/ui/icons'
+import { DotsHorizontalIcon } from '@/components/ui/icons'
+import { getAndSetProfilePictureURL } from '@/utils/helpers/helper.file';
+import { extractSignatureFromString } from '@/utils/helpers/helper.string';
+import { PictureContext } from '@/utils/providers/ProfilePicturesProvider';
+import { UserContext } from '@/utils/providers/UserContextProvider';
 import { StoryDisplayType } from '@/utils/types/story.types'
 import dayjs from 'dayjs';
+import React from 'react';
 
 const StoryCard = ({ story }: { story: StoryDisplayType }) => {
+  const { profileInfo, profilePicture } = React.useContext(UserContext)
+  const { picturesDict } = React.useContext(PictureContext)
+  const [profilePictureUrl, setProfilePictureUrl] = React.useState('')
+
+  const signature = React.useMemo(() => extractSignatureFromString(profileInfo.penName), [profileInfo.penName])
+
+  React.useEffect(() => {
+    if (!profilePictureUrl && picturesDict) {
+      getAndSetProfilePictureURL({ picturesDict, profileId: profileInfo.id, fileName: profilePicture.fileName, setProfilePictureUrl })
+    }
+  }, [picturesDict])
+
   return (
     <Card className='p-5 w-2/3'>
-      <div className="flex items-center h-16">
-        <div><AvatarIcon /></div>
+      <div className="flex items-center h-14">
+        <Avatar className='size-16'>
+          <AvatarImage src={profilePictureUrl} alt="@shadcn" />
+          <AvatarFallback>{signature}</AvatarFallback>
+        </Avatar>
         <div className='flex flex-col ml-[10px]'>
           <span className="leading-5 font-semibold">
             {story.author.penName}

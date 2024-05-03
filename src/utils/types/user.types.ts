@@ -1,12 +1,16 @@
 
 export type FavoriteType = {
-  storyId: number,
+  storyId: number | string,
   createdOn: Date | string
 }
 
 export type ReadLaterType = {
-  storyId: number,
+  storyId: number | string,
   createdOn: Date | string
+}
+
+export type PictureDictType = {
+  [key: number]: string
 }
 
 export type ProfilePictureType = {
@@ -22,6 +26,16 @@ export type BaseUserProfileType = {
   bio: string,
   location: string,
   website: string,
+}
+
+export const emptyBaseUserProfileType: BaseUserProfileType = {
+  id: '',
+  penName: '',
+  headline: '',
+  fullName: '',
+  bio: '',
+  location: '',
+  website: '',
 }
 
 export type UserProfilePayloadType = Omit<BaseUserProfileType, 'id'> 

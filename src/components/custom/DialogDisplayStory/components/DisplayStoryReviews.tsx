@@ -18,10 +18,6 @@ const DisplayStoryReviews = ({ storyId }: { storyId: string | number }) => {
     makeRequest({ request: () => retrieveAllReviewsOfStoryPaginate(storyId), setObject: setPaginatedReviews, setIsLoading })
   }, [storyId])
 
-  useEffect(() => {
-    console.log(paginatedReviews)
-  }, [paginatedReviews])
-
   if (isLoading) {
     return <div>Reviews are loading...</div>
   }

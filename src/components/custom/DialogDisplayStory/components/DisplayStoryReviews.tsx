@@ -2,32 +2,49 @@ import { makeRequest } from "@/requests/request.handler"
 import { retrieveAllReviewsOfStoryPaginate } from "@/requests/story.review.requests"
 import { Paginated, emptyPaginated } from "@/utils/types/general.types"
 import { ReviewType } from "@/utils/types/story.types"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import ReviewCard from "./ReviewCard"
 import PaginationControl from "../../PaginationControl/PaginationControl"
 import { Separator } from "@/components/ui/separator"
+import { debounce } from "lodash"
+
+const REVIEWS_COUNT = 4
 
 const DisplayStoryReviews = ({ storyId }: { storyId: string | number }) => {
   const [paginatedReviews, setPaginatedReviews] = useState<Paginated<ReviewType>>(emptyPaginated)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [currentPage, setCurrentPage] = useState<number>(1)
 
-  useEffect(() => {
+  const paginationRequest = useCallback((currentPage: number) => {
     if (!storyId) {
       return;
     }
-    makeRequest({ request: () => retrieveAllReviewsOfStoryPaginate(storyId), setObject: setPaginatedReviews, setIsLoading })
+    const pagination = { size: REVIEWS_COUNT, page: currentPage - 1 }
+    makeRequest({ request: () => retrieveAllReviewsOfStoryPaginate(storyId, pagination), setObject: setPaginatedReviews, setIsLoading })
+  }, [currentPage])
+
+  const debouncedPaginationRequest = useMemo(() => debounce(paginationRequest, 300), [])
+
+  useEffect(() => {
+    return () => {
+      debouncedPaginationRequest.cancel()
+    }
+  }, [debouncedPaginationRequest])
+
+  useEffect(() => {
+    debouncedPaginationRequest(currentPage)
+  }, [currentPage])
+
+  useEffect(() => {
+    paginationRequest(currentPage)
   }, [storyId])
 
-  if (isLoading) {
-    return <div>Reviews are loading...</div>
-  }
-
-  return (<div>
+  return (<div className={isLoading ? 'opacity-80' : 'opacity-100'}>
     <Separator className="mt-4" />
-    <PaginationControl className="my-2" pageCount={5} currentPage={1} setCurrentPage={() => { }} />
+    <PaginationControl className="my-2" pageCount={paginatedReviews?.totalPages || 1} currentPage={currentPage} setCurrentPage={setCurrentPage} />
     <Separator className="mb-4" />
     <div className="overflow-auto h-[50vh]">
-      {paginatedReviews.content.map((review) => <ReviewCard review={review} />)}
+      {paginatedReviews.content.map((review) => <ReviewCard key={`review-${review.id}`} review={review} />)}
     </div>
   </div>)
 }

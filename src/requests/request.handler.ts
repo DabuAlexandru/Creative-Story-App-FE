@@ -38,8 +38,11 @@ export const makeRequest = async <T>({
         toast({ description: successMessage || 'The request was successful!' });
       }
     }
-  } catch (error) {
-    toast({ variant: 'destructive', description: 'An error occurred' });
+  } catch (error: any) {
+    console.error(error)
+    const title = error?.message || 'An error occured.'
+    const description = error?.stack || JSON.stringify(error)
+    toast({ variant: 'destructive', title, description });
   } finally {
     setIsLoading(false);
   }

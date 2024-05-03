@@ -26,7 +26,7 @@ const Discover = () => {
         <div className='w-100 align-items-start'>
           <span>Stories</span>
           <div className='flex flex-wrap justify-center gap-10'>
-            {(stories.content).map(story => <StoryCard story={story} />)}
+            {(stories.content).map(story => <StoryCard key={`discover-story-${story.id}`} story={story} />)}
           </div>
         </div>
       </CardContent>

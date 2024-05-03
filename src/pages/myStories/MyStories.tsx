@@ -32,7 +32,7 @@ const MyStories = () => {
           <span>Stories</span>
           <div>Story Entries</div>
           <div className='flex flex-wrap justify-center gap-10'>
-            {(stories).map(story => <StoryCard story={story} />)}
+            {(stories).map(story => <StoryCard key={`my-story-${story.id}`} story={story} />)}
           </div>
         </div>
       </CardContent>

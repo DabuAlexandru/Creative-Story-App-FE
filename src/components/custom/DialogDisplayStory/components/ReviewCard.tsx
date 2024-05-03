@@ -28,15 +28,14 @@ const ReviewCard = ({
           <AvatarFallback>{signature}</AvatarFallback>
         </Avatar>
         <div className='pl-2'>
-          <p className="text-gray-200 text-[13px] font-
-          semibold">{review.title}</p>
+          <p className="text-gray-200 text-[15px] font-semibold">{review.title}</p>
           <div className="text-[12px]">
             <span className="text-gray-300">{userProfile.penName}</span>
             <span className="text-gray-400"> - {createdOn}</span></div>
         </div>
       </div>
       <ScoreWrapper scoreDetails={review} />
-      <div className='mt-1 p-2 border-solid border-l-2 border-gray-500 text-sm'>
+      <div className='px-2 border-solid border-l-2 border-gray-500 text-sm'>
         <p>{review.content}</p>
       </div>
     </div>

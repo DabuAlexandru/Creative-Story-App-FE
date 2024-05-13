@@ -4,7 +4,7 @@ import { extractSignatureFromString } from '@/utils/helpers/helper.string'
 import { ReviewType } from '@/utils/types/story.types'
 import dayjs from 'dayjs'
 import { useEffect, useMemo, useState } from 'react'
-import { ScoreWrapper } from './ScoreWrapper'
+import { ScoreWrapper } from '../ScoreWrapper/ScoreWrapper'
 
 const ReviewCard = ({
   review

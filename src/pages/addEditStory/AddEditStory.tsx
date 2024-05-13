@@ -1,7 +1,8 @@
+import TipTapEditorWrapper from "@/components/custom/TipTapEditor/TipTapEditorWrapper"
 
 const AddEditStory = () => {
   return (
-    <div>AddEditStory</div>
+    <TipTapEditorWrapper />
   )
 }
 

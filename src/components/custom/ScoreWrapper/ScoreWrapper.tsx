@@ -3,7 +3,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { ReviewType, StoryScoreType } from "@/utils/types/story.types"
 import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons"
 import { useMemo, useState } from "react"
-import { starIndexes, starScoreBaseline } from "../utils"
+import { starIndexes, starScoreBaseline } from "../DialogDisplayStory/utils"
 
 const ScoreDisplay = ({ score, isOverallScore = false, label = '' }: { score: number, isOverallScore?: boolean, label?: string }) => {
   const displayScore = isOverallScore ? score.toFixed(2) : score

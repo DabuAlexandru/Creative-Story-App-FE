@@ -9,6 +9,7 @@ import Discover from "@/pages/discover/Discover";
 import ViewProfile from "@/pages/viewProfile/ViewProfile";
 import EditProfile from "@/pages/editProfile/EditProfile";
 import LandingPage from "@/pages/landingPage/LandingPage";
+import AddEditStory from "@/pages/addEditStory/AddEditStory";
 
 const PrivateRoute = ({ children }: { children: any }) => {
   const state = useContext<any>(UserContext);
@@ -53,7 +54,7 @@ const RoutesProvider = () => {
         path="/add-edit-story"
         element={
           <PrivateRoute>
-            <Dashboard />
+            <AddEditStory />
           </PrivateRoute>
         }
       />

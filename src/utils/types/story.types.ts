@@ -8,8 +8,8 @@ export type StoryBaseType = {
   author: UserProfileReferenceType
   storyOverallScore: StoryScoreType
 }
-export type StoryDisplayType = StoryBaseType & { description: string; content: string }
-export type StoryContentType = StoryBaseType & { content: string }
+export type StoryDisplayType = StoryBaseType & { description: string; preview: string }
+export type StoryContentType = StoryBaseType & { preview: string }
 
 export type ReviewType = {
   id: number

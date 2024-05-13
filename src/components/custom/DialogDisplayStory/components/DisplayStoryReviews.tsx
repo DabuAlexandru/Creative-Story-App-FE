@@ -3,7 +3,7 @@ import { retrieveAllReviewsOfStoryPaginate } from "@/requests/story.review.reque
 import { Paginated, emptyPaginated } from "@/utils/types/general.types"
 import { ReviewType } from "@/utils/types/story.types"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import ReviewCard from "./ReviewCard"
+import ReviewCard from "../../ReviewCard/ReviewCard"
 import PaginationControl from "../../PaginationControl/PaginationControl"
 import { Separator } from "@/components/ui/separator"
 import { debounce } from "lodash"

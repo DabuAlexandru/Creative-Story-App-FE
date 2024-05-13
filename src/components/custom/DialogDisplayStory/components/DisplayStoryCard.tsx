@@ -3,7 +3,7 @@ import { StoryDisplayType, StoryScoreType } from '@/utils/types/story.types'
 import { UserProfileReferenceType } from '@/utils/types/user.types'
 import dayjs from 'dayjs'
 import DisplayStoryReviews from './DisplayStoryReviews'
-import { ScoreWrapper } from './ScoreWrapper'
+import { ScoreWrapper } from '../../ScoreWrapper/ScoreWrapper'
 import { Button } from '@/components/ui/button'
 import { useContext } from 'react'
 import { UserContext } from '@/utils/providers/UserContextProvider'
@@ -15,7 +15,7 @@ import { PictureContext } from '@/utils/providers/ProfilePicturesProvider'
 import React from 'react'
 
 const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
-  const { title, createdOn, lastUpdatedOn, description, content } = story
+  const { title, createdOn, lastUpdatedOn, description, preview } = story
   const { readLaterSet, setReadLater } = useContext(UserContext)
   const storyBookmarked = readLaterSet.has(story.id)
 
@@ -63,7 +63,7 @@ const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
       </div>
       <div className='p-2'>
         <p className="text-gray-2100 my-2 text-lg">{description}</p>
-        <div className="text-gray-300 text-justify overflow-ellipsis">{content}</div>
+        <div className="text-gray-300 text-justify overflow-ellipsis">{preview}</div>
       </div>
     </div>
   )

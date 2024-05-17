@@ -6,7 +6,7 @@ type EffectFunction = () => Promise<void>;
 export const makeRequest = async <T>({
   request,
   setObject,
-  setIsLoading,
+  setIsLoading = () => {},
   onReceiveResponse,
   onSuccessEffect,
   onFailEffect,
@@ -14,14 +14,14 @@ export const makeRequest = async <T>({
   successMessage = 'Success',
 }: {
   request: () => Promise<APIResponseType>,
-  setObject: StateSetter<T>,
-  setIsLoading: StateSetter<boolean>,
+  setObject?: StateSetter<T>,
+  setIsLoading?: StateSetter<boolean>,
   onReceiveResponse?: (data: T) => Promise<void>,
   onSuccessEffect?: EffectFunction,
   onFailEffect?: EffectFunction,
   displaySuccessMessage?: Boolean
   successMessage?: string,
-}) => {
+}): Promise<T | undefined> => {
   try {
     setIsLoading(true);
     const response = await request();
@@ -37,6 +37,7 @@ export const makeRequest = async <T>({
       if (displaySuccessMessage) {
         toast({ description: successMessage || 'The request was successful!' });
       }
+      return responsePayload;
     }
   } catch (error: any) {
     console.error(error)

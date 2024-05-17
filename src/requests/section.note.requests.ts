@@ -5,7 +5,13 @@ const baseURL = '/section-note';
 
 // Retrieve all notes of a section with pagination
 export const retrieveAllSectionNotesPaginate = async ({ sectionId, page, size }: { sectionId: number, page: number, size: number }) => {
-  const url = `${baseURL}/get-all/of-section/${sectionId}?page=${page}&size=${size}`;
+  const url = `${baseURL}/get-all/of-section/paginate/${sectionId}?page=${page}&size=${size}`;
+  return await axiosRequest({ method: RequestMethod.GET, requestURL: url });
+}
+
+// Retrieve all sections of a section
+export const retrieveAllSectionNotes = async (sectionId: number) => {
+  const url = `${baseURL}/get-all/of-section/${sectionId}`;
   return await axiosRequest({ method: RequestMethod.GET, requestURL: url });
 }
 

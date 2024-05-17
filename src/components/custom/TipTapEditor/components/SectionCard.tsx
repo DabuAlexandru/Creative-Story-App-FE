@@ -1,8 +1,10 @@
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { SectionType } from "@/utils/types/section.types"
 import { FileTextIcon } from "@radix-ui/react-icons"
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useMemo, useCallback, useContext } from "react"
 import { InlineInput } from "../../InlineInput/InlineInput"
+import { debounce } from "lodash"
+import { TipTopEditorContext } from "@/utils/providers/TipTapEditorProvider"
 
 const SectionCard = ({
   section,
@@ -11,9 +13,23 @@ const SectionCard = ({
   section: SectionType,
   setSection: (newSection: SectionType) => void
 }) => {
+  const { sectionId, setSectionId } = useContext(TipTopEditorContext)
+  const [sectionTitle, setSectionTitle] = useState<string>(section.title)
   const [editableMode, setEditableMode] = useState<boolean>(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  const updateSectionTitle = useCallback((oldSection: SectionType, newTitle: string) => {
+    setSection({...oldSection, title: newTitle})
+  }, [])
+
+  const debouncedSaveRequest = useMemo(() => debounce(updateSectionTitle, 300), [])
+
+  useEffect(() => {
+    return () => {
+      debouncedSaveRequest.cancel()
+    }
+  }, [debouncedSaveRequest])
 
   const handleClickOutside = (event: MouseEvent) => {
     if (containerRef.current && !containerRef.current.contains(event.target as Element)) {
@@ -30,11 +46,16 @@ const SectionCard = ({
     if (editableMode && inputRef.current) {
       inputRef.current.select()
     }
+
+    if (!editableMode && sectionTitle && section.title !== sectionTitle) {
+      debouncedSaveRequest(section, sectionTitle)
+    }
   }, [editableMode]);
 
   return (
     <div
-      className='m-1 px-2 rounded-md bg-slate-100'
+      className={`m-1 px-2 rounded-md ${sectionId === section.id ? 'bg-slate-200 font-semibold' : 'bg-slate-50 font-normal'} cursor-pointer hover:bg-slate-100`}
+      onClick={() => setSectionId(section.id)}
       onDoubleClick={() => setEditableMode(!editableMode)}
       ref={containerRef}
     >
@@ -44,17 +65,17 @@ const SectionCard = ({
             <div><FileTextIcon /></div>
             {editableMode
               ? (<InlineInput
-                value={section.title}
-                onChange={ev => setSection({ ...section, title: ev.target.value })}
+                value={sectionTitle}
+                onChange={ev => setSectionTitle(ev.target.value || '')}
                 ref={inputRef}
               />)
               : (<TooltipTrigger asChild>
-                <span className='truncate select-none'>{section.title}</span>
+                <span className='truncate select-none'>{sectionTitle}</span>
               </TooltipTrigger>)
             }
           </div>
           <TooltipContent>
-            <p>{section.title}</p>
+            <p>{sectionTitle}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

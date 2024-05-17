@@ -1,33 +1,38 @@
 import { makeRequest } from '@/requests/request.handler'
-import { retrieveAllSectionNotesPaginate } from '@/requests/section.note.requests'
-import { TipTopEditorContext } from '@/utils/providers/TipTapEditorProvider'
-import { Paginated, emptyPaginated } from '@/utils/types/general.types'
-import { NoteType } from '@/utils/types/section.types'
+import { retrieveAllSectionNotes } from '@/requests/section.note.requests'
+import { NoteType, getNewNote } from '@/utils/types/section.types'
 import { useContext, useEffect, useState } from 'react'
-
-const SECTION_NOTE_COUNT = 6
+import NoteCard from './NoteCard'
+import { Button } from '@/components/ui/button'
+import { TipTopEditorContext } from '@/utils/providers/TipTapEditorProvider'
 
 const NotesExplorer = () => {
   const { sectionId } = useContext(TipTopEditorContext)
-  const [paginatedNotes, setPaginatedNotes] = useState<Paginated<NoteType>>(emptyPaginated)
+  const [notes, setNotes] = useState<NoteType[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [currentPage, setCurrentPage] = useState<number>(1)
-
+  
   useEffect(() => {
     if (!sectionId) {
       return
     }
     makeRequest({
-      request: () => retrieveAllSectionNotesPaginate({ sectionId, page: currentPage - 1, size: SECTION_NOTE_COUNT }),
-      setObject: setPaginatedNotes,
+      request: () => retrieveAllSectionNotes(sectionId),
+      setObject: setNotes,
       setIsLoading
     })
   }, [sectionId])
 
-
   return (
-    <div className='absolute right-0 w-[12.5vw] h-[97.5vh] pt-14 bg-slate-300 font-black text-slate-900 flex justify-center'>
-      <h1 className='text-2xl'>Notes</h1>
+    <div className='absolute right-0 w-[12.5vw] h-[97.5vh] pt-14 px-2 bg-slate-300 text-slate-900 overflow-auto'>
+      <h1 className='text-2xl text-center mb-2'>Notes</h1>
+      <div className='flex justify-center'>
+        <div className='flex gap-4 flex-col'>
+          <div className='mt-4'>
+            <Button className='w-[10vw]' onClick={() => {}}>New Note +</Button>
+          </div>
+          {notes.map(note => <NoteCard key={note.id} note={note} />)}
+        </div>
+      </div>
     </div>
   )
 }

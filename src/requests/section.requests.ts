@@ -21,6 +21,11 @@ export const retrieveSectionContent = async (sectionId: number) => {
   return await axiosRequest({ method: RequestMethod.GET, requestURL: url });
 }
 
+export const retrieveLastModifiedSectionOfStory = async (storyId: number) => {
+  const url = `${baseURL}/get/last-modified/of-story/${storyId}`;
+  return await axiosRequest({ method: RequestMethod.GET, requestURL: url });
+}
+
 // Create a new section for a story
 export const createNewSection = async (storyId: number, newSection: SectionType) => {
   const url = `${baseURL}/create/for-story/${storyId}`;

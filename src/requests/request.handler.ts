@@ -2,6 +2,7 @@ import { toast } from "@/components/ui/use-toast";
 import { APIResponseType, StateSetter } from "@/utils/types/general.types";
 
 type EffectFunction = () => Promise<void>;
+type EffectSimpleFunction = () => void;
 
 export const makeRequest = async <T>({
   request,
@@ -16,9 +17,9 @@ export const makeRequest = async <T>({
   request: () => Promise<APIResponseType>,
   setObject?: StateSetter<T>,
   setIsLoading?: StateSetter<boolean>,
-  onReceiveResponse?: (data: T) => Promise<void>,
-  onSuccessEffect?: EffectFunction,
-  onFailEffect?: EffectFunction,
+  onReceiveResponse?: ((data: T) => Promise<void>) | ((data: T) => void),
+  onSuccessEffect?: EffectFunction | EffectSimpleFunction,
+  onFailEffect?: EffectFunction | EffectSimpleFunction,
   displaySuccessMessage?: Boolean
   successMessage?: string,
 }): Promise<T | undefined> => {

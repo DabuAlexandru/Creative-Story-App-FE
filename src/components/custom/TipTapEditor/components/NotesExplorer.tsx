@@ -1,16 +1,25 @@
 import { makeRequest } from '@/requests/request.handler'
 import { retrieveAllSectionNotes } from '@/requests/section.note.requests'
-import { NoteType, getNewNote } from '@/utils/types/section.types'
-import { useContext, useEffect, useState } from 'react'
+import { NoteType } from '@/utils/types/section.types'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import NoteCard from './NoteCard'
 import { Button } from '@/components/ui/button'
 import { TipTopEditorContext } from '@/utils/providers/TipTapEditorProvider'
+import ModalNoteDialog from './ModalNoteDialog'
 
 const NotesExplorer = () => {
   const { sectionId } = useContext(TipTopEditorContext)
   const [notes, setNotes] = useState<NoteType[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  
+
+  const onSuccessAddEditNote = useCallback((note: NoteType) => {
+    setNotes((oldNotes: NoteType[]) => {
+      let newNotes = [...oldNotes]
+      newNotes = newNotes.filter((oldNote) => oldNote.id != note.id)
+      return [note, ...newNotes]
+    })
+  }, [])
+
   useEffect(() => {
     if (!sectionId) {
       return
@@ -28,9 +37,11 @@ const NotesExplorer = () => {
       <div className='flex justify-center'>
         <div className='flex gap-4 flex-col'>
           <div className='mt-4'>
-            <Button className='w-[10vw]' onClick={() => {}}>New Note +</Button>
+            <ModalNoteDialog onReceiveResponse={onSuccessAddEditNote}>
+              <Button className='w-[10vw]'>New Note +</Button>
+            </ModalNoteDialog>
           </div>
-          {notes.map(note => <NoteCard key={note.id} note={note} />)}
+          {notes.map(note => <NoteCard key={note.id} note={note} onSuccessAddEditNote={onSuccessAddEditNote} />)}
         </div>
       </div>
     </div>

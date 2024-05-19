@@ -2,8 +2,11 @@ import { Card } from '@/components/ui/card'
 import { DotsHorizontalIcon } from '@/components/ui/icons'
 import { StoryDisplayType } from '@/utils/types/story.types'
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
 const StoryCard = ({ story }: { story: StoryDisplayType }) => {
+  const navigate = useNavigate()
+
   return (
     <Card className='p-5 w-[400px]'>
       <div className="flex items-center h-4">
@@ -19,7 +22,9 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
           Unspecified
         </span>
       </div>
-      <span>{story.description}</span>
+      <span className='select-none cursor-pointer' onClick={
+        () => navigate(`/add-edit-story/${story.id}`)
+      }>{story.description}</span>
       <div className='mt-4 opacity-60 text-sm'>{dayjs(story.lastUpdatedOn).format('YYYY-MM-DD HH:mm')}</div>
     </Card>
   )

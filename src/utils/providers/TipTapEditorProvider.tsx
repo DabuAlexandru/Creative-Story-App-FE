@@ -23,7 +23,7 @@ const TipTapEditorProvider: FC<{ children: React.ReactNode  }> = ({
   children,
 }) => {
   const [content, setContent] = useState<string>('')
-  const [storyId, setStoryId] = useState<number>(3)
+  const [storyId, setStoryId] = useState<number>(0)
   const [sectionId, setSectionId] = useState<number>(0)
 
   const storeForProvider: TipTopEditorContextProps = {

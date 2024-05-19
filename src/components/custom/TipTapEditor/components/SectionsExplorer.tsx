@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { makeRequest } from '@/requests/request.handler'
-import { createNewSection, retrieveAllSections, updateSection } from '@/requests/section.requests'
+import { createNewSection, retrieveAllSections, retrieveSectionContent, updateSection } from '@/requests/section.requests'
 import { TipTopEditorContext } from '@/utils/providers/TipTapEditorProvider'
 import { SectionType, getNewSection } from '@/utils/types/section.types'
 import { useContext, useEffect, useState } from 'react'
@@ -12,6 +12,9 @@ const SectionsExplorer = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
+    if (!storyId) {
+      return;
+    }
     makeRequest({
       request: () => retrieveAllSections(storyId),
       setObject: setSections,
@@ -44,7 +47,7 @@ const SectionsExplorer = () => {
   }
 
   return (
-    <div className='absolute left-0 w-[12.5vw] h-[97.5vh] px-1 pt-14 bg-slate-300 text-slate-900'>
+    <div className='w-[12.5vw] h-[100vh] px-1 pt-16 bg-slate-300 text-slate-900'>
       <h1 className='text-2xl text-center mb-6'>Sections</h1>
       <div>
         {(sections || []).map(section => <SectionCard key={section?.id} section={section} setSection={onEditSection} />)}

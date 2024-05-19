@@ -5,6 +5,9 @@ import { useState, useRef, useEffect, useMemo, useCallback, useContext } from "r
 import { InlineInput } from "../../InlineInput/InlineInput"
 import { debounce } from "lodash"
 import { TipTopEditorContext } from "@/utils/providers/TipTapEditorProvider"
+import { useCurrentEditor } from "@tiptap/react"
+import { makeRequest } from "@/requests/request.handler"
+import { retrieveSectionContent } from "@/requests/section.requests"
 
 const SectionCard = ({
   section,
@@ -13,6 +16,7 @@ const SectionCard = ({
   section: SectionType,
   setSection: (newSection: SectionType) => void
 }) => {
+  const { editor } = useCurrentEditor()
   const { sectionId, setSectionId } = useContext(TipTopEditorContext)
   const [sectionTitle, setSectionTitle] = useState<string>(section.title)
   const [editableMode, setEditableMode] = useState<boolean>(false)
@@ -20,8 +24,22 @@ const SectionCard = ({
   const containerRef = useRef<HTMLDivElement>(null)
 
   const updateSectionTitle = useCallback((oldSection: SectionType, newTitle: string) => {
-    setSection({...oldSection, title: newTitle})
+    setSection({ ...oldSection, title: newTitle })
   }, [])
+
+  const selectSection = async (newSectionId: number) => {
+    setSectionId(newSectionId)
+    if (!editor) {
+      return null
+    }
+    editor.commands.clearContent()
+    editor.setEditable(false)
+
+    const contentResponse = await makeRequest<{ id: number, content: string }>({ request: () => retrieveSectionContent(newSectionId) })
+
+    editor.setEditable(true)
+    editor.commands.setContent(contentResponse?.content || '')
+  }
 
   const debouncedSaveRequest = useMemo(() => debounce(updateSectionTitle, 300), [])
 
@@ -55,7 +73,7 @@ const SectionCard = ({
   return (
     <div
       className={`m-1 px-2 rounded-md ${sectionId === section.id ? 'bg-slate-200 font-semibold' : 'bg-slate-50 font-normal'} cursor-pointer hover:bg-slate-100`}
-      onClick={() => setSectionId(section.id)}
+      onClick={() => selectSection(section.id)}
       onDoubleClick={() => setEditableMode(!editableMode)}
       ref={containerRef}
     >

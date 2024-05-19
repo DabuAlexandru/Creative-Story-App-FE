@@ -1,17 +1,25 @@
-import { ReactNode, useContext } from 'react'
+import { ReactNode, useContext, useEffect } from 'react'
 import { EditorProvider } from '@tiptap/react';
-import { TipTopEditorContext } from '@/utils/providers/TipTapEditorProvider';
 import { editorProps, extensions } from '../utils';
 import EditStyleMenu from './EditorToolbar';
+import { useParams } from 'react-router-dom';
+import { TipTopEditorContext } from '@/utils/providers/TipTapEditorProvider';
 
 const TipTapEditor = ({ children }: { children?: ReactNode }) => {
-  const { content } = useContext(TipTopEditorContext)
+  const { storyId } = useParams()
+  const { setStoryId } = useContext(TipTopEditorContext)
+
+  useEffect(() => {
+    if (!storyId) {
+      return;
+    }
+    setStoryId(Number(storyId))
+  }, [storyId])
 
   return (
     <EditorProvider
       slotBefore={<EditStyleMenu />}
       extensions={extensions}
-      content={content}
       editorProps={editorProps}
       children={children}
     />

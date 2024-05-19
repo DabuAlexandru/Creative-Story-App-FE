@@ -51,7 +51,7 @@ const RoutesProvider = () => {
         }
       />
       <Route
-        path="/add-edit-story"
+        path="/add-edit-story/:storyId"
         element={
           <PrivateRoute>
             <AddEditStory />

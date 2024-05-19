@@ -21,7 +21,7 @@ export const extensions: Extensions = [
 
 export const editorProps: EditorProps = {
   attributes: {
-    class: 'w-full h-[85vh] overflow-auto px-16 py-12 bg-white text-black rounded-sm',
+    class: 'w-full h-[85vh] mt-[-5vh] overflow-auto px-16 py-12 bg-white text-black rounded-sm relative z-10',
   }
 }
 

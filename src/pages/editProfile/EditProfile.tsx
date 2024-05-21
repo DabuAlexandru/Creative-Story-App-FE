@@ -12,10 +12,11 @@ import { editProfileFormSchema } from './utils';
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from 'zod'
-import { updatePicture, updateUserProfile } from '@/requests/user.profile.requests';
+import { updateProfilePicture, updateUserProfile } from '@/requests/user.profile.requests';
 import { useNavigate } from 'react-router-dom';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@radix-ui/react-label';
+import { makeRequest } from '@/requests/request.handler';
 
 const ProfileForm = ({
   userProfile
@@ -29,19 +30,12 @@ const ProfileForm = ({
     defaultValues: userProfile,
   })
 
-  const onSubmit = async (values: z.infer<typeof editProfileFormSchema>) => {
-    setIsLoading(true)
-    const response = await updateUserProfile(values);
-    setIsLoading(false)
-    if (response.error) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: response.message
-      })
-      return
-    }
-    navigate("/view-profile")
+  const onSubmit = (values: z.infer<typeof editProfileFormSchema>) => {
+    makeRequest({
+      request: () => updateUserProfile(values),
+      setIsLoading,
+      onSuccessEffect: () => navigate("/view-profile"),
+    })
   }
 
   return (
@@ -171,7 +165,7 @@ const ProfilePictureForm = ({
     const formData = new FormData();
     formData.append("file", selectedFile)
 
-    const fileResponse = await updatePicture(formData)
+    const fileResponse = await updateProfilePicture(formData)
     if (fileResponse.error) {
       toast({ variant: 'destructive', title: 'File upload failed!', description: fileResponse.message })
       return

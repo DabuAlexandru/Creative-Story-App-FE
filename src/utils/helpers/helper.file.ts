@@ -4,47 +4,49 @@ import { StateSetter } from "../types/general.types";
 import { PictureDictType } from "../types/user.types";
 import { toNumber } from "./helper.string";
 
-export const getProfilePictureURL = async (filename: string): Promise<string> => {
-  const profilePictureResponse = await retrieveFile(filename);
-  if (profilePictureResponse.error) {
+export const getPictureURL = async (filename: string): Promise<string> => {
+  const pictureResponse = await retrieveFile(filename);
+  if (pictureResponse.error) {
     toast({
       variant: "destructive",
       title: "Uh oh! Something went wrong.",
-      description: profilePictureResponse.message
+      description: pictureResponse.message
     })
     return '';
   }
-  const imageURL = URL.createObjectURL(new Blob([profilePictureResponse.data]));
+  const imageURL = URL.createObjectURL(new Blob([pictureResponse.data]));
   return imageURL
 }
 
-export const getAndSetProfilePicture = async (filename: string, setProfilePicture: StateSetter<string>) => {
+export const getAndSetPicture = async (filename: string, setPicture: StateSetter<string>) => {
   if (!filename) {
     return;
   }
-  const imageURL = await getProfilePictureURL(filename)
-  setProfilePicture(imageURL)
+  const imageURL = await getPictureURL(filename)
+  setPicture(imageURL)
 }
 
-export const getAndSetProfilePictureURL = async ({
+export const getAndSetPictureURL = async ({
   picturesDict,
-  profileId,
+  category,
+  pictureKey,
   fileName,
-  setProfilePictureUrl
+  setPictureUrl
 }: {
   picturesDict: PictureDictType
-  profileId: string | number
+  category: 'profile' | 'cover'
+  pictureKey: string | number
   fileName: string
-  setProfilePictureUrl: StateSetter<string>
+  setPictureUrl: StateSetter<string>
 }) => {
   if (!picturesDict) {
     return;
   }
-  const pictureKey = toNumber(profileId)
-  const futureProfilePictureUrl = picturesDict[pictureKey]
-  if (futureProfilePictureUrl) {
-    setProfilePictureUrl(futureProfilePictureUrl)
+  const idKey = `${category}-${toNumber(pictureKey)}`
+  const futurePictureUrl = picturesDict[idKey]
+  if (futurePictureUrl) {
+    setPictureUrl(futurePictureUrl)
   } else {
-    getAndSetProfilePicture(fileName, setProfilePictureUrl)
+    getAndSetPicture(fileName, setPictureUrl)
   }
 }

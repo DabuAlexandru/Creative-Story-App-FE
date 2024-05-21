@@ -1,9 +1,9 @@
 import TipTapEditorWrapper from "@/components/custom/TipTapEditor/TipTapEditorWrapper"
 
-const AddEditStory = () => {
+const AddEditStoryContent = () => {
   return (
     <TipTapEditorWrapper />
   )
 }
 
-export default AddEditStory
+export default AddEditStoryContent

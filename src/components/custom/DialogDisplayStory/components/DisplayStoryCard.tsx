@@ -9,7 +9,7 @@ import { useContext } from 'react'
 import { UserContext } from '@/utils/providers/UserContextProvider'
 import { BookmarkFilledIcon, BookmarkIcon, MagnifyingGlassIcon, ReaderIcon } from '@radix-ui/react-icons'
 import { updateReadLaterList } from '../utils'
-import { getAndSetProfilePictureURL } from '@/utils/helpers/helper.file'
+import { getAndSetPictureURL } from '@/utils/helpers/helper.file'
 import { extractSignatureFromString } from '@/utils/helpers/helper.string'
 import { PictureContext } from '@/utils/providers/ProfilePicturesProvider'
 import React from 'react'
@@ -86,7 +86,7 @@ const SocialDetails = ({
 
   React.useEffect(() => {
     if (!profilePictureUrl && picturesDict) {
-      getAndSetProfilePictureURL({ picturesDict, profileId: profileInfo.id, fileName: profilePicture.fileName, setProfilePictureUrl })
+      getAndSetPictureURL({ picturesDict, category: 'profile', pictureKey: profileInfo.id, fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
     }
   }, [picturesDict])
 

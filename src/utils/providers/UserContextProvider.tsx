@@ -1,9 +1,9 @@
 import { createContext, useCallback, useMemo } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { loginRequest } from "@/requests/auth.requests";
-import { APIResponseType, StateSetter } from "../types/general.types";
+import { APIResponseType, PictureType, StateSetter } from "../types/general.types";
 import { redirect } from "react-router-dom";
-import { BaseUserProfileType, FavoriteType, ProfilePictureType, ReadLaterType, UserProfileType, emptyBaseUserProfileType } from "../types/user.types";
+import { BaseUserProfileType, FavoriteType, ReadLaterType, UserProfileType, emptyBaseUserProfileType } from "../types/user.types";
 import { toNumber } from "../helpers/helper.string";
 import { getUserProfile } from "@/requests/user.profile.requests";
 import { toast } from "@/components/ui/use-toast";
@@ -36,8 +36,8 @@ type UserContextProps = {
   readLaterSet: Set<number>
   profileInfo: BaseUserProfileType
   setProfileInfo: StateSetter<BaseUserProfileType>
-  profilePicture: ProfilePictureType
-  setProfilePicture: StateSetter<ProfilePictureType>
+  profilePicture: PictureType
+  setProfilePicture: StateSetter<PictureType>
 }
 
 const UserContext = createContext<UserContextProps>({
@@ -67,7 +67,7 @@ const UserContextProvider = ({ children }: { children: any }) => {
   const [readLater, setReadLater] = useLocalStorage<ReadLaterType[]>("read-later", [])
   const readLaterSet: Set<number> = useMemo(() => (new Set(readLater.map(f => toNumber(f.storyId)))), [readLater])
   const [profileInfo, setProfileInfo] = useLocalStorage<BaseUserProfileType>("profile-info", emptyBaseUserProfileType)
-  const [profilePicture, setProfilePicture] = useLocalStorage<ProfilePictureType>("profile-picture", { fileName: '', userId: 0 })
+  const [profilePicture, setProfilePicture] = useLocalStorage<PictureType>("profile-picture", { fileName: '', userId: 0 })
   const [token, setToken] = useLocalStorage<string>("jwt", '')
 
   const onLoginSuccess = useCallback(async (loginResponse: { user: UserType, token: string }) => {

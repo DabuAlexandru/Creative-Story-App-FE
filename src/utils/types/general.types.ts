@@ -65,3 +65,8 @@ export const emptyPaginated: Paginated<any> = {
   totalElements: 0,
   totalPages: 0
 };
+
+export type PictureType = {
+  fileName: string,
+  userId: number
+}

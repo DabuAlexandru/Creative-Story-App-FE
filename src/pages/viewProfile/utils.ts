@@ -1,6 +1,6 @@
 import { toast } from "@/components/ui/use-toast";
 import { getUserProfile } from "@/requests/user.profile.requests";
-import { getAndSetProfilePicture } from "@/utils/helpers/helper.file";
+import { getAndSetPicture } from "@/utils/helpers/helper.file";
 import { StateSetter } from "@/utils/types/general.types";
 import { UserProfileType } from "@/utils/types/user.types";
 
@@ -32,7 +32,7 @@ export const getAndSetUserProfile = async ({
   const userProfile: UserProfileType = userProfileResponse.data
   const profilePictureFilename = userProfile.profilePicture?.fileName;
 
-  getAndSetProfilePicture(profilePictureFilename, setImageSrc)
+  getAndSetPicture(profilePictureFilename, setImageSrc)
 
   setIsLoading(false)
   setUserProfile(userProfile)

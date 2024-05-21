@@ -10,10 +10,10 @@ import { makeRequest } from '@/requests/request.handler'
 const MyStories = () => {
   const [stories, setStories] = useState<StoryDisplayType[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { user: { id: userId } } = useContext(UserContext)
+  const { profileInfo: { id: profileId } } = useContext(UserContext)
 
   useEffect(() => {
-    makeRequest({ request: () => retrieveStoriesForAuthorRequest(userId), setObject: setStories, setIsLoading })
+    makeRequest({ request: () => retrieveStoriesForAuthorRequest(profileId), setObject: setStories, setIsLoading })
   }, [])
 
   if (isLoading) {

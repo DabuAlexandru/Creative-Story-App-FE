@@ -1,3 +1,5 @@
+import DropdownMenuOwnStory from '@/components/custom/DropdownMenuOwnStory/DropdownMenuOwnStory';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card'
 import { DotsHorizontalIcon } from '@/components/ui/icons'
 import { StoryDisplayType } from '@/utils/types/story.types'
@@ -11,7 +13,11 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
     <Card className='p-5 w-[400px]'>
       <div className="flex items-center h-4">
         <div className='h-full ml-auto opacity-60'>
-          <DotsHorizontalIcon />
+          <DropdownMenuOwnStory>
+            <Button variant='ghost' className='w-[40px] h-[40px] rounded-full p-1'>
+              <DotsHorizontalIcon className="h-10 w-10" />
+            </Button>
+          </DropdownMenuOwnStory>
         </div>
       </div>
       <div className='mt-4 text-2xl font-semibold'>

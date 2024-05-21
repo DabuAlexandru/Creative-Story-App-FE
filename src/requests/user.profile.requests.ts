@@ -5,7 +5,7 @@ export const getUserProfile = async (reduced: boolean = false) => {
   return await axiosRequest({ method: RequestMethod.GET, requestURL: `/user-profile${reduced ? '/reduced' : ''}` })
 }
 
-export const updatePicture = async (payload: FormData) => {
+export const updateProfilePicture = async (payload: FormData) => {
   return await axiosRequest({ method: RequestMethod.POST, requestURL: `/user-profile/update-picture`, payload })
 }
 

@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { getAndSetProfilePicture } from '@/utils/helpers/helper.file'
+import { getAndSetPicture } from '@/utils/helpers/helper.file'
 import { extractSignatureFromString } from '@/utils/helpers/helper.string'
 import { ReviewType } from '@/utils/types/story.types'
 import dayjs from 'dayjs'
@@ -17,7 +17,7 @@ const ReviewCard = ({
   const createdOn = dayjs(review.createdOn).format('YYYY-MM-DD HH:mm')
 
   useEffect(() => {
-    getAndSetProfilePicture(userProfile?.profilePicture?.fileName, setProfilePicture)
+    getAndSetPicture(userProfile?.profilePicture?.fileName, setProfilePicture)
   }, [userProfile?.profilePicture?.fileName])
 
   return (

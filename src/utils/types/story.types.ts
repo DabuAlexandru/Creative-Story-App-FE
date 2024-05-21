@@ -1,3 +1,4 @@
+import { PictureType } from "./general.types"
 import { UserProfileReferenceType } from "./user.types"
 
 export type StoryBaseType = {
@@ -7,9 +8,9 @@ export type StoryBaseType = {
   lastUpdatedOn: Date
   author: UserProfileReferenceType
   storyOverallScore: StoryScoreType
+  coverPicture: PictureType
 }
 export type StoryDisplayType = StoryBaseType & { description: string; preview: string }
-export type StoryContentType = StoryBaseType & { preview: string }
 
 export type ReviewType = {
   id: number

@@ -16,7 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserContext } from "@/utils/providers/UserContextProvider";
 import { extractSignatureFromString } from "@/utils/helpers/helper.string";
 import { PictureContext } from "@/utils/providers/ProfilePicturesProvider";
-import { getAndSetProfilePictureURL } from "@/utils/helpers/helper.file";
+import { getAndSetPictureURL } from "@/utils/helpers/helper.file";
 
 const navigationMenuBarStyle = cva(
   "absolute top-0 left-0 w-full h-14 px-8 bg-slate-900 justify-between rounded-b-sm fixed"
@@ -47,7 +47,7 @@ const AvatarMenuItem = () => {
 
   React.useEffect(() => {
     if (!profilePictureUrl && picturesDict) {
-      getAndSetProfilePictureURL({ picturesDict, profileId: profileInfo.id, fileName: profilePicture.fileName, setProfilePictureUrl })
+      getAndSetPictureURL({ picturesDict, category: 'profile', pictureKey: profileInfo.id, fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
     }
   }, [picturesDict])
 

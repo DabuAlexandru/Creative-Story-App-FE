@@ -2,7 +2,7 @@ import DialogDisplayStory from '@/components/custom/DialogDisplayStory/DialogDis
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card'
 import { DotsHorizontalIcon } from '@/components/ui/icons'
-import { getAndSetProfilePictureURL } from '@/utils/helpers/helper.file';
+import { getAndSetPictureURL } from '@/utils/helpers/helper.file';
 import { extractSignatureFromString } from '@/utils/helpers/helper.string';
 import { PictureContext } from '@/utils/providers/ProfilePicturesProvider';
 import { UserContext } from '@/utils/providers/UserContextProvider';
@@ -19,7 +19,7 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
 
   React.useEffect(() => {
     if (!profilePictureUrl && picturesDict) {
-      getAndSetProfilePictureURL({ picturesDict, profileId: profileInfo.id, fileName: profilePicture.fileName, setProfilePictureUrl })
+      getAndSetPictureURL({ picturesDict, category: 'profile', pictureKey: profileInfo.id, fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
     }
   }, [picturesDict])
 

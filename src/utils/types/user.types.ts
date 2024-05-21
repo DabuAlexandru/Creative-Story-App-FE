@@ -1,3 +1,4 @@
+import { PictureType } from "./general.types"
 
 export type FavoriteType = {
   storyId: number | string,
@@ -10,12 +11,7 @@ export type ReadLaterType = {
 }
 
 export type PictureDictType = {
-  [key: number]: string
-}
-
-export type ProfilePictureType = {
-  fileName: string,
-  userId: number
+  [key: string]: string
 }
 
 export type BaseUserProfileType = {
@@ -41,13 +37,13 @@ export const emptyBaseUserProfileType: BaseUserProfileType = {
 export type UserProfilePayloadType = Omit<BaseUserProfileType, 'id'> 
 
 export type UserProfileReferenceType = BaseUserProfileType & {
-  profilePicture: ProfilePictureType
+  profilePicture: PictureType
 }
 
 export type UserProfileType = BaseUserProfileType & {
   favorites: FavoriteType[],
   readingLists: ReadLaterType[],
-  profilePicture: ProfilePictureType
+  profilePicture: PictureType
 }
 
 export type ReducedUserProfileType = BaseUserProfileType & {

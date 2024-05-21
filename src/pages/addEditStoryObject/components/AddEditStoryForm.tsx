@@ -13,9 +13,13 @@ import CoverPictureForm from "./CoverPictureForm"
 import { createNewStoryRequest, updateStoryRequest } from "@/requests/story.requests"
 import { makeRequest } from "@/requests/request.handler"
 import { useNavigate } from "react-router-dom"
+import GenresForm from "./GenresForm"
+import { GenreType } from "@/utils/types/genre.types"
 
 const AddEditStoryForm = ({ story, imageSrc }: { story: StoryDisplayType, imageSrc: string }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [genres, setGenres] = useState<GenreType[]>(story.genres || [])
+  const [subGenres, setSubGenres] = useState<GenreType[]>(story.subGenres || [])
   const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof storyFormSchema>>({
@@ -24,7 +28,7 @@ const AddEditStoryForm = ({ story, imageSrc }: { story: StoryDisplayType, imageS
   })
 
   const onSubmit = (values: z.infer<typeof storyFormSchema>) => {
-    const futureStory: StoryDisplayType = { ...story, ...values }
+    const futureStory: StoryDisplayType = { ...story, ...values, genres, subGenres }
     const request = story.id
       ? () => updateStoryRequest(story.id, futureStory)
       : () => createNewStoryRequest(futureStory)
@@ -75,6 +79,7 @@ const AddEditStoryForm = ({ story, imageSrc }: { story: StoryDisplayType, imageS
               </FormItem>
             )}
           />
+          <GenresForm genres={genres} setGenres={setGenres} subGenres={subGenres} setSubGenres={setSubGenres} /> 
         </div>
       </div>
       <FormField

@@ -4,7 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import UserContextProvider from './utils/providers/UserContextProvider.tsx'
 import { Toaster } from './components/ui/toaster.tsx'
-import PictureContextProvider from './utils/providers/ProfilePicturesProvider.tsx'
+import PictureContextProvider from './utils/providers/PicturesProvider.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

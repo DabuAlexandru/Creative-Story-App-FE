@@ -1,4 +1,5 @@
 import DropdownMenuOwnStory from '@/components/custom/DropdownMenuOwnStory/DropdownMenuOwnStory';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card'
 import { DotsHorizontalIcon } from '@/components/ui/icons'
@@ -24,14 +25,26 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
         {story.title}
       </div>
       <div className="mt-0.5 mb-2.5 text-xs font-semibold">
-        <span className='bg-zinc-400 px-2 py-0.5 rounded-2xl text-center mx-0.5 my-0'>
-          Unspecified
-        </span>
+        {(story.genres || []).map(genre => (
+          <Badge key={`${story.id}-${genre.name}`} className='rounded-full mx-[2px]'>
+            {genre.name}
+          </Badge>
+        ))}
+      </div>
+      <div className="mt-0.5 mb-2.5 text-xs font-semibold">
+        {(story.subGenres || []).map(subGenre => (
+          <Badge key={`${story.id}-sub-${subGenre.name}`} className='rounded-full mx-[2px]' variant='secondary'>
+            {subGenre.name}
+          </Badge>
+        ))}
       </div>
       <span className='select-none cursor-pointer' onClick={
         () => navigate(`/add-edit-story/${story.id}`)
       }>{story.description}</span>
-      <div className='mt-4 opacity-60 text-sm'>{dayjs(story.lastUpdatedOn).format('YYYY-MM-DD HH:mm')}</div>
+      <div className='mt-4 opacity-60 text-sm'>
+        <span className='font-semibold'>Last Modified: </span>
+        {dayjs(story.lastUpdatedOn).format('YYYY-MM-DD HH:mm')}
+      </div>
     </Card>
   )
 }

@@ -9,9 +9,8 @@ import { useContext } from 'react'
 import { UserContext } from '@/utils/providers/UserContextProvider'
 import { BookmarkFilledIcon, BookmarkIcon, MagnifyingGlassIcon, ReaderIcon } from '@radix-ui/react-icons'
 import { updateReadLaterList } from '../utils'
-import { getAndSetPictureURL } from '@/utils/helpers/helper.file'
 import { extractSignatureFromString } from '@/utils/helpers/helper.string'
-import { PictureContext } from '@/utils/providers/ProfilePicturesProvider'
+import { PictureContext } from '@/utils/providers/PicturesProvider'
 import React from 'react'
 
 const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
@@ -79,16 +78,17 @@ const SocialDetails = ({
   storyId: string | number
 }) => {
   const { profileInfo, profilePicture } = React.useContext(UserContext)
-  const { picturesDict } = React.useContext(PictureContext)
+  const { getAndSetPictureURL } = React.useContext(PictureContext)
   const [profilePictureUrl, setProfilePictureUrl] = React.useState('')
 
   const signature = React.useMemo(() => extractSignatureFromString(profileInfo.penName), [profileInfo.penName])
 
   React.useEffect(() => {
-    if (!profilePictureUrl && picturesDict) {
-      getAndSetPictureURL({ picturesDict, category: 'profile', pictureKey: profileInfo.id, fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
+    console.log("changed?")
+    if (!profilePictureUrl && getAndSetPictureURL) {
+      getAndSetPictureURL({ category: 'profile', fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
     }
-  }, [picturesDict])
+  }, [getAndSetPictureURL])
 
   return (
     <div className='w-1/3 p-1'>

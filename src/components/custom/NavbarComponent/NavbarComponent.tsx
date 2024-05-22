@@ -15,8 +15,7 @@ import { DropdownMenuUser } from "../DropdownMenuUser/DropdownMenuUser";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserContext } from "@/utils/providers/UserContextProvider";
 import { extractSignatureFromString } from "@/utils/helpers/helper.string";
-import { PictureContext } from "@/utils/providers/ProfilePicturesProvider";
-import { getAndSetPictureURL } from "@/utils/helpers/helper.file";
+import { PictureContext } from "@/utils/providers/PicturesProvider";
 
 const navigationMenuBarStyle = cva(
   "absolute top-0 left-0 w-full h-14 px-8 bg-slate-900 justify-between rounded-b-sm fixed"
@@ -40,16 +39,16 @@ const BellMenuItem = () => {
 const navigatioMenuAvatarStyle = navigationMenuBlankStyle() + " pl-1 pr-2"
 const AvatarMenuItem = () => {
   const { profileInfo, profilePicture } = React.useContext(UserContext)
-  const { picturesDict } = React.useContext(PictureContext)
+  const { getAndSetPictureURL } = React.useContext(PictureContext)
   const [profilePictureUrl, setProfilePictureUrl] = React.useState('')
 
   const signature = React.useMemo(() => extractSignatureFromString(profileInfo.penName), [profileInfo.penName])
 
   React.useEffect(() => {
-    if (!profilePictureUrl && picturesDict) {
-      getAndSetPictureURL({ picturesDict, category: 'profile', pictureKey: profileInfo.id, fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
+    if (!profilePictureUrl && getAndSetPictureURL) {
+      getAndSetPictureURL({ category: 'profile', fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
     }
-  }, [picturesDict])
+  }, [getAndSetPictureURL])
 
   return (
     <NavigationMenuItem className="flex items-center gap-1 justify-center">

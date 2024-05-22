@@ -1,8 +1,6 @@
 import { toast } from "@/components/ui/use-toast";
 import { retrieveFile } from "@/requests/file.requests";
 import { StateSetter } from "../types/general.types";
-import { PictureDictType } from "../types/user.types";
-import { toNumber } from "./helper.string";
 
 export const getPictureURL = async (filename: string): Promise<string> => {
   const pictureResponse = await retrieveFile(filename);
@@ -20,33 +18,9 @@ export const getPictureURL = async (filename: string): Promise<string> => {
 
 export const getAndSetPicture = async (filename: string, setPicture: StateSetter<string>) => {
   if (!filename) {
-    return;
+    return '';
   }
   const imageURL = await getPictureURL(filename)
   setPicture(imageURL)
-}
-
-export const getAndSetPictureURL = async ({
-  picturesDict,
-  category,
-  pictureKey,
-  fileName,
-  setPictureUrl
-}: {
-  picturesDict: PictureDictType
-  category: 'profile' | 'cover'
-  pictureKey: string | number
-  fileName: string
-  setPictureUrl: StateSetter<string>
-}) => {
-  if (!picturesDict) {
-    return;
-  }
-  const idKey = `${category}-${toNumber(pictureKey)}`
-  const futurePictureUrl = picturesDict[idKey]
-  if (futurePictureUrl) {
-    setPictureUrl(futurePictureUrl)
-  } else {
-    getAndSetPicture(fileName, setPictureUrl)
-  }
+  return imageURL
 }

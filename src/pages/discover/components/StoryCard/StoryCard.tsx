@@ -2,9 +2,8 @@ import DialogDisplayStory from '@/components/custom/DialogDisplayStory/DialogDis
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card'
 import { DotsHorizontalIcon } from '@/components/ui/icons'
-import { getAndSetPictureURL } from '@/utils/helpers/helper.file';
 import { extractSignatureFromString } from '@/utils/helpers/helper.string';
-import { PictureContext } from '@/utils/providers/ProfilePicturesProvider';
+import { PictureContext } from '@/utils/providers/PicturesProvider';
 import { UserContext } from '@/utils/providers/UserContextProvider';
 import { StoryDisplayType } from '@/utils/types/story.types'
 import dayjs from 'dayjs';
@@ -12,16 +11,16 @@ import React from 'react';
 
 const StoryCard = ({ story }: { story: StoryDisplayType }) => {
   const { profileInfo, profilePicture } = React.useContext(UserContext)
-  const { picturesDict } = React.useContext(PictureContext)
+  const { getAndSetPictureURL } = React.useContext(PictureContext)
   const [profilePictureUrl, setProfilePictureUrl] = React.useState('')
 
   const signature = React.useMemo(() => extractSignatureFromString(profileInfo.penName), [profileInfo.penName])
 
   React.useEffect(() => {
-    if (!profilePictureUrl && picturesDict) {
-      getAndSetPictureURL({ picturesDict, category: 'profile', pictureKey: profileInfo.id, fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
+    if (!profilePictureUrl && getAndSetPictureURL) {
+      getAndSetPictureURL({ category: 'profile', fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
     }
-  }, [picturesDict])
+  }, [getAndSetPictureURL])
 
   return (
     <Card className='p-5 w-2/3'>

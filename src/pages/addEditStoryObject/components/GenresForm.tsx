@@ -90,6 +90,7 @@ const GenresForm = ({
           <Label htmlFor="available-genres">Available Genres</Label>
           <SelectObject
             value={''}
+            disabled={isLoading}
             options={updateAvailableGenres()}
             valueKey="id"
             labelKey="name"
@@ -113,6 +114,7 @@ const GenresForm = ({
           <Label htmlFor="available-subgenres">Available Subgenres</Label>
           <SelectObject
             value={''}
+            disabled={isLoading}
             options={updateAvailableSubgenres()}
             valueKey="id"
             labelKey="name"

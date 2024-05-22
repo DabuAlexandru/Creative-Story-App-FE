@@ -89,6 +89,7 @@ const GenresForm = ({
         <div className="">
           <Label htmlFor="available-genres">Available Genres</Label>
           <SelectObject
+            value={''}
             options={updateAvailableGenres()}
             valueKey="id"
             labelKey="name"
@@ -98,7 +99,7 @@ const GenresForm = ({
         </div>
         <div className="">
           <Label htmlFor="selected-genres">Selected Genres</Label>
-          <BadgesContainer 
+          <BadgesContainer
             elements={genres}
             IdKey='id'
             labelKey='name'
@@ -111,6 +112,7 @@ const GenresForm = ({
         <div className="">
           <Label htmlFor="available-subgenres">Available Subgenres</Label>
           <SelectObject
+            value={''}
             options={updateAvailableSubgenres()}
             valueKey="id"
             labelKey="name"
@@ -120,7 +122,7 @@ const GenresForm = ({
         </div>
         <div className="select-container">
           <Label htmlFor="selected-subgenres">Selected Subgenres</Label>
-          <BadgesContainer 
+          <BadgesContainer
             elements={subGenres}
             IdKey='id'
             labelKey='name'

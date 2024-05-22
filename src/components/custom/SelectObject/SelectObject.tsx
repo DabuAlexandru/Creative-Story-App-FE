@@ -9,6 +9,7 @@ import {
 import { FlexibleObject } from "@/utils/types/general.types";
 
 const SelectObject = ({
+  value,
   options,
   valueKey,
   labelKey,
@@ -16,6 +17,7 @@ const SelectObject = ({
   onValueChange,
   className
 }: {
+  value: string
   options: FlexibleObject[];
   valueKey: string;
   labelKey: string;
@@ -24,7 +26,7 @@ const SelectObject = ({
   className?: string;
 }) => {
   return (
-    <Select onValueChange={onValueChange} disabled={!options || options.length === 0}>
+    <Select value={value} onValueChange={onValueChange} disabled={!options || options.length === 0}>
       <SelectTrigger className={className}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

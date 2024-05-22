@@ -1,4 +1,5 @@
 import axios from "axios";
+import { clearStorageData } from "./axios.handler";
 
 const axiosInstance = axios.create({
   timeout: 10000,
@@ -23,8 +24,7 @@ axiosInstance.interceptors.response.use(function (response) {
   const { response } = error;
   if (response && response.status === 403) {
     // Clear localStorage
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('user');
+    clearStorageData();
     // Redirect the user to the root of the app
     window.location.href = '/';
   }

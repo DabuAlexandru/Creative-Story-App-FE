@@ -1,5 +1,4 @@
-import { createContext, useMemo } from "react";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { createContext, useMemo, useState } from "react";
 import { StateSetter } from "../types/general.types";
 import { PictureDictType } from "../types/user.types";
 import { getAndSetPicture } from "../helpers/helper.file";
@@ -23,7 +22,7 @@ const PictureContext = createContext<PictureContextProps>({
 
 
 const PictureContextProvider = ({ children }: { children: any }) => {
-  const [picturesDict, setPicturesDict] = useLocalStorage<PictureDictType>("pictureURLs", {});
+  const [picturesDict, setPicturesDict] = useState<PictureDictType>({})
 
   const getAndSetPictureURL = async ({
     category,

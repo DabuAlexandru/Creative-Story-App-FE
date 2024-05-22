@@ -48,7 +48,7 @@ const AvatarMenuItem = () => {
     if (!profilePictureUrl && getAndSetPictureURL) {
       getAndSetPictureURL({ category: 'profile', fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
     }
-  }, [getAndSetPictureURL])
+  }, [])
 
   return (
     <NavigationMenuItem className="flex items-center gap-1 justify-center">

@@ -110,3 +110,9 @@ export const axiosRequest = async (axiosPayload: AxiosRequestHandlerType): Promi
     return ApiResponseObject.error(err as AxiosError)
   }
 }
+
+export const clearStorageData = () => {
+  localStorage.removeItem('jwt');
+  localStorage.removeItem('user');
+  // localStorage.removeItem('pictureURLs');
+}

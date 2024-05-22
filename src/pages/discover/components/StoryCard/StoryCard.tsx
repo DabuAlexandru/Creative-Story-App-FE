@@ -1,4 +1,6 @@
+import CoverImage from '@/components/custom/CoverImage/CoverImage';
 import DialogDisplayStory from '@/components/custom/DialogDisplayStory/DialogDisplayStory';
+import DisplayGenres from '@/components/custom/DisplayGenres/DisplayGenres';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card'
 import { DotsHorizontalIcon } from '@/components/ui/icons'
@@ -20,11 +22,11 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
     if (!profilePictureUrl && getAndSetPictureURL) {
       getAndSetPictureURL({ category: 'profile', fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
     }
-  }, [getAndSetPictureURL])
+  }, [])
 
   return (
     <Card className='p-5 w-2/3'>
-      <div className="flex items-center h-14">
+      <div className="flex items-center h-14 mb-3">
         <Avatar className='size-16'>
           <AvatarImage src={profilePictureUrl} alt="@shadcn" />
           <AvatarFallback>{signature}</AvatarFallback>
@@ -41,13 +43,14 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
           <DotsHorizontalIcon />
         </div>
       </div>
-      <div className='mt-4 text-2xl font-semibold'>
-        {story.title}
-      </div>
-      <div className="mt-0.5 mb-2.5 text-xs font-semibold">
-        <span className='bg-zinc-400 px-2 py-0.5 rounded-2xl text-center mx-0.5 my-0'>
-          Unspecified
-        </span>
+      <div className='flex gap-2'>
+        <CoverImage fileName={story.coverPicture?.fileName} />
+        <div>
+          <div className='mt-4 text-2xl font-semibold'>
+            {story.title}
+          </div>
+          <DisplayGenres genres={story.genres} subGenres={story.subGenres} />
+        </div>
       </div>
       <DialogDisplayStory story={story}>
         <span>{story.description}</span>

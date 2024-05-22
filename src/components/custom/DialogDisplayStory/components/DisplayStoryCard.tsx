@@ -12,6 +12,8 @@ import { updateReadLaterList } from '../utils'
 import { extractSignatureFromString } from '@/utils/helpers/helper.string'
 import { PictureContext } from '@/utils/providers/PicturesProvider'
 import React from 'react'
+import CoverImage from '../../CoverImage/CoverImage'
+import DisplayGenres from '../../DisplayGenres/DisplayGenres'
 
 const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
   const { title, createdOn, lastUpdatedOn, description, preview } = story
@@ -21,19 +23,10 @@ const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
   return (
     <div className='w-2/3 p-1'>
       <div className='flex gap-4'>
-        <div>
-          <Avatar className='w-[125px] h-[175px] rounded-none'>
-            <AvatarImage className='object-cover' src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback className='rounded-none'>CN</AvatarFallback>
-          </Avatar>
-        </div>
+        <CoverImage fileName={story.coverPicture?.fileName} initialHeight={200} />
         <div>
           <h3 className="text-xl font-semibold mb-2">{title}</h3>
-          <div className="mt-0.5 mb-2.5 text-xs font-semibold">
-            <span className='bg-zinc-400 px-2 py-0.5 rounded-2xl text-center mx-0.5 my-0'>
-              Unspecified
-            </span>
-          </div>
+          <DisplayGenres genres={story.genres} subGenres={story.subGenres} />
           <p className="text-gray-400 text-sm mb-2">
             Creation Date: {dayjs(createdOn).format('YYYY-MM-DD HH:mm')}
           </p>
@@ -84,11 +77,10 @@ const SocialDetails = ({
   const signature = React.useMemo(() => extractSignatureFromString(profileInfo.penName), [profileInfo.penName])
 
   React.useEffect(() => {
-    console.log("changed?")
     if (!profilePictureUrl && getAndSetPictureURL) {
       getAndSetPictureURL({ category: 'profile', fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
     }
-  }, [getAndSetPictureURL])
+  }, [])
 
   return (
     <div className='w-1/3 p-1'>

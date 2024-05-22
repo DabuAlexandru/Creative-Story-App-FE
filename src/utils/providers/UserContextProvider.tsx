@@ -7,6 +7,7 @@ import { BaseUserProfileType, FavoriteType, ReadLaterType, UserProfileType, empt
 import { toNumber } from "../helpers/helper.string";
 import { getUserProfile } from "@/requests/user.profile.requests";
 import { toast } from "@/components/ui/use-toast";
+import { clearStorageData } from "@/requests/axiosHandler/axios.handler";
 
 export type UserType = {
   id: number;
@@ -119,6 +120,8 @@ const UserContextProvider = ({ children }: { children: any }) => {
   const logout = () => {
     setUser(emptyUser);
     setToken('');
+
+    clearStorageData()
     redirect("/login");
   };
 

@@ -3,7 +3,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { formFieldStyle } from "@/pages/register/utils"
-import { StoryDisplayType } from "@/utils/types/story.types"
+import { StoryBaseType } from "@/utils/types/story.types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom"
 import GenresForm from "./GenresForm"
 import { GenreType } from "@/utils/types/genre.types"
 
-const AddEditStoryForm = ({ story, imageSrc }: { story: StoryDisplayType, imageSrc: string }) => {
+const AddEditStoryForm = ({ story, imageSrc }: { story: StoryBaseType, imageSrc: string }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [genres, setGenres] = useState<GenreType[]>(story.genres || [])
   const [subGenres, setSubGenres] = useState<GenreType[]>(story.subGenres || [])
@@ -28,7 +28,7 @@ const AddEditStoryForm = ({ story, imageSrc }: { story: StoryDisplayType, imageS
   })
 
   const onSubmit = (values: z.infer<typeof storyFormSchema>) => {
-    const futureStory: StoryDisplayType = { ...story, ...values, genres, subGenres }
+    const futureStory: StoryBaseType = { ...story, ...values, genres, subGenres }
     const request = story.id
       ? () => updateStoryRequest(story.id, futureStory)
       : () => createNewStoryRequest(futureStory)

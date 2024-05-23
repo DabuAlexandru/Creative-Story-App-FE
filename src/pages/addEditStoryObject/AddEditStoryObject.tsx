@@ -1,16 +1,17 @@
 import { makeRequest } from '@/requests/request.handler'
 import { retrieveStoryRequest } from '@/requests/story.requests'
-import { StoryDisplayType } from '@/utils/types/story.types'
-import { useEffect, useState } from 'react'
+import { StoryBaseType, emptyStory } from '@/utils/types/story.types'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import AddEditStoryForm from './components/AddEditStoryForm'
 import { getAndSetPicture } from '@/utils/helpers/helper.file'
 
 const AddEditStoryObject = () => {
   const { storyId } = useParams()
-  const [story, setStory] = useState<StoryDisplayType | null>(null)
+  const [story, setStory] = useState<StoryBaseType>(emptyStory)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [imageSrc, setImageSrc] = useState<string>('')
+  const isEditMode = useMemo(() => Boolean(storyId), [storyId])
 
   const getAndSetData = async () => {
     if (!storyId) {
@@ -22,15 +23,17 @@ const AddEditStoryObject = () => {
     if (pictureFileName) {
       await getAndSetPicture(pictureFileName, setImageSrc)
     }
-    
+
     setIsLoading(false)
   }
 
   useEffect(() => {
-    getAndSetData()
+    if (isEditMode) {
+      getAndSetData()
+    }
   }, [storyId])
 
-  if (!story || isLoading) {
+  if (isLoading) {
     return null
   }
 

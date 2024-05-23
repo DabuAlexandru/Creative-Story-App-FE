@@ -15,7 +15,7 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
     <Card className='p-5 w-[500px]'>
       <div className="flex items-center h-4">
         <div className='h-full ml-auto opacity-60'>
-          <DropdownMenuOwnStory>
+          <DropdownMenuOwnStory storyId={story.id}>
             <Button variant='ghost' className='w-[40px] h-[40px] rounded-full p-1'>
               <DotsHorizontalIcon className="h-10 w-10" />
             </Button>
@@ -33,7 +33,7 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
       </div>
       <div
         className='select-none cursor-pointer p-1'
-        onClick={() => navigate(`/add-edit-story/${story.id}`)}
+        onClick={() => navigate(`/add-edit-story-content/${story.id}`)}
       >
         <span>{story.description}</span>
       </div>

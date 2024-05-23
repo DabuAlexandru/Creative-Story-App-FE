@@ -5,15 +5,18 @@ import { UserProfileReferenceType } from "./user.types"
 export type StoryBaseType = {
   id: number
   title: string
+  genres: GenreType[]
+  subGenres: GenreType[]
+  description: string
+  preview: string
+  coverPicture: PictureType
+}
+export type StoryDisplayType = StoryBaseType & {
   createdOn: Date
   lastUpdatedOn: Date
   author: UserProfileReferenceType
   storyOverallScore: StoryScoreType
-  coverPicture: PictureType
-  genres: GenreType[]
-  subGenres: GenreType[]
 }
-export type StoryDisplayType = StoryBaseType & { description: string; preview: string }
 
 export type ReviewType = {
   id: number
@@ -27,6 +30,19 @@ export type ReviewType = {
   createdOn: Date
   userProfile: UserProfileReferenceType
 }
+
+export const emptyStory: StoryBaseType = {
+  id: 0,
+  title: "",
+  genres: [],
+  subGenres: [],
+  description: "",
+  preview: "",
+  coverPicture: {
+    fileName: '',
+    userId: 0
+  }
+};
 
 export type StoryScoreType = {
   numOfReviews: number

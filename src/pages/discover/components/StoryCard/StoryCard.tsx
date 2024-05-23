@@ -53,7 +53,9 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
         </div>
       </div>
       <DialogDisplayStory story={story}>
-        <span>{story.description}</span>
+        <div className='p-2 mt-2 cursor-pointer'>
+          <span>{story.description}</span>
+        </div>
       </DialogDisplayStory>
       <div className='mt-4 opacity-60 text-sm'>{dayjs(story.lastUpdatedOn).format('YYYY-MM-DD HH:mm')}</div>
     </Card>

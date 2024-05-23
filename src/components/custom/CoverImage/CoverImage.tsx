@@ -12,7 +12,7 @@ const CoverImage = ({
   initialHeight = DEFAULT_HEIGHT,
   className = ''
 }: {
-  fileName: string,
+  fileName: string | null | undefined,
   initialWidth?: number,
   initialHeight?: number,
   className?: string

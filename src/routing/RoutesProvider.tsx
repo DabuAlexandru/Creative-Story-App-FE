@@ -60,6 +60,14 @@ const RoutesProvider = () => {
         }
       />
       <Route
+        path="/add-edit-story"
+        element={
+          <PrivateRoute>
+            <AddEditStoryObject />
+          </PrivateRoute>
+        }
+      />
+      <Route
         path="/add-edit-story-content/:storyId"
         element={
           <PrivateRoute>

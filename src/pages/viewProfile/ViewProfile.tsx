@@ -41,7 +41,7 @@ const ViewProfile = () => {
   const [imageSrc, setImageSrc] = useState<string>('');
 
   useEffect(() => {
-    getAndSetUserProfile({ userId: null, setIsLoading, setUserProfile, setImageSrc })
+    getAndSetUserProfile({ setIsLoading, setUserProfile, setImageSrc })
   }, [])
 
   if (isLoading) {

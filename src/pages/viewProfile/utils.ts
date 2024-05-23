@@ -5,18 +5,14 @@ import { StateSetter } from "@/utils/types/general.types";
 import { UserProfileType } from "@/utils/types/user.types";
 
 export const getAndSetUserProfile = async ({
-  userId,
   setIsLoading,
   setUserProfile,
   setImageSrc
 }: {
-  userId: number | null | undefined
   setIsLoading: StateSetter<boolean>
   setUserProfile: StateSetter<UserProfileType | null>
   setImageSrc: StateSetter<string>
 }) => {
-  if (!userId) {
-  }
   setIsLoading(true)
   const userProfileResponse = await getUserProfile();
   if (userProfileResponse.error) {
@@ -30,9 +26,8 @@ export const getAndSetUserProfile = async ({
   }
 
   const userProfile: UserProfileType = userProfileResponse.data
-  const profilePictureFilename = userProfile.profilePicture?.fileName;
-
-  getAndSetPicture(profilePictureFilename, setImageSrc)
+  const profilePictureFilename = userProfile.profilePicture?.fileName || ''
+  await getAndSetPicture(profilePictureFilename, setImageSrc)
 
   setIsLoading(false)
   setUserProfile(userProfile)

@@ -217,12 +217,12 @@ const EditProfileCard = ({
 }
 
 const EditProfile = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [userProfile, setUserProfile] = useState<UserProfileType | null>(null)
   const [imageSrc, setImageSrc] = useState<string>('');
 
   useEffect(() => {
-    getAndSetUserProfile({ userId: null, setIsLoading, setUserProfile, setImageSrc })
+    getAndSetUserProfile({ setIsLoading, setUserProfile, setImageSrc })
   }, [])
 
   if (isLoading) {

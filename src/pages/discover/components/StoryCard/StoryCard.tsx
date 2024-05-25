@@ -6,21 +6,21 @@ import { Card } from '@/components/ui/card'
 import { DotsHorizontalIcon } from '@/components/ui/icons'
 import { extractSignatureFromString } from '@/utils/helpers/helper.string';
 import { PictureContext } from '@/utils/providers/PicturesProvider';
-import { UserContext } from '@/utils/providers/UserContextProvider';
 import { StoryDisplayType } from '@/utils/types/story.types'
 import dayjs from 'dayjs';
 import React from 'react';
 
 const StoryCard = ({ story }: { story: StoryDisplayType }) => {
-  const { profileInfo, profilePicture } = React.useContext(UserContext)
   const { getAndSetPictureURL } = React.useContext(PictureContext)
   const [profilePictureUrl, setProfilePictureUrl] = React.useState('')
+  const author = story.author
+  const profilePicture = author.profilePicture
 
-  const signature = React.useMemo(() => extractSignatureFromString(profileInfo.penName), [profileInfo.penName])
+  const signature = React.useMemo(() => extractSignatureFromString(author.penName), [author.penName])
 
   React.useEffect(() => {
     if (!profilePictureUrl && getAndSetPictureURL) {
-      getAndSetPictureURL({ category: 'profile', fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
+      getAndSetPictureURL({ category: 'profile', fileName: profilePicture?.fileName, setPictureUrl: setProfilePictureUrl })
     }
   }, [])
 

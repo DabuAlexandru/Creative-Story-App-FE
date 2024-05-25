@@ -14,9 +14,11 @@ import { PictureContext } from '@/utils/providers/PicturesProvider'
 import React from 'react'
 import CoverImage from '../../CoverImage/CoverImage'
 import DisplayGenres from '../../DisplayGenres/DisplayGenres'
+import { useNavigate } from 'react-router-dom'
 
 const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
   const { title, createdOn, lastUpdatedOn, description, preview } = story
+  const navigate = useNavigate()
   const { readLaterSet, setReadLater } = useContext(UserContext)
   const storyBookmarked = readLaterSet.has(story.id)
 
@@ -34,7 +36,10 @@ const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
             Last Modified Date: {dayjs(lastUpdatedOn).format('YYYY-MM-DD HH:mm')}
           </p>
           <div className='p-1 flex gap-2'>
-            <Button className='rounded-full'>
+            <Button
+              className='rounded-full'
+              onClick={() => navigate(`/view-story/${story.id}`)}
+            >
               <MagnifyingGlassIcon />
               <span className='ml-1 pb-[1px]'>See More</span>
             </Button>
@@ -78,7 +83,7 @@ const SocialDetails = ({
 
   React.useEffect(() => {
     if (!profilePictureUrl && getAndSetPictureURL) {
-      getAndSetPictureURL({ category: 'profile', fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
+      getAndSetPictureURL({ category: 'profile', fileName: profilePicture?.fileName, setPictureUrl: setProfilePictureUrl })
     }
   }, [])
 
@@ -101,7 +106,7 @@ const SocialDetails = ({
         </>
         : null
       }
-      <DisplayStoryReviews storyId={storyId} />
+      <DisplayStoryReviews storyId={storyId} className='max-h-[50vh]' />
     </div>
   )
 }

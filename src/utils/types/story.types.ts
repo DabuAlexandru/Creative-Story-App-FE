@@ -1,6 +1,6 @@
 import { PictureType } from "./general.types"
 import { GenreType } from "./genre.types"
-import { UserProfileReferenceType } from "./user.types"
+import { UserProfileReferenceType, emptyBaseUserProfileType } from "./user.types"
 
 export type StoryBaseType = {
   id: number
@@ -51,4 +51,21 @@ export type StoryScoreType = {
   plotScore: number
   settingScore: number
   themeScore: number
+}
+
+const emptyStoryScore: StoryScoreType = {
+  numOfReviews: 0,
+  characterScore: 0,
+  conflictScore: 0,
+  plotScore: 0,
+  settingScore: 0,
+  themeScore: 0,
+}
+
+export const emptyDisplayStory: StoryDisplayType = {
+  ...emptyStory,
+  createdOn: new Date(),
+  lastUpdatedOn: new Date(),
+  author: { ...emptyBaseUserProfileType, profilePicture: { fileName: '', userId: 0 } },
+  storyOverallScore: emptyStoryScore,
 }

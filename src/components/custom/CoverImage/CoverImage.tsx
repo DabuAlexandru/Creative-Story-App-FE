@@ -32,7 +32,7 @@ const CoverImage = ({
 
   useEffect(() => {
     if (!coverPictureUrl && fileName) {
-      getAndSetPictureURL({ category: 'profile', fileName, setPictureUrl: setCoverPictureUrl })
+      getAndSetPictureURL({ category: 'cover', fileName, setPictureUrl: setCoverPictureUrl })
     }
   }, [fileName])
 

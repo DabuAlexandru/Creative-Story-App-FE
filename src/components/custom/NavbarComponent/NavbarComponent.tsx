@@ -46,7 +46,7 @@ const AvatarMenuItem = () => {
 
   React.useEffect(() => {
     if (!profilePictureUrl && getAndSetPictureURL) {
-      getAndSetPictureURL({ category: 'profile', fileName: profilePicture.fileName, setPictureUrl: setProfilePictureUrl })
+      getAndSetPictureURL({ category: 'profile', fileName: profilePicture?.fileName, setPictureUrl: setProfilePictureUrl })
     }
   }, [])
 

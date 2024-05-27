@@ -11,7 +11,6 @@ import { debounce } from "lodash"
 const REVIEWS_COUNT = 4
 
 const DisplayStoryReviews = ({ storyId, reviewsCount = REVIEWS_COUNT, className = '' }: { storyId: string | number, reviewsCount?: number, className?: string }) => {
-  console.log("storyId:", storyId)
   const [paginatedReviews, setPaginatedReviews] = useState<Paginated<ReviewType>>(emptyPaginated)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [currentPage, setCurrentPage] = useState<number>(1)

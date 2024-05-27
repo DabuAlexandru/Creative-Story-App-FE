@@ -43,7 +43,7 @@ const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
               <MagnifyingGlassIcon />
               <span className='ml-1 pb-[1px]'>See More</span>
             </Button>
-            <Button className='rounded-full'>
+            <Button className='rounded-full' onClick={() => navigate(`/read-story/${story.id}`)}>
               <ReaderIcon />
               <span className='ml-1 pb-[1px]'>Read Now</span>
             </Button> {/* redirect to read story page */}

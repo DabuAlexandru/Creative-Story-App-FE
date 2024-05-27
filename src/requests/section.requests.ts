@@ -15,6 +15,12 @@ export const retrieveAllSections = async (storyId: number) => {
   return await axiosRequest({ method: RequestMethod.GET, requestURL: url });
 }
 
+// Retrieve all sections of a story with content
+export const retrieveAllSectionsWithContent = async (storyId: number | string) => {
+  const url = `${baseURL}/get-all/of-story/with-content/${storyId}`;
+  return await axiosRequest({ method: RequestMethod.GET, requestURL: url });
+}
+
 // Retrieve section content by section ID
 export const retrieveSectionContent = async (sectionId: number) => {
   const url = `${baseURL}/get/content/${sectionId}`;

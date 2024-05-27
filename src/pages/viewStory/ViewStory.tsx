@@ -79,7 +79,7 @@ const SocialDetails = ({
         <Button className='ml-8 rounded-full'>
           <CardStackPlusIcon /> {/* if not following <CardStackMinusIcon /> */}
           <span className='ml-1 pb-[1px]'>Follow</span>
-        </Button> {/* redirect to read story page */}
+        </Button>
       </div>
       <SectionTitle className="mt-6 mb-2">What did others think of it?</SectionTitle>
       {storyScore
@@ -96,12 +96,13 @@ const SocialDetails = ({
 
 const StoryCoverCard = ({ story }: { story: StoryBaseType }) => {
   const { readLaterSet, setReadLater } = useContext(UserContext)
+  const navigate = useNavigate();
   const storyBookmarked = readLaterSet.has(story.id)
 
   return (
     <div className="flex flex-col gap-4 fixed mt-10">
       <CoverImage fileName={story.coverPicture?.fileName} initialWidth={200} />
-      <Button className='rounded-full'>
+      <Button className='rounded-full' onClick={() => navigate(`/read-story/${story.id}`)}>
         <ReaderIcon />
         <span className='ml-1 pb-[1px]'>Read Now</span>
       </Button> {/* redirect to read story page */}

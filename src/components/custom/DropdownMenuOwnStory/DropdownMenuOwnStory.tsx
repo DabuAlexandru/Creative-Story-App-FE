@@ -17,7 +17,7 @@ const DropdownMenuOwnStory = ({ storyId, children }: { storyId: number | string,
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate(`/read-story/${storyId}`)}>
             <span>Reading Mode</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => { }}>

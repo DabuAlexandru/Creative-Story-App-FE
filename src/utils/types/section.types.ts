@@ -8,6 +8,8 @@ export type SectionType = {
   displayOrder: number
 }
 
+export type SectionWithContentType = SectionType & { content: string }
+
 export const emptySection: SectionType = {
   id: 0,
   title: '',

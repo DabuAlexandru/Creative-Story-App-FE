@@ -53,7 +53,6 @@ const ReadStory = () => {
         return
       }
       const futureSections = await makeRequest({ request: () => retrieveAllSectionsWithContent(storyId), setObject: setSections })
-      console.log(futureStory, futureSections)
       setStory(futureStory)
       setSections(futureSections || [])
       setIsLoading(false)

@@ -74,7 +74,7 @@ const RightSideMenuList = () => {
   )
 }
 
-const SelectablNavMenuItem = ({ route, label }: { route: string, label: string }) => {
+const SelectableNavMenuItem = ({ route, label }: { route: string, label: string }) => {
   const { pathname } = useLocation()
   const isActive = React.useMemo(() => checkIsActive(pathname, route), [pathname, route])
 
@@ -110,8 +110,9 @@ export function NavigationMenuDemo() {
             Creative App
           </NavigationMenuLink>
         </NavigationMenuItem>
-        <SelectablNavMenuItem route="/discover" label="Discover Stories" />
-        <SelectablNavMenuItem route="/my-stories" label="My Stories" />
+        <SelectableNavMenuItem route="/discover" label="Discover Stories" />
+        <SelectableNavMenuItem route="/my-stories" label="My Stories" />
+        <SelectableNavMenuItem route="/see-discussions" label="Discussions" />
       </NavigationMenuList>
       {/* float right list */}
       <RightSideMenuList />

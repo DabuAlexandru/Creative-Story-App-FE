@@ -1,7 +1,7 @@
-import { createContext, useCallback, useMemo } from "react";
+import { ReactNode, createContext, useCallback, useMemo } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { loginRequest } from "@/requests/auth.requests";
-import { APIResponseType, PictureType, StateSetter } from "../types/general.types";
+import { APIResponseType, FlexibleObject, PictureType, StateSetter } from "../types/general.types";
 import { redirect } from "react-router-dom";
 import { BaseUserProfileType, FavoriteType, ReadLaterType, UserProfileType, emptyBaseUserProfileType } from "../types/user.types";
 import { toNumber } from "../helpers/helper.string";
@@ -9,22 +9,12 @@ import { getUserProfile } from "@/requests/user.profile.requests";
 import { toast } from "@/components/ui/use-toast";
 import { clearStorageData } from "@/requests/axiosHandler/axios.handler";
 
-export type UserType = {
-  id: number;
-  email: string;
-};
-export const emptyUser: UserType = {
-  id: 0,
-  email: "",
-};
-
 type LoginProps = {
   email: string
   password: string
 }
 
 type UserContextProps = {
-  user: UserType
   token: string
   login: (props: LoginProps) => Promise<APIResponseType>
   logout: () => void
@@ -42,7 +32,6 @@ type UserContextProps = {
 }
 
 const UserContext = createContext<UserContextProps>({
-  user: emptyUser,
   token: '',
   login: (_) => new Promise(() => false),
   logout: () => { },
@@ -59,10 +48,7 @@ const UserContext = createContext<UserContextProps>({
   setProfilePicture: () => { }
 });
 
-const UserContextProvider = ({ children }: { children: any }) => {
-  // In the localStorage we will remember only the auth token after the API is integrated
-  // The user is saved in the localStorage just for the Mocking stage, to have a pseudo-authentification system
-  const [user, setUser] = useLocalStorage<UserType>("user", emptyUser);
+const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [favorites, setFavorites] = useLocalStorage<FavoriteType[]>("favorites", [])
   const favoritesSet: Set<number> = useMemo(() => (new Set(favorites.map(f => toNumber(f.storyId)))), [favorites])
   const [readLater, setReadLater] = useLocalStorage<ReadLaterType[]>("read-later", [])
@@ -71,8 +57,7 @@ const UserContextProvider = ({ children }: { children: any }) => {
   const [profilePicture, setProfilePicture] = useLocalStorage<PictureType>("profile-picture", { fileName: '', userId: 0 })
   const [token, setToken] = useLocalStorage<string>("jwt", '')
 
-  const onLoginSuccess = useCallback(async (loginResponse: { user: UserType, token: string }) => {
-    setUser(loginResponse.user);
+  const onLoginSuccess = useCallback(async (loginResponse: { user: FlexibleObject, token: string }) => {
     setToken(loginResponse.token);
 
     const userProfileResponse = await getUserProfile();
@@ -111,14 +96,13 @@ const UserContextProvider = ({ children }: { children: any }) => {
   }: LoginProps) => {
     const result = await loginRequest({ email, password })
     const loginResponse = result?.data;
-    if (loginResponse?.user) {
+    if (loginResponse?.token) {
       onLoginSuccess(loginResponse)
     }
     return result;
   };
 
   const logout = () => {
-    setUser(emptyUser);
     setToken('');
 
     clearStorageData()
@@ -128,8 +112,7 @@ const UserContextProvider = ({ children }: { children: any }) => {
   const isLogged = Boolean(token);
 
   const store: UserContextProps = {
-    user, token,
-    login, logout, isLogged,
+    token, login, logout, isLogged,
     favorites, setFavorites, favoritesSet,
     readLater, setReadLater, readLaterSet,
     profileInfo, setProfileInfo,

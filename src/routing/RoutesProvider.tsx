@@ -13,6 +13,7 @@ import AddEditStoryContent from "@/pages/addEditStoryContent/AddEditStoryContent
 import AddEditStoryObject from "@/pages/addEditStoryObject/AddEditStoryObject";
 import ViewStory from "@/pages/viewStory/ViewStory";
 import ReadStory from "@/pages/readStory/ReadStory";
+import SeeDiscussions from "@/pages/seeDiscussions/SeeDiscussions";
 
 const PrivateRoute = ({ children }: { children: any }) => {
   const state = useContext<any>(UserContext);
@@ -114,6 +115,38 @@ const RoutesProvider = () => {
         element={
           <PrivateRoute>
             <EditProfile />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/see-discussions/of-author/:authorId"
+        element={
+          <PrivateRoute>
+            <></>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/see-discussions/of-story/:storyId"
+        element={
+          <PrivateRoute>
+            <></>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/see-discussions/explore-thread/:threadId"
+        element={
+          <PrivateRoute>
+            <></>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/see-discussions"
+        element={
+          <PrivateRoute>
+            <SeeDiscussions />
           </PrivateRoute>
         }
       />

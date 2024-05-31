@@ -113,6 +113,4 @@ export const axiosRequest = async (axiosPayload: AxiosRequestHandlerType): Promi
 
 export const clearStorageData = () => {
   localStorage.removeItem('jwt');
-  localStorage.removeItem('user');
-  // localStorage.removeItem('pictureURLs');
 }

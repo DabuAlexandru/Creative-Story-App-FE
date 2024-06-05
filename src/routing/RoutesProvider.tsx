@@ -14,6 +14,7 @@ import AddEditStoryObject from "@/pages/addEditStoryObject/AddEditStoryObject";
 import ViewStory from "@/pages/viewStory/ViewStory";
 import ReadStory from "@/pages/readStory/ReadStory";
 import SeeDiscussions from "@/pages/seeDiscussions/SeeDiscussions";
+import ThreadsOfDiscussion from "@/pages/threadsOfDiscussion/ThreadsOfDiscussion";
 
 const PrivateRoute = ({ children }: { children: any }) => {
   const state = useContext<any>(UserContext);
@@ -131,6 +132,14 @@ const RoutesProvider = () => {
         element={
           <PrivateRoute>
             <></>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/see-threads/of-discussion/:discussionId"
+        element={
+          <PrivateRoute>
+            <ThreadsOfDiscussion />
           </PrivateRoute>
         }
       />

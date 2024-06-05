@@ -8,8 +8,10 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import { DISCUSSIONS_PER_PAGE } from "./utils"
 import { AvatarIcon } from "@radix-ui/react-icons"
 import dayjs from "dayjs"
+import { useNavigate } from "react-router-dom"
 
 const DiscussionCard = ({ discussion }: { discussion: DiscussionType }) => {
+  const navigate = useNavigate()
   if (!discussion) {
     return null
   }
@@ -23,10 +25,12 @@ const DiscussionCard = ({ discussion }: { discussion: DiscussionType }) => {
           <span className="text-sm font-semibold">{discussion.author.penName}</span>
         </div>
       </div>
-      <p className="mb-4 text-slate-300">{discussion.content}</p>
-      <div className="flex justify-between items-center text-slate-300">
-        <span className="text-sm font-semibold text-slate-500 ">Creation Date: {dayjs(discussion.createdOn).format('YYYY-MM-DD HH:mm')}</span>
-        <span className="cursor-pointer text-blue-500">{discussion.commentsCount} comments</span>
+      <div onClick={() => navigate(`/see-threads/of-discussion/${discussion.id}`)}>
+        <p className="mb-4 text-slate-300">{discussion.content}</p>
+        <div className="flex justify-between items-center text-slate-300">
+          <span className="text-sm font-semibold text-slate-500 ">Creation Date: {dayjs(discussion.createdOn).format('YYYY-MM-DD HH:mm')}</span>
+          <span className="cursor-pointer text-blue-500">{discussion.commentsCount} comments</span>
+        </div>
       </div>
     </div>
   )

@@ -15,7 +15,7 @@ export const getAlThreadslOfAuthorPaginate = async ({ authorId, page, size }: { 
 }
 
 export const getAllThreadsOfDiscussionPaginate = async ({ discussionId, page, size }: { discussionId: string | number, page: number, size: number }) => {
-    return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get-all/of-discussio/paginate/${discussionId}?page=${page}&size=${size}` })
+    return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get-all/of-discussion/paginate/${discussionId}?page=${page}&size=${size}` })
 }
 
 export const getDiscussionThread = async (threadId: string | number) => {

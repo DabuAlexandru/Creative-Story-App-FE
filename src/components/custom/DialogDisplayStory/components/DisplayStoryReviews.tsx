@@ -13,13 +13,13 @@ const REVIEWS_COUNT = 4
 const DisplayStoryReviews = ({ storyId, reviewsCount = REVIEWS_COUNT, className = '' }: { storyId: string | number, reviewsCount?: number, className?: string }) => {
   const [paginatedReviews, setPaginatedReviews] = useState<Paginated<ReviewType>>(emptyPaginated)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(0)
 
   const paginationRequest = useCallback((currentPage: number) => {
     if (!storyId) {
       return;
     }
-    const pagination = { size: reviewsCount, page: currentPage - 1 }
+    const pagination = { size: reviewsCount, page: currentPage }
     makeRequest({ request: () => retrieveAllReviewsOfStoryPaginate(storyId, pagination), setObject: setPaginatedReviews, setIsLoading })
   }, [currentPage])
 

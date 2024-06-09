@@ -39,10 +39,10 @@ const DiscussionCard = ({ discussion }: { discussion: DiscussionType }) => {
 const SeeDiscussions = () => {
   const [paginatedDiscussions, setPaginatedDiscussions] = useState<Paginated<DiscussionType>>(emptyPaginated)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(0)
 
   const paginationRequest = useCallback((currentPage: number) => {
-    const pagination = { size: DISCUSSIONS_PER_PAGE, page: currentPage - 1 }
+    const pagination = { size: DISCUSSIONS_PER_PAGE, page: currentPage }
     makeRequest({ request: () => getAllDiscussionsPaginate(pagination), setObject: setPaginatedDiscussions, setIsLoading })
   }, [currentPage])
 

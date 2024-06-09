@@ -3,6 +3,7 @@ import { APIResponseType, StateSetter } from "@/utils/types/general.types";
 
 type EffectFunction = () => Promise<void>;
 type EffectSimpleFunction = () => void;
+type ErrorType = any;
 
 export const makeRequest = async <T>({
   request,
@@ -40,7 +41,7 @@ export const makeRequest = async <T>({
       }
       return responsePayload;
     }
-  } catch (error: any) {
+  } catch (error: ErrorType) {
     console.error(error)
     const title = error?.message || 'An error occured.'
     const description = error?.stack || JSON.stringify(error)

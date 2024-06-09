@@ -14,7 +14,7 @@ type LoginProps = {
   password: string
 }
 
-type UserContextProps = {
+export type UserContextProps = {
   token: string
   login: (props: LoginProps) => Promise<APIResponseType>
   logout: () => void

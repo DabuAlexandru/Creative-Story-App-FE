@@ -70,3 +70,8 @@ export type PictureType = {
   fileName: string,
   userId: number
 }
+
+export type PagesCountType = {
+  totalElements: number;
+  totalPages: number;
+}

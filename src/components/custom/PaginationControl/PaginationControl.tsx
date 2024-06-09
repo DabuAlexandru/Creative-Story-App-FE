@@ -1,6 +1,9 @@
 import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationLink, PaginationEllipsis, PaginationNext } from '@/components/ui/pagination'
 import { useMemo } from 'react'
 
+const LEFT_ELLIPSIS = -1
+const RIGHT_ELLISPSIS = -2
+
 const getPagesConfig = ({
   pageCount,
   currentPage,
@@ -10,14 +13,14 @@ const getPagesConfig = ({
 }) => {
   let pages = []
   if (pageCount <= 5) {
-    pages = Array.from(Array(pageCount + 1).keys()).slice(1)
+    pages = Array.from(Array(pageCount).keys())
   } else {
-    if (currentPage <= 3) {
-      pages = [1, 2, 3, 4, 0, pageCount]
-    } else if (currentPage >= pageCount - 2) {
-      pages = [1, 0, pageCount - 3, pageCount - 2, pageCount - 1, pageCount]
+    if (currentPage <= 2) {
+      pages = [0, 1, 2, 3, RIGHT_ELLISPSIS, pageCount - 1]
+    } else if (currentPage >= pageCount - 3) {
+      pages = [0, LEFT_ELLIPSIS, pageCount - 4, pageCount - 3, pageCount - 2, pageCount - 1]
     } else {
-      pages = [1, 0, currentPage - 1, currentPage, currentPage + 1, 0, pageCount]
+      pages = [0, LEFT_ELLIPSIS, currentPage - 1, currentPage, currentPage + 1, RIGHT_ELLISPSIS, pageCount - 1]
     }
   }
 
@@ -40,14 +43,14 @@ const PaginationControl = ({
   return (
     <Pagination className={className}>
       <PaginationContent>
-        <PaginationItem onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}>
+        <PaginationItem onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}>
           <PaginationPrevious />
         </PaginationItem>
 
         {pageConfig.map((page: number) => {
-          if (page <= 0) {
+          if (page === LEFT_ELLIPSIS || page === RIGHT_ELLISPSIS) {
             return (
-              <PaginationItem key={`ellipsis-${page === 0 ? 'left' : 'right'}`}>
+              <PaginationItem key={`ellipsis-${page === LEFT_ELLIPSIS ? 'left' : 'right'}`}>
                 <PaginationEllipsis />
               </PaginationItem>
             )
@@ -56,13 +59,13 @@ const PaginationControl = ({
           return (
             <PaginationItem key={`page-${page}`} onClick={() => setCurrentPage(page)}>
               <PaginationLink isActive={currentPage === page}>
-                {page}
+                {page + 1}
               </PaginationLink>
             </PaginationItem>
           )
         })}
 
-        <PaginationItem onClick={() => setCurrentPage(Math.min(pageCount, currentPage + 1))}>
+        <PaginationItem onClick={() => setCurrentPage(Math.min(pageCount - 1, currentPage + 1))}>
           <PaginationNext />
         </PaginationItem>
       </PaginationContent>

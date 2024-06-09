@@ -1,6 +1,6 @@
-import { useContext } from "react";
+import { ReactNode, useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { UserContext } from "../utils/providers/UserContextProvider";
+import { UserContext, UserContextProps } from "../utils/providers/UserContextProvider";
 import Layout from "@/components/custom/Layout/Layout";
 import MyStories from "@/pages/myStories/MyStories";
 import Register from "@/pages/register/Register";
@@ -15,10 +15,11 @@ import ViewStory from "@/pages/viewStory/ViewStory";
 import ReadStory from "@/pages/readStory/ReadStory";
 import SeeDiscussions from "@/pages/seeDiscussions/SeeDiscussions";
 import ThreadsOfDiscussion from "@/pages/threadsOfDiscussion/ThreadsOfDiscussion";
+import ThreadsProvider from "@/utils/providers/ThreadsProvider/ThreadsProvider";
 
-const PrivateRoute = ({ children }: { children: any }) => {
-  const state = useContext<any>(UserContext);
-  if (!state.isLogged) {
+const PrivateRoute = ({ children }: { children: ReactNode }) => {
+  const { isLogged } = useContext<UserContextProps>(UserContext);
+  if (!isLogged) {
     return <Navigate to="/login" />;
   }
   return <Layout>{children}</Layout>
@@ -139,7 +140,9 @@ const RoutesProvider = () => {
         path="/see-threads/of-discussion/:discussionId"
         element={
           <PrivateRoute>
-            <ThreadsOfDiscussion />
+            <ThreadsProvider>
+              <ThreadsOfDiscussion />
+            </ThreadsProvider>
           </PrivateRoute>
         }
       />

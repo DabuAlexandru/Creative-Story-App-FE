@@ -1,31 +1,30 @@
-import { Skeleton } from "@/components/ui/skeleton"
-import { THREADS_PER_PAGE, ThreadsContext } from "@/utils/providers/ThreadsProvider/config"
-import { DiscussionThreadType } from "@/utils/types/discussion.types"
-import { AvatarIcon } from "@radix-ui/react-icons"
-import { Separator } from "@radix-ui/react-separator"
-import dayjs from "dayjs"
-import { useContext, useEffect, useMemo } from "react"
-import { useParams } from "react-router-dom"
+import { Skeleton } from "@/components/ui/skeleton";
+import { THREADS_PER_PAGE, ThreadsContext } from "@/utils/providers/ThreadsProvider/config";
+import { DiscussionThreadType } from "@/utils/types/discussion.types";
+import { AvatarIcon } from "@radix-ui/react-icons";
+import { Separator } from "@radix-ui/react-separator";
+import dayjs from "dayjs";
+import { useContext, useEffect, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { InView } from "react-intersection-observer";
 
-const CommentPageComponent = ({ comments, numOfElements = THREADS_PER_PAGE }: { comments: DiscussionThreadType[], numOfElements?: number }) => {
+const CommentPageComponent = ({ pageNo, numOfElements = THREADS_PER_PAGE }: { pageNo: number, numOfElements?: number }) => {
+  const { threadsDict, handleViewPage } = useContext(ThreadsContext);
+  const comments = useMemo(() => threadsDict[pageNo], [threadsDict[pageNo]])
 
-  if (!comments || comments.length === 0) {
-    const elementIndexes = Array.from(Array(numOfElements).keys())
-    return (
-      <div>
-        <Separator className="h-5 bg-red-500" />
-        {elementIndexes.map(commentIndex => <SkeletonCommentComponent key={`comment-${commentIndex}`} />)}
-      </div>
-    )
-  }
+  const stillUnloaded = !comments || comments.length === 0
+  const elementIndexes = Array.from(Array(numOfElements).keys());
 
   return (
-    <div>
+    <InView as="div" onChange={(inView, _entry) => handleViewPage(inView, pageNo)}>
       <Separator className="h-5 bg-red-500" />
-      {(comments || []).map(thread => <CommentComponent key={thread.id} comment={thread} />)}
-    </div>
-  )
-}
+      {stillUnloaded
+        ? elementIndexes.map(commentIndex => <SkeletonCommentComponent key={`comment-${commentIndex}`} />)
+        : (comments || []).map(thread => <CommentComponent key={thread.id} comment={thread} />)
+      }
+    </InView>
+  );
+};
 
 const SkeletonCommentComponent = () => {
   return (
@@ -44,8 +43,7 @@ const SkeletonCommentComponent = () => {
       </div>
     </div>
   );
-}
-
+};
 
 const CommentComponent = ({ comment }: { comment: DiscussionThreadType }) => {
   return (
@@ -67,40 +65,36 @@ const CommentComponent = ({ comment }: { comment: DiscussionThreadType }) => {
 };
 
 const ThreadsOfDiscussion = () => {
-  const { discussionId } = useParams()
-  const { setDiscussionId, isLoading, threadsDict, paginationCount } = useContext(ThreadsContext)
+  const { discussionId } = useParams();
+  const { setDiscussionId, paginationCount } = useContext(ThreadsContext);
+
   const pagesConfig = useMemo(() => {
     if (!paginationCount || paginationCount.totalPages === 0) {
       return;
     }
-    const { totalPages, totalElements } = paginationCount
-    const pages = Array.from(Array(totalPages).keys())
-    const lastPageCount = totalElements - THREADS_PER_PAGE * (totalPages - 1)
+    const { totalPages, totalElements } = paginationCount;
+    const pages = Array.from(Array(totalPages).keys());
+    const lastPageCount = totalElements - THREADS_PER_PAGE * (totalPages - 1);
 
-    return { pages, lastPageCount }
-  }, [paginationCount])
-  
+    return { pages, lastPageCount };
+  }, [paginationCount]);
+
   useEffect(() => {
-    setDiscussionId(discussionId || 0)
-  }, [discussionId])
-
-  if (isLoading) {
-    return null
-  }
+    setDiscussionId(discussionId || 0);
+  }, [discussionId]);
 
   return (
     <div>{
       (pagesConfig?.pages || []).map((page) => {
-        const comments = threadsDict[page]
-        const lastPage = page === (paginationCount?.totalPages || 0) - 1
+        const lastPage = page === (paginationCount?.totalPages || 0) - 1;
+        let lastPageCount: number | undefined;
         if (lastPage) {
-          return (<CommentPageComponent key={`threads-page-${page}`} comments={comments} numOfElements={pagesConfig?.lastPageCount || 0} />)
+          lastPageCount = pagesConfig?.lastPageCount || 0
         }
-
-        return (<CommentPageComponent key={`threads-page-${page}`} comments={comments} />)
+        return (<CommentPageComponent pageNo={page} key={`threads-page-${page}`} numOfElements={lastPageCount} />);
       })
     }</div>
-  )
-}
+  );
+};
 
-export default ThreadsOfDiscussion
+export default ThreadsOfDiscussion;

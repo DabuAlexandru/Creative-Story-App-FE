@@ -24,7 +24,7 @@ export type ThreadsContextProps = {
   isLoading: boolean;
   paginationCount: PagesCountType | undefined;
   currentPage: number;
-  setCurrentPage: StateSetter<number>;
+  handleViewPage: (inView: boolean, page: number) => void;
   threadsDict: ThreadsDictType;
 }
 
@@ -42,7 +42,13 @@ export type DictInfoType = {
 }
 
 export const ThreadsContext = createContext<ThreadsContextProps>({
-  discussionId: 0, setDiscussionId: () => { }, isLoading: false, paginationCount: undefined, currentPage: 0, setCurrentPage: () => { }, threadsDict: {}
+  discussionId: 0,
+  setDiscussionId: () => { },
+  isLoading: false,
+  paginationCount: undefined,
+  currentPage: 0,
+  handleViewPage: () => { },
+  threadsDict: {}
 });
 
 
@@ -87,5 +93,6 @@ export const getThreadsWindowByPage = async (pageStateInfo: PageStateInfoType, d
     }
   })
   setThreadsDict(oldDict => ({ ...oldDict, ...pagesDict }))
+  setIsLoading(false)
   return pagesDict
 }

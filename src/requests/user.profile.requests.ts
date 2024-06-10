@@ -9,6 +9,10 @@ export const updateProfilePicture = async (payload: FormData) => {
   return await axiosRequest({ method: RequestMethod.POST, requestURL: `/user-profile/update-picture`, payload })
 }
 
+export const getAllAuthors = async (penName?: string) => {
+  return await axiosRequest({ method: RequestMethod.GET, requestURL: `/user-profile/get-authors?penName=${penName || ''}` })
+}
+
 export const deletePicture = async (payload: FormData) => {
   return await axiosRequest({ method: RequestMethod.POST, requestURL: `/user-profile/delete-picture`, payload })
 }

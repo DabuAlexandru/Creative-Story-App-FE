@@ -1,3 +1,4 @@
+import { StoryFilterType } from "@/utils/types/story.types"
 import { RequestMethod, axiosRequest } from "./axiosHandler/axios.handler"
 
 type StoryType = any
@@ -5,6 +6,10 @@ const baseURL = '/story'
 
 export const retrieveAllStoriesPaginate = async () => {
   return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get-all` })
+}
+
+export const retrieveAllStoriesFilteredPaginate = async ({ page, size, filters }: { page: number, size: number, filters: StoryFilterType }) => {
+  return await axiosRequest({ method: RequestMethod.POST, requestURL: `${baseURL}/get-all-filtered?page=${page}&size=${size}`, payload: filters })
 }
 
 export const retrieveStoriesForAuthorRequest = async (profileId: string | number) => {

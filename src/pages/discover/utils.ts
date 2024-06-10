@@ -1,23 +1,7 @@
-import { retrieveAllStoriesPaginate } from "@/requests/story.requests"
-import { StateSetter } from "@/utils/types/general.types"
-import { StoryDisplayType } from "@/utils/types/story.types"
+import { StoryFilterType } from "@/utils/types/story.types";
 
-export const getAndSetStoriesPaginate = async ({
-  setStories,
-  setIsLoading
-}: {
-  setStories: StateSetter<StoryDisplayType[]>
-  setIsLoading: StateSetter<boolean>
-}) => {
-  setIsLoading(true)
-  const storiesResponse = await retrieveAllStoriesPaginate()
-  
-  if(storiesResponse.error) {
-    // display toast
-  } else {
-    setStories(storiesResponse.data || [])
-    // success toast
-  }
+export const STORIES_PER_PAGE = 4;
 
-  setIsLoading(false)
-}
+const hasValue = (value: string | undefined | (string | number)[]) => (value && value.length > 0)
+
+export const filtersHaveValue = (filters: StoryFilterType) => Object.values(filters).some(hasValue)

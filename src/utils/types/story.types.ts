@@ -2,6 +2,18 @@ import { PictureType } from "./general.types"
 import { GenreType } from "./genre.types"
 import { UserProfileReferenceType, emptyBaseUserProfileType } from "./user.types"
 
+export type StoryFilterType = {
+  title?: string,
+  authorIds?: (number | string)[],
+  genreIds?: (number | string)[]
+}
+
+export const emptyStoryFilterObject: StoryFilterType = {
+  title: '',
+  authorIds: [],
+  genreIds: []
+}
+
 export type StoryBaseType = {
   id: number
   title: string

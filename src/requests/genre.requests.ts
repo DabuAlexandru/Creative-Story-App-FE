@@ -5,3 +5,7 @@ const baseURL = '/genre';
 export const getGenreDictList = async () => {
   return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get-dict` })
 }
+
+export const getAllGenres = async () => {
+  return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get-all` })
+}

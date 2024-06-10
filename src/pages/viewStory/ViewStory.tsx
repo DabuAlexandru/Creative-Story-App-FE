@@ -28,11 +28,11 @@ const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
       <h3 className="text-3xl font-semibold mb-2">{title}</h3>
       <DisplayGenres genres={story.genres} subGenres={story.subGenres} />
       <p className="text-gray-400 text-sm mb-2">
-        Creation Date: {dayjs(createdOn).format('YYYY-MM-DD HH:mm')}
+        Publish date: {dayjs(createdOn).format('YYYY-MM-DD HH:mm')}
       </p>
-      <p className="text-gray-400 text-sm mb-2">
+      {/* <p className="text-gray-400 text-sm mb-2">
         Last Modified Date: {dayjs(lastUpdatedOn).format('YYYY-MM-DD HH:mm')}
-      </p>
+      </p> */}
       <div className='p-2'>
         <SectionTitle className="mt-4">A short glimpse</SectionTitle>
         <p className="text-gray-200 my-2 text-lg">{description}</p>

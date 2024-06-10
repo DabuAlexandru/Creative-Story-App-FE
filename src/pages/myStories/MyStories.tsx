@@ -34,12 +34,6 @@ const MyStories = () => {
       </CardHeader>
       <CardContent className='mb-4'>
         <div className='w-100 align-items-start'>
-          <span>Journal</span>
-          <div>Journal Entries</div>
-        </div>
-        <div className='w-100 align-items-start'>
-          <span>Stories</span>
-          <div>Story Entries</div>
           <div className='flex flex-wrap justify-center gap-10'>
             {(stories).map(story => <StoryCard key={`my-story-${story.id}`} story={story} />)}
           </div>

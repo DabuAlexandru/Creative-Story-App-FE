@@ -40,3 +40,13 @@
 .read-the-docs {
   color: #888;
 }
+
+.discussion-card-hidden {
+  opacity: 0;
+  transition: opacity 0.125s ease-in-out;
+}
+
+.discussion-card-visible {
+  opacity: 1;
+  transition: opacity 0.125s ease-in-out;
+}

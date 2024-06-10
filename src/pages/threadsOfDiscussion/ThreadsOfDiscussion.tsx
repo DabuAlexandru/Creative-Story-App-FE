@@ -1,12 +1,14 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { THREADS_PER_PAGE, ThreadsContext } from "@/utils/providers/ThreadsProvider/config";
-import { DiscussionThreadType } from "@/utils/types/discussion.types";
+import { DiscussionThreadType, DiscussionType } from "@/utils/types/discussion.types";
 import { AvatarIcon } from "@radix-ui/react-icons";
-import { Separator } from "@radix-ui/react-separator";
 import dayjs from "dayjs";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { InView } from "react-intersection-observer";
+import { DiscussionCard } from "../seeDiscussions/SeeDiscussions";
+import { makeRequest } from "@/requests/request.handler";
+import { getDiscussion } from "@/requests/discussion.requests";
 
 const CommentPageComponent = ({ pageNo, numOfElements = THREADS_PER_PAGE }: { pageNo: number, numOfElements?: number }) => {
   const { threadsDict, handleViewPage } = useContext(ThreadsContext);
@@ -17,7 +19,6 @@ const CommentPageComponent = ({ pageNo, numOfElements = THREADS_PER_PAGE }: { pa
 
   return (
     <InView as="div" onChange={(inView, _entry) => handleViewPage(inView, pageNo)}>
-      <Separator className="h-5 bg-red-500" />
       {stillUnloaded
         ? elementIndexes.map(commentIndex => <SkeletonCommentComponent key={`comment-${commentIndex}`} />)
         : (comments || []).map(thread => <CommentComponent key={thread.id} comment={thread} />)
@@ -64,9 +65,56 @@ const CommentComponent = ({ comment }: { comment: DiscussionThreadType }) => {
   );
 };
 
+const DiscussionTitlePreview = ({ discussion }: { discussion: DiscussionType }) => {
+  return (
+    <div key={`preview-${discussion.id}`} className="p-6 mb-4 bg-slate-800 rounded-lg shadow fixed left-0 right-0 top-14 z-10 border-slate-950 border-s-2 fixed-position">
+      <div className="flex justify-between items-center">
+        <div className="flex">
+          <h2 className="text-xl font-bold">{discussion.title}</h2>
+          <div className="ml-4 text-slate-500 flex gap-2 items-center">
+            <AvatarIcon className="size-8" />
+            <span className="text-sm font-semibold">{discussion.author.penName}</span>
+          </div>
+        </div>
+        <div>
+          <span className="text-sm font-semibold text-slate-500 ">Creation Date: {dayjs(discussion.createdOn).format('YYYY-MM-DD HH:mm')}</span>
+          <span className="ml-4 cursor-pointer text-blue-500">{discussion.commentsCount} comments</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const DisplayDiscussionConditional = ({ discussion }: { discussion: DiscussionType | undefined }) => {
+  const [isInView, setIsInView] = useState(true);
+
+  if (!discussion) {
+    return null;
+  }
+
+  return (
+    <div>
+      <InView
+        as="div"
+        onChange={(inView) => setIsInView(inView)}
+        threshold={0}
+      >
+        <div>
+          <DiscussionCard discussion={discussion} />
+        </div>
+      </InView>
+      <div className={`discussion-title-preview-wrapper ${isInView ? 'discussion-card-hidden' : 'discussion-card-visible'}`}>
+        <DiscussionTitlePreview discussion={discussion} />
+      </div>
+    </div>
+  );
+}
+
+
 const ThreadsOfDiscussion = () => {
   const { discussionId } = useParams();
   const { setDiscussionId, paginationCount } = useContext(ThreadsContext);
+  const [discussion, setDiscussion] = useState<DiscussionType>()
 
   const pagesConfig = useMemo(() => {
     if (!paginationCount || paginationCount.totalPages === 0) {
@@ -81,19 +129,27 @@ const ThreadsOfDiscussion = () => {
 
   useEffect(() => {
     setDiscussionId(discussionId || 0);
+    makeRequest({ request: () => getDiscussion(discussionId || 0), setObject: setDiscussion })
   }, [discussionId]);
 
   return (
-    <div>{
-      (pagesConfig?.pages || []).map((page) => {
-        const lastPage = page === (paginationCount?.totalPages || 0) - 1;
-        let lastPageCount: number | undefined;
-        if (lastPage) {
-          lastPageCount = pagesConfig?.lastPageCount || 0
-        }
-        return (<CommentPageComponent pageNo={page} key={`threads-page-${page}`} numOfElements={lastPageCount} />);
-      })
-    }</div>
+    <div>
+      <DisplayDiscussionConditional discussion={discussion} />
+      <div className="flex flex-col items-center">
+        <div className="w-4/5">
+          {
+            (pagesConfig?.pages || []).map((page) => {
+              const lastPage = page === (paginationCount?.totalPages || 0) - 1;
+              let lastPageCount: number | undefined;
+              if (lastPage) {
+                lastPageCount = pagesConfig?.lastPageCount || 0
+              }
+              return (<CommentPageComponent pageNo={page} key={`threads-page-${page}`} numOfElements={lastPageCount} />);
+            })
+          }
+        </div>
+      </div>
+    </div>
   );
 };
 

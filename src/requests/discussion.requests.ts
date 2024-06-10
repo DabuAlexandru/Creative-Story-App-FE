@@ -14,7 +14,7 @@ export const getAllDiscussionsOfStoryPaginate = async ({ storyId, page, size }: 
     return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get-all/of-story/paginate/${storyId}?page=${page}&size=${size}` })
 }
 
-export const getDiscussionn = async (discussionId: string | number) => {
+export const getDiscussion = async (discussionId: string | number) => {
     return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/${discussionId}` })
 }
 

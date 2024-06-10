@@ -10,7 +10,7 @@ import { AvatarIcon } from "@radix-ui/react-icons"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
 
-const DiscussionCard = ({ discussion }: { discussion: DiscussionType }) => {
+export const DiscussionCard = ({ discussion }: { discussion: DiscussionType }) => {
   const navigate = useNavigate()
   if (!discussion) {
     return null

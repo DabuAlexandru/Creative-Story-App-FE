@@ -36,7 +36,7 @@ const StoryCard = ({ story }: { story: StoryDisplayType }) => {
             {story.author.penName}
           </span>
           <span className='text-sm opacity-60 mt-[-5px]'>
-            Junior Writer
+            {story.author.headline}
           </span>
         </div>
         <div className='h-full ml-auto opacity-60'>

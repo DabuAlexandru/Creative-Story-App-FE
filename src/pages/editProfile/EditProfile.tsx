@@ -178,14 +178,14 @@ const ProfilePictureForm = ({
   return (
     <div className='flex flex-col items-center gap-8'>
       <div className='w-[230px] h-[230px] rounded-full overflow-hidden border-4 border-white'>
-        {Boolean(profilePicture)
+        {Boolean(previewUrl)
           ? <img className='w-full h-full object-cover' src={previewUrl} alt="profile-picture" />
           : <AvatarIcon className='w-full h-full' />
         }
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="picture">Load Another Profile Picture</Label>
-        <Input id="picture" type="file" accept='image/*' onChange={handleFileChange} />
+        <Input id="picture" type="file" accept='image/*' className="bg-slate-500" onChange={handleFileChange} />
       </div>
       <div className='flex flex-col justify-center items-center'>
         <Button type="submit" disabled={!Boolean(selectedFile)} onClick={handleSaveNewFile}>Save</Button>

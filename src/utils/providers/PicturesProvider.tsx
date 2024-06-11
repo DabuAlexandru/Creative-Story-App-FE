@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState } from "react";
+import { ReactNode, createContext, useMemo, useState } from "react";
 import { StateSetter } from "../types/general.types";
 import { PictureDictType } from "../types/user.types";
 import { getAndSetPicture } from "../helpers/helper.file";
@@ -21,7 +21,7 @@ const PictureContext = createContext<PictureContextProps>({
 });
 
 
-const PictureContextProvider = ({ children }: { children: any }) => {
+const PictureContextProvider = ({ children }: { children: ReactNode }) => {
   const [picturesDict, setPicturesDict] = useState<PictureDictType>({})
 
   const getAndSetPictureURL = async ({

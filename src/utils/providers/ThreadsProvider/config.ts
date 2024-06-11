@@ -73,7 +73,11 @@ export const getThreadsPromiseByPage = ({
   return threadsPromiseDict[page];
 }
 
-export const getThreadsWindowByPage = async (pageStateInfo: PageStateInfoType, dictInfo: DictInfoType, setIsLoading: StateSetter<boolean>): Promise<ThreadsDictType> => {
+export const getThreadsWindowByPage = async (
+  pageStateInfo: PageStateInfoType,
+  dictInfo: DictInfoType,
+  setIsLoading: StateSetter<boolean>
+): Promise<ThreadsDictType> => {
   const { paginationCount, discussionId, currentPage } = pageStateInfo
   const { setThreadsDict, threadsPromiseDict, setThreadsPromiseDict } = dictInfo
   const numOfPages = paginationCount?.totalPages || 0
@@ -85,7 +89,9 @@ export const getThreadsWindowByPage = async (pageStateInfo: PageStateInfoType, d
   const pages = getUniqueList([Math.max(currentPage - 1, 0), currentPage, Math.min(currentPage + 1, numOfPages - 1)])
 
   setIsLoading(true)
-  const resolvedPromises = await Promise.allSettled(pages.map(page => getThreadsPromiseByPage({ page, discussionId, threadsPromiseDict, setThreadsPromiseDict })))
+  const resolvedPromises = await Promise.allSettled(
+    pages.map(page => getThreadsPromiseByPage({ page, discussionId, threadsPromiseDict, setThreadsPromiseDict }))
+  )
   pages.forEach((page, index) => {
     const resolvedPromise = resolvedPromises[index]
     if (resolvedPromise.status === "fulfilled") {

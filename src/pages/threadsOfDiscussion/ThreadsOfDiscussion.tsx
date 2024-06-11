@@ -9,6 +9,7 @@ import { InView } from "react-intersection-observer";
 import { DiscussionCard } from "../seeDiscussions/SeeDiscussions";
 import { makeRequest } from "@/requests/request.handler";
 import { getDiscussion } from "@/requests/discussion.requests";
+import AuthorAvatar from "@/components/custom/AuthorAvatar/AuthorAvatar";
 
 const CommentPageComponent = ({ pageNo, numOfElements = THREADS_PER_PAGE }: { pageNo: number, numOfElements?: number }) => {
   const { threadsDict, handleViewPage } = useContext(ThreadsContext);
@@ -51,7 +52,7 @@ const CommentComponent = ({ comment }: { comment: DiscussionThreadType }) => {
     <div key={comment.id} className="p-6 mb-4 bg-slate-800 rounded-lg shadow">
       <div className="mb-4">
         <div className="ml-4 text-slate-500 flex gap-2 items-center">
-          <AvatarIcon className="size-8" />
+        <AuthorAvatar author={comment.author} className="size-8" />
           <span className="text-sm font-semibold">{comment.author.penName}</span>
         </div>
       </div>
@@ -72,7 +73,7 @@ const DiscussionTitlePreview = ({ discussion }: { discussion: DiscussionType }) 
         <div className="flex">
           <h2 className="text-xl font-bold">{discussion.title}</h2>
           <div className="ml-4 text-slate-500 flex gap-2 items-center">
-            <AvatarIcon className="size-8" />
+            <AuthorAvatar author={discussion.author} className="size-8" />
             <span className="text-sm font-semibold">{discussion.author.penName}</span>
           </div>
         </div>

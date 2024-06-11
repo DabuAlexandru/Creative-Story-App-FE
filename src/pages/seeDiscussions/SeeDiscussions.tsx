@@ -6,9 +6,9 @@ import { Paginated, emptyPaginated } from "@/utils/types/general.types"
 import { debounce } from "lodash"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { DISCUSSIONS_PER_PAGE } from "./utils"
-import { AvatarIcon } from "@radix-ui/react-icons"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
+import AuthorAvatar from "@/components/custom/AuthorAvatar/AuthorAvatar"
 
 export const DiscussionCard = ({ discussion }: { discussion: DiscussionType }) => {
   const navigate = useNavigate()
@@ -21,7 +21,7 @@ export const DiscussionCard = ({ discussion }: { discussion: DiscussionType }) =
       <div className="mb-4">
         <h2 className="text-xl font-bold">{discussion.title}</h2>
         <div className="ml-4 text-slate-500 flex gap-2 items-center">
-          <AvatarIcon className="size-8" />
+          <AuthorAvatar author={discussion.author} className="size-8" />
           <span className="text-sm font-semibold">{discussion.author.penName}</span>
         </div>
       </div>
@@ -43,7 +43,11 @@ const SeeDiscussions = () => {
 
   const paginationRequest = useCallback((currentPage: number) => {
     const pagination = { size: DISCUSSIONS_PER_PAGE, page: currentPage }
-    makeRequest({ request: () => getAllDiscussionsPaginate(pagination), setObject: setPaginatedDiscussions, setIsLoading })
+    makeRequest({
+      request: () => getAllDiscussionsPaginate(pagination),
+      setObject: setPaginatedDiscussions,
+      setIsLoading
+    })
   }, [currentPage])
 
   const debouncedPaginationRequest = useMemo(() => debounce(paginationRequest, 300), [])

@@ -14,7 +14,7 @@ export const storyFormSchema = z.object({
       invalid_type_error: "Description must be a string"
     })
     .min(1, { message: "Description must not be empty!" })
-    .max(255, {message: "The Description should not exceed 255 characters!"}),
+    .max(1000, {message: "The Description should not exceed 1000 characters!"}),
   preview: z
     .string({
       required_error: "Description is required",

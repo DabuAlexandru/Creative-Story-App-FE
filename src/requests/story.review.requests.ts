@@ -21,3 +21,7 @@ export const removeReviewFromStory = async (storyId: string | number) => {
   return await axiosRequest({ method: RequestMethod.DELETE, requestURL: `${baseURL}/delete/from-story/${storyId}` })
 }
 
+export const getReviewByStoryAndProfile = async ({ storyId, profileId }: { storyId: number; profileId: string | number }) => {
+  return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get/for-story/${storyId}/of-profile/${profileId}` })
+}
+

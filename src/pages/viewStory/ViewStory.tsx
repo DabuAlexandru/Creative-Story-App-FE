@@ -52,15 +52,14 @@ const SocialDetails = ({
   storyScore: StoryScoreType
   storyId: string | number
 }) => {
-  const { profileInfo, profilePicture } = useContext(UserContext)
   const { getAndSetPictureURL } = useContext(PictureContext)
   const [profilePictureUrl, setProfilePictureUrl] = useState('')
 
-  const signature = useMemo(() => extractSignatureFromString(profileInfo.penName), [profileInfo.penName])
+  const signature = useMemo(() => extractSignatureFromString(author.penName), [author.penName])
 
   useEffect(() => {
     if (!profilePictureUrl && getAndSetPictureURL) {
-      getAndSetPictureURL({ category: 'profile', fileName: profilePicture?.fileName, setPictureUrl: setProfilePictureUrl })
+      getAndSetPictureURL({ category: 'profile', fileName: author?.profilePicture?.fileName, setPictureUrl: setProfilePictureUrl })
     }
   }, [])
 

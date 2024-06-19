@@ -5,10 +5,10 @@ import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons"
 import { useMemo, useState } from "react"
 import { starIndexes, starScoreBaseline } from "../DialogDisplayStory/utils"
 
-const ScoreDisplay = ({ score, isOverallScore = false, label = '' }: { score: number, isOverallScore?: boolean, label?: string }) => {
+export const ScoreDisplay = ({ score, isOverallScore = false, label = '' }: { score: number, isOverallScore?: boolean, label?: string }) => {
   const displayScore = isOverallScore ? score.toFixed(2) : score
   return (
-    <div className='flex gap-1 items-center'>
+    <div className='flex gap-1 items-center p-1'>
       <div className='flex gap-1 items-center border-solid border-2 border-gray-500 px-2 my-[1px] mx-2 rounded-full h-[21px]'>
         {starIndexes.map((index: number) => {
           const isFullStar = index < score - starScoreBaseline

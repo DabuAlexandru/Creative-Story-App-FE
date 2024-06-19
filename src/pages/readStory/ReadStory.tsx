@@ -3,13 +3,17 @@ import { retrieveAllSectionsWithContent } from '@/requests/section.requests'
 import { retrieveStoryRequest } from '@/requests/story.requests'
 import { SectionWithContentType } from '@/utils/types/section.types'
 import { StoryBaseType, StoryDisplayType, emptyDisplayStory } from '@/utils/types/story.types'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import DOMPurify from 'dompurify';
 import { Separator } from '@/components/ui/separator'
 import CoverImage from '@/components/custom/CoverImage/CoverImage'
 import { Button } from '@/components/ui/button'
 import { ReaderIcon } from '@radix-ui/react-icons'
+import ModalReviewDialog, { ReviewType } from './components/ReviewFormComponent'
+import { createNewStoryReviewRequest, getReviewByStoryAndProfile, removeReviewFromStory } from '@/requests/story.review.requests'
+import { UserContext } from '@/utils/providers/UserContextProvider'
+import { ConfirmationDialog } from '@/components/custom/ConfirmationDialog/ConfirmationDialog'
 
 const SectionContentDisplay = ({ section }: { section: SectionWithContentType }) => {
   const htmlString = section?.content || '<p></p>'
@@ -25,16 +29,49 @@ const SectionContentDisplay = ({ section }: { section: SectionWithContentType })
 }
 
 const StoryCoverCard = ({ story }: { story: StoryBaseType }) => {
-  const navigate = useNavigate();
+  const { profileInfo } = useContext(UserContext)
+  const [userReview, setUserReview] = useState<ReviewType | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const onReceiveResponse = (reviewPayload: any) => {
+    makeRequest({ request: () => createNewStoryReviewRequest(story.id, reviewPayload), setIsLoading, setObject: setUserReview })
+  }
+
+  const onConfirmRemoveResponse = () => {
+    makeRequest({ request: () => removeReviewFromStory(story.id), setIsLoading, onSuccessEffect: () => setUserReview(null)})
+  }
+
+  useEffect(() => {
+    if (story?.id && profileInfo?.id) {
+      const storyId = story.id
+      const profileId = profileInfo?.id
+      makeRequest({ request: () => getReviewByStoryAndProfile({ storyId, profileId }), setIsLoading, setObject: setUserReview })
+    }
+  }, [story?.id, profileInfo?.id])
 
   return (
     <div className="flex flex-col gap-4 fixed mt-10">
       <CoverImage fileName={story.coverPicture?.fileName} initialWidth={200} />
-      <Button className='rounded-full' onClick={() => navigate(`/read-story/${story.id}`)}>
-        <ReaderIcon />
-        <span className='ml-1 pb-[1px]'>Leave a review</span>
-      </Button>
+      {userReview ? (
+        <ConfirmationDialog
+          question="Are you sure you want to remove your review?"
+          onConfirm={onConfirmRemoveResponse}
+        >
+          <Button disabled={isLoading} className='rounded-full' variant='destructive'>
+            <ReaderIcon />
+            <span className='ml-1 pb-[1px]'>Remove review</span>
+          </Button>
+        </ConfirmationDialog>
+      ) : (
+        <ModalReviewDialog onReceiveResponse={onReceiveResponse}>
+          <Button disabled={isLoading} className='rounded-full' variant='default'>
+            <ReaderIcon />
+            <span className='ml-1 pb-[1px]'>Leave a review</span>
+          </Button>
+        </ModalReviewDialog>
+      )}
     </div>
+
   )
 }
 

@@ -6,7 +6,7 @@ export const getAllThreadsOfMainThreadPaginate = async ({ mainThreadId, page, si
     return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get-all/of-thread/paginate/${mainThreadId}?page=${page}&size=${size}` })
 }
 
-export const getAllThreadsOfMainThread = async ( mainThreadId: string | number ) => {
+export const getAllThreadsOfMainThread = async (mainThreadId: string | number) => {
     return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get-all/of-thread/${mainThreadId}` })
 }
 
@@ -16,6 +16,10 @@ export const getAlThreadsOfAuthorPaginate = async ({ authorId, page, size }: { a
 
 export const getThreadsOfDiscussionPagesCount = async ({ discussionId, size }: { discussionId: string | number, size: number }) => {
     return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get-pages-count/of-discussion/${discussionId}?size=${size}` })
+}
+
+export const getThreadsOfMainThreadPagesCount = async ({ mainThreadId, size }: { mainThreadId: string | number, size: number }) => {
+    return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/get-pages-count/of-thread/${mainThreadId}?size=${size}` })
 }
 
 export const getAllThreadsOfDiscussionPaginate = async ({ discussionId, page, size }: { discussionId: string | number, page: number, size: number }) => {

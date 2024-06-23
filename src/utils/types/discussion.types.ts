@@ -10,4 +10,4 @@ export type DiscussionType = {
     lastUpdatedOn: Date | string
 }
 
-export type DiscussionThreadType = Omit<DiscussionType, 'title' | 'commentsCount'>
+export type DiscussionThreadType = Omit<DiscussionType, 'title'>

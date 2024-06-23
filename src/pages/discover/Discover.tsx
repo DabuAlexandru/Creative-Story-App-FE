@@ -16,7 +16,6 @@ import { DataFiltersToolbar } from './components/Filters/DataFiltersToolbar';
 
 const Discover = () => {
   const [stories, setStories] = useState<Paginated<StoryDisplayType>>(emptyPaginated);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [authorList, setAuthorList] = useState<{ id: number, penName: string }[]>([]);
   const [genreList, setGenreList] = useState<GenreType[]>([]);
@@ -27,7 +26,7 @@ const Discover = () => {
 
   const paginationRequest = useCallback((currentPage: number, filters: StoryFilterType) => {
     const pagination = { size: STORIES_PER_PAGE, page: currentPage, filters: { ...filters, title: filters.title?.trim() } };
-    makeRequest({ request: () => retrieveAllStoriesFilteredPaginate(pagination), setObject: setStories, setIsLoading });
+    makeRequest({ request: () => retrieveAllStoriesFilteredPaginate(pagination), setObject: setStories });
   }, []);
 
   const debouncedPaginationRequest = useMemo(() => debounce(paginationRequest, 300), []);

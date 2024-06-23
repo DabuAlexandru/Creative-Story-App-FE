@@ -17,7 +17,7 @@ import DisplayGenres from '../../DisplayGenres/DisplayGenres'
 import { useNavigate } from 'react-router-dom'
 
 const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
-  const { title, createdOn, lastUpdatedOn, description, preview } = story
+  const { title, createdOn, description, preview } = story
   const navigate = useNavigate()
   const { readLaterSet, setReadLater } = useContext(UserContext)
   const storyBookmarked = readLaterSet.has(story.id)

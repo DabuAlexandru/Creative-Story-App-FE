@@ -22,7 +22,7 @@ const SectionTitle = ({ className, children }: { className: string, children: Re
 }
 
 const DisplayStoryDetails = ({ story }: { story: StoryDisplayType }) => {
-  const { title, createdOn, lastUpdatedOn, description, preview } = story
+  const { title, createdOn, description, preview } = story
   return (
     <div>
       <h3 className="text-3xl font-semibold mb-2">{title}</h3>

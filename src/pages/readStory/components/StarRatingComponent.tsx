@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StarFilledIcon, StarIcon } from '@radix-ui/react-icons';
 import { toNumber } from 'lodash';
 

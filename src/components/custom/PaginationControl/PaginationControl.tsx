@@ -58,7 +58,7 @@ const PaginationControl = ({
 
           return (
             <PaginationItem key={`page-${page}`} onClick={() => setCurrentPage(page)}>
-              <PaginationLink isActive={currentPage === page}>
+              <PaginationLink isActive={currentPage === page} className='select-none cursor-pointer'>
                 {page + 1}
               </PaginationLink>
             </PaginationItem>

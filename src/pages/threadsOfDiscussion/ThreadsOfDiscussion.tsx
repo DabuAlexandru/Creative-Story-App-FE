@@ -34,7 +34,6 @@ const DisplayDiscussionConditional = ({ discussion }: { discussion: DiscussionTy
   );
 }
 
-
 const ThreadsOfDiscussion = () => {
   const { discussionId } = useParams();
   const { setDiscussionId, paginationCount } = useContext(ThreadsContext);
@@ -68,7 +67,13 @@ const ThreadsOfDiscussion = () => {
               if (lastPage) {
                 lastPageCount = pagesConfig?.lastPageCount || 0
               }
-              return (<CommentPageComponent pageNo={page} key={`threads-page-${page}`} numOfElements={lastPageCount} />);
+              return (
+                <CommentPageComponent
+                  key={`threads-page-${page}`}
+                  pageNo={page}
+                  numOfElements={lastPageCount}
+                  discussionId={discussionId || 0}
+                />);
             })
           }
         </div>

@@ -30,7 +30,7 @@ export const getDiscussionThread = async (threadId: string | number) => {
     return await axiosRequest({ method: RequestMethod.GET, requestURL: `${baseURL}/${threadId}` })
 }
 
-export const createNewDiscussionThread = async (payload: { content: string }) => {
+export const createNewDiscussionThread = async (payload: { content: string, discussionId: number | string, mainThreadId?: number | string | undefined }) => {
     return await axiosRequest({ method: RequestMethod.POST, requestURL: `${baseURL}/create`, payload })
 }
 

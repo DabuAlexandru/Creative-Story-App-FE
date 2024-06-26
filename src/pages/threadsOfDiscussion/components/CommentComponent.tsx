@@ -5,8 +5,17 @@ import { ArrowDownIcon, ArrowUpIcon, ThickArrowDownIcon, ThickArrowUpIcon } from
 import dayjs from "dayjs";
 import { useState } from "react";
 import CommentThreadComponent from "./CommentThreadComponent";
+import ReplyDialogWrapper from "./ReplyDialogWrapper";
 
-export const CommentComponent = ({ comment, level = 0 }: { comment: DiscussionThreadType, level?: number }) => {
+export const CommentComponent = ({
+  comment,
+  level = 0,
+  discussionId
+}: {
+  comment: DiscussionThreadType,
+  level?: number,
+  discussionId: number | string
+}) => {
   const [showComments, setShowComments] = useState<boolean>(false);
 
   const handleToggleComments = () => {
@@ -40,9 +49,11 @@ export const CommentComponent = ({ comment, level = 0 }: { comment: DiscussionTh
               <div className="flex items-center bg-slate-700 rounded-full px-2">
                 <span>{Math.ceil(Math.random() * 100)}</span>
               </div>
-              <button className="select-none flex items-center gap-1 text-slate-500 hover:text-slate-300">
-                <span>Reply</span>
-              </button>
+              <ReplyDialogWrapper discussionId={discussionId} mainThreadId={comment.id}>
+                <button className="select-none flex items-center gap-1 text-slate-500 hover:text-slate-300">
+                  <span>Reply</span>
+                </button>
+              </ReplyDialogWrapper>
               <button
                 disabled={!threadHasComments}
                 onClick={handleToggleComments}
@@ -55,7 +66,7 @@ export const CommentComponent = ({ comment, level = 0 }: { comment: DiscussionTh
           </div>
         </div>
       </div>
-      {showComments ? <CommentThreadComponent commentId={comment.id} commentsCount={comment.commentsCount} level={level + 1} /> : null}
+      {showComments ? <CommentThreadComponent discussionId={discussionId} commentId={comment.id} commentsCount={comment.commentsCount} level={level + 1} /> : null}
     </>
   );
 };

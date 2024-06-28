@@ -2,15 +2,24 @@ import PaginationControl from "@/components/custom/PaginationControl/PaginationC
 import { getAllDiscussionsPaginate } from "@/requests/discussion.requests"
 import { makeRequest } from "@/requests/request.handler"
 import { DiscussionType } from "@/utils/types/discussion.types"
-import { Paginated, emptyPaginated } from "@/utils/types/general.types"
+import { Paginated, StateSetter, emptyPaginated } from "@/utils/types/general.types"
 import { debounce } from "lodash"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { DISCUSSIONS_PER_PAGE } from "./utils"
 import dayjs from "dayjs"
 import { useNavigate } from "react-router-dom"
 import AuthorAvatar from "@/components/custom/AuthorAvatar/AuthorAvatar"
+import VoteComponent, { PartialVoteComponent } from "../threadsOfDiscussion/components/VoteComponent"
+import { voteForDiscussion } from "@/requests/vote.requests"
+import { VoteStateType } from "@/utils/types/vote.types"
 
-export const DiscussionCard = ({ discussion }: { discussion: DiscussionType }) => {
+const PartialDiscussionCard = ({
+  discussion,
+  children
+}: {
+  discussion: DiscussionType;
+  children: ReactNode
+}) => {
   const navigate = useNavigate()
   if (!discussion) {
     return null
@@ -29,10 +38,47 @@ export const DiscussionCard = ({ discussion }: { discussion: DiscussionType }) =
         <p className="mb-4 text-slate-300">{discussion.content}</p>
         <div className="flex justify-between items-center text-slate-300">
           <span className="text-sm font-semibold text-slate-500 ">Creation Date: {dayjs(discussion.createdOn).format('YYYY-MM-DD HH:mm')}</span>
-          <span className="cursor-pointer text-blue-500">{discussion.commentsCount} comments</span>
+          <div className="flex items-center gap-4">
+            {children}
+            <span className="cursor-pointer text-blue-500">{discussion.commentsCount} comments</span>
+          </div>
         </div>
       </div>
     </div>
+  )
+}
+
+export const DiscussionCard = ({ discussion }: { discussion: DiscussionType }) => {
+  return (
+    <PartialDiscussionCard discussion={discussion}>
+      <VoteComponent
+        initialVote={discussion.userVote}
+        voteTally={discussion.voteValue}
+        castUserVote={(voteValue) => voteForDiscussion({ voteValue, discussionId: discussion.id })}
+      />
+    </PartialDiscussionCard>
+  )
+}
+
+export const DiscussionCardVoteState = ({ 
+  discussion, 
+  userVote, 
+  setUserVote 
+}: { 
+  discussion: DiscussionType 
+  userVote: VoteStateType
+  setUserVote: StateSetter<VoteStateType>
+}) => {
+  return (
+    <PartialDiscussionCard discussion={discussion}>
+      <PartialVoteComponent
+        userVote={userVote}
+        setUserVote={setUserVote}
+        initialVote={discussion.userVote}
+        voteTally={discussion.voteValue}
+        castUserVote={(voteValue) => voteForDiscussion({ voteValue, discussionId: discussion.id })}
+      />
+    </PartialDiscussionCard>
   )
 }
 

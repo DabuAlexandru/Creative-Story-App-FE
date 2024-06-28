@@ -1,6 +1,7 @@
 import { PictureType } from "./general.types"
 import { GenreType } from "./genre.types"
 import { UserProfileReferenceType, emptyBaseUserProfileType } from "./user.types"
+import { VoteStateType } from "./vote.types"
 
 export type StoryFilterType = {
   title?: string,
@@ -34,6 +35,8 @@ export type ReviewType = {
   id: number
   title: string
   content: string
+  voteValue: number
+  userVote: VoteStateType
   characterScore: number
   conflictScore: number
   plotScore: number

@@ -5,6 +5,8 @@ import { ReviewType } from '@/utils/types/story.types'
 import dayjs from 'dayjs'
 import { useEffect, useMemo, useState } from 'react'
 import { ScoreWrapper } from '../ScoreWrapper/ScoreWrapper'
+import VoteComponent from '@/pages/threadsOfDiscussion/components/VoteComponent'
+import { voteForStoryReview } from '@/requests/vote.requests'
 
 const ReviewCard = ({
   review
@@ -37,6 +39,14 @@ const ReviewCard = ({
       <ScoreWrapper scoreDetails={review} />
       <div className='px-2 border-solid border-l-2 border-gray-500 text-sm'>
         <p>{review.content}</p>
+      </div>
+      <div className="flex items-center gap-4 mt-2">
+        <VoteComponent
+          initialVote={review.userVote}
+          voteTally={review.voteValue}
+          castUserVote={(voteValue) => voteForStoryReview({ voteValue, storyReviewId: review.id })}
+          className='bg-slate-900'
+        />
       </div>
     </div>
   )

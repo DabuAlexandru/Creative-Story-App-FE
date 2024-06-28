@@ -3,14 +3,16 @@ import { DiscussionType } from "@/utils/types/discussion.types";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { InView } from "react-intersection-observer";
-import { DiscussionCard } from "../seeDiscussions/SeeDiscussions";
+import { DiscussionCardVoteState } from "../seeDiscussions/SeeDiscussions";
 import { makeRequest } from "@/requests/request.handler";
 import { getDiscussion } from "@/requests/discussion.requests";
 import { CommentPageComponent } from "./components/CommentPageComponent";
 import { DiscussionTitlePreview } from "./components/DiscussionTitlePreview";
+import { VoteStateType } from "@/utils/types/vote.types";
 
-const DisplayDiscussionConditional = ({ discussion }: { discussion: DiscussionType | undefined }) => {
+const DisplayDiscussionConditional = ({ discussion }: { discussion: DiscussionType }) => {
   const [isInView, setIsInView] = useState(true);
+  const [userVote, setUserVote] = useState<VoteStateType>(discussion?.userVote || 0)
 
   if (!discussion) {
     return null;
@@ -24,11 +26,11 @@ const DisplayDiscussionConditional = ({ discussion }: { discussion: DiscussionTy
         threshold={0}
       >
         <div>
-          <DiscussionCard discussion={discussion} />
+          <DiscussionCardVoteState discussion={discussion} userVote={userVote} setUserVote={setUserVote} />
         </div>
       </InView>
       <div className={`discussion-title-preview-wrapper ${isInView ? 'discussion-card-hidden' : 'discussion-card-visible'}`}>
-        <DiscussionTitlePreview discussion={discussion} />
+        <DiscussionTitlePreview discussion={discussion} userVote={userVote} setUserVote={setUserVote} />
       </div>
     </div>
   );
@@ -54,6 +56,10 @@ const ThreadsOfDiscussion = () => {
     setDiscussionId(discussionId || 0);
     makeRequest({ request: () => getDiscussion(discussionId || 0), setObject: setDiscussion })
   }, [discussionId]);
+
+  if (!discussion) {
+    return;
+  }
 
   return (
     <div>

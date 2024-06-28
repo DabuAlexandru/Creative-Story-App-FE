@@ -1,11 +1,12 @@
 import AuthorAvatar from "@/components/custom/AuthorAvatar/AuthorAvatar";
-import { Button } from "@/components/ui/button";
 import { DiscussionThreadType } from "@/utils/types/discussion.types";
-import { ArrowDownIcon, ArrowUpIcon, ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
 import { useState } from "react";
 import CommentThreadComponent from "./CommentThreadComponent";
 import ReplyDialogWrapper from "./ReplyDialogWrapper";
+import { voteForDiscussionThread } from "@/requests/vote.requests";
+import VoteComponent from "./VoteComponent";
 
 export const CommentComponent = ({
   comment,
@@ -38,17 +39,11 @@ export const CommentComponent = ({
           <div className="flex justify-between items-center text-slate-300">
             <span className="text-sm font-semibold text-slate-500">Creation Date: {dayjs(comment.createdOn).format('YYYY-MM-DD HH:mm')}</span>
             <div className="flex items-center gap-4">
-              <div className="flex items-center bg-slate-700 rounded-full">
-                <Button className="p-0 h-6 w-8 rounded-l-full" variant={'ghost'}>
-                  <ThickArrowUpIcon />
-                </Button>
-                <Button className="p-0 h-6 w-8 rounded-r-full" variant={'ghost'}>
-                  <ThickArrowDownIcon />
-                </Button>
-              </div>
-              <div className="flex items-center bg-slate-700 rounded-full px-2">
-                <span>{Math.ceil(Math.random() * 100)}</span>
-              </div>
+              <VoteComponent
+                initialVote={comment.userVote}
+                voteTally={comment.voteValue}
+                castUserVote={(voteValue) => voteForDiscussionThread({ voteValue, threadId: comment.id })}
+              />
               <ReplyDialogWrapper discussionId={discussionId} mainThreadId={comment.id}>
                 <button className="select-none flex items-center gap-1 text-slate-500 hover:text-slate-300">
                   <span>Reply</span>

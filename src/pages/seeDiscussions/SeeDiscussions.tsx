@@ -7,11 +7,12 @@ import { debounce } from "lodash"
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { DISCUSSIONS_PER_PAGE } from "./utils"
 import dayjs from "dayjs"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import AuthorAvatar from "@/components/custom/AuthorAvatar/AuthorAvatar"
-import VoteComponent, { PartialVoteComponent } from "../threadsOfDiscussion/components/VoteComponent"
+import { PartialVoteComponent } from "../threadsOfDiscussion/components/VoteComponent"
 import { voteForDiscussion } from "@/requests/vote.requests"
 import { VoteStateType } from "@/utils/types/vote.types"
+import ReplyDialogWrapper from "../threadsOfDiscussion/components/ReplyDialogWrapper"
 
 const PartialDiscussionCard = ({
   discussion,
@@ -20,10 +21,15 @@ const PartialDiscussionCard = ({
   discussion: DiscussionType;
   children: ReactNode
 }) => {
-  const navigate = useNavigate()
-  if (!discussion) {
-    return null
-  }
+  const navigate = useNavigate();
+  const location = useLocation();
+  const targetPath = `/see-threads/of-discussion/${discussion.id}`;
+
+  const handleNavigation = () => {
+    if (location.pathname !== targetPath) {
+      navigate(targetPath);
+    }
+  };
 
   return (
     <div key={discussion.id} className="p-6 mb-4 bg-slate-800 rounded-lg shadow">
@@ -34,13 +40,13 @@ const PartialDiscussionCard = ({
           <span className="text-sm font-semibold">{discussion.author.penName}</span>
         </div>
       </div>
-      <div onClick={() => navigate(`/see-threads/of-discussion/${discussion.id}`)}>
+      <div>
         <p className="mb-4 text-slate-300">{discussion.content}</p>
         <div className="flex justify-between items-center text-slate-300">
           <span className="text-sm font-semibold text-slate-500 ">Creation Date: {dayjs(discussion.createdOn).format('YYYY-MM-DD HH:mm')}</span>
           <div className="flex items-center gap-4">
             {children}
-            <span className="cursor-pointer text-blue-500">{discussion.commentsCount} comments</span>
+            <span className="cursor-pointer text-blue-500" onClick={handleNavigation}>{discussion.commentsCount} comments</span>
           </div>
         </div>
       </div>
@@ -50,22 +56,16 @@ const PartialDiscussionCard = ({
 
 export const DiscussionCard = ({ discussion }: { discussion: DiscussionType }) => {
   return (
-    <PartialDiscussionCard discussion={discussion}>
-      <VoteComponent
-        initialVote={discussion.userVote}
-        voteTally={discussion.voteValue}
-        castUserVote={(voteValue) => voteForDiscussion({ voteValue, discussionId: discussion.id })}
-      />
-    </PartialDiscussionCard>
+    <PartialDiscussionCard discussion={discussion} children={null} />
   )
 }
 
-export const DiscussionCardVoteState = ({ 
-  discussion, 
-  userVote, 
-  setUserVote 
-}: { 
-  discussion: DiscussionType 
+export const DiscussionCardVoteState = ({
+  discussion,
+  userVote,
+  setUserVote
+}: {
+  discussion: DiscussionType
   userVote: VoteStateType
   setUserVote: StateSetter<VoteStateType>
 }) => {
@@ -78,6 +78,11 @@ export const DiscussionCardVoteState = ({
         voteTally={discussion.voteValue}
         castUserVote={(voteValue) => voteForDiscussion({ voteValue, discussionId: discussion.id })}
       />
+      <ReplyDialogWrapper discussionId={discussion.id} >
+        <button className="select-none flex items-center gap-1 text-slate-500 hover:text-slate-300">
+          <span>Reply</span>
+        </button>
+      </ReplyDialogWrapper>
     </PartialDiscussionCard>
   )
 }

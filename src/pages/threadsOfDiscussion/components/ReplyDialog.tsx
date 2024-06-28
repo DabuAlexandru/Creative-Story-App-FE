@@ -35,7 +35,7 @@ const ReplyDialog = ({
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>Leave a review!</DialogTitle>
+        <DialogTitle>Leave a reply!</DialogTitle>
         <DialogDescription>Share your thoughts with the world!</DialogDescription>
       </DialogHeader>
       <Form {...form}>
@@ -50,7 +50,7 @@ const ReplyDialog = ({
                   <Textarea
                     disabled={isLoading}
                     className='max-h-[300px] min-h-[300px] h-[300px]'
-                    placeholder="Write your memos here"
+                    placeholder="Write a reply..."
                     typeof="content"
                     {...field}
                   />

@@ -44,6 +44,12 @@ export const updateSection = async (sectionId: number, updatedSection: SectionTy
   return await axiosRequest({ method: RequestMethod.PUT, requestURL: url, payload: updatedSection });
 }
 
+// Update section list
+export const updateSectionList = async (updatedSections: SectionType[]) => {
+  const url = `${baseURL}/update-list`;
+  return await axiosRequest({ method: RequestMethod.PUT, requestURL: url, payload: updatedSections });
+}
+
 // Update section content by section ID
 export const updateSectionContent = async (sectionId: number, content: string) => {
   const url = `${baseURL}/update/content/${sectionId}`;

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { makeRequest } from '@/requests/request.handler';
-import { createNewSection, retrieveAllSections, updateSection } from '@/requests/section.requests';
+import { createNewSection, retrieveAllSections, updateSection, updateSectionList } from '@/requests/section.requests';
 import { TipTopEditorContext } from '@/utils/providers/TipTapEditorProvider';
 import { SectionType, getNewSection } from '@/utils/types/section.types';
 import { useContext, useEffect, useState } from 'react';
@@ -105,16 +105,9 @@ const SectionsExplorer = () => {
     if (active.id !== over.id) {
       const oldIndex = sections.findIndex((section) => section.id === active.id);
       const newIndex = sections.findIndex((section) => section.id === over.id);
-      const newSections = arrayMove(sections, oldIndex, newIndex);
+      const newSections = arrayMove(sections, oldIndex, newIndex).map((section, index) => ({...section, displayOrder: index + 1}));
       setSections(newSections);
-
-      // Optionally, save the new order to the backend
-      newSections.forEach(async (section, index) => {
-        section.displayOrder = index + 1;
-        await makeRequest<SectionType>({
-          request: () => updateSection(section.id, section),
-        });
-      });
+      makeRequest<SectionType[]>({ request: () => updateSectionList(newSections) });
     }
   };
 

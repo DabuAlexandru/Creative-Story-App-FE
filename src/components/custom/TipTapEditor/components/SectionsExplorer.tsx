@@ -112,7 +112,7 @@ const SectionsExplorer = () => {
   };
 
   return (
-    <div className="w-[12.5vw] h-[100vh] px-1 pt-16 bg-slate-300 text-slate-900">
+    <div className="w-[12.5vw] h-[100vh] px-1 pt-14 bg-slate-300 text-slate-900">
       <h1 className="text-2xl text-center mb-6">Sections</h1>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={sections} strategy={verticalListSortingStrategy}>

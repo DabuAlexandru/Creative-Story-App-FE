@@ -32,15 +32,17 @@ const NotesExplorer = () => {
   }, [sectionId])
 
   return (
-    <div className='w-[12.5vw] h-[100vh] pt-16 px-2 bg-slate-300 text-slate-900 overflow-auto'>
-      <h1 className='text-2xl text-center mb-2'>Notes</h1>
-      <div className='flex justify-center'>
-        <div className='flex gap-4 flex-col'>
-          <div className='mt-4'>
-            <ModalNoteDialog onReceiveResponse={onSuccessAddEditNote}>
-              <Button disabled={!sectionId || isLoading} className='w-[10vw]'>New Note +</Button>
-            </ModalNoteDialog>
-          </div>
+    <div className='w-[12.5vw] h-[100vh] pt-14 bg-slate-300 text-slate-900 overflow-auto'>
+      <div className='w-[12.5vw] fixed flex flex-col items-center bg-slate-300 pb-2'>
+        <h1 className='text-2xl text-center mb-2'>Notes</h1>
+        <div className='mt-4'>
+          <ModalNoteDialog onReceiveResponse={onSuccessAddEditNote}>
+            <Button disabled={!sectionId || isLoading} className='w-[10vw]'>New Note +</Button>
+          </ModalNoteDialog>
+        </div>
+      </div>
+      <div className='flex justify-center mt-24 px-2 py-4'>
+        <div className='flex gap-4 flex-col items-center'>
           {Boolean(!sectionId || isLoading)
             ? null
             : notes.map(note =>

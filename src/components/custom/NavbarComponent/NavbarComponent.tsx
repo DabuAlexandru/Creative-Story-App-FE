@@ -18,7 +18,7 @@ import { extractSignatureFromString } from "@/utils/helpers/helper.string";
 import { PictureContext } from "@/utils/providers/PicturesProvider";
 
 const navigationMenuBarStyle = cva(
-  "absolute top-0 left-0 w-full h-14 px-8 bg-slate-900 justify-between rounded-b-sm fixed"
+  "absolute top-0 left-0 w-full h-14 px-8 bg-slate-900 justify-between rounded-b-sm fixed z-50"
 )
 
 const navigationMenuBlankStyle = cva(

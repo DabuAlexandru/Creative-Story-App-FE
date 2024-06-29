@@ -4,7 +4,7 @@ import { makeRequest } from "@/requests/request.handler"
 import { DiscussionType } from "@/utils/types/discussion.types"
 import { Paginated, StateSetter, emptyPaginated } from "@/utils/types/general.types"
 import { debounce } from "lodash"
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
+import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { DISCUSSIONS_PER_PAGE } from "./utils"
 import dayjs from "dayjs"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -13,6 +13,7 @@ import { PartialVoteComponent } from "../threadsOfDiscussion/components/VoteComp
 import { voteForDiscussion } from "@/requests/vote.requests"
 import { VoteStateType } from "@/utils/types/vote.types"
 import ReplyDialogWrapper from "../threadsOfDiscussion/components/ReplyDialogWrapper"
+import { ThreadsContext } from "@/utils/providers/ThreadsProvider/config"
 
 const PartialDiscussionCard = ({
   discussion,
@@ -69,6 +70,8 @@ export const DiscussionCardVoteState = ({
   userVote: VoteStateType
   setUserVote: StateSetter<VoteStateType>
 }) => {
+  const { refreshDiscussion } = useContext(ThreadsContext)
+
   return (
     <PartialDiscussionCard discussion={discussion}>
       <PartialVoteComponent
@@ -78,7 +81,7 @@ export const DiscussionCardVoteState = ({
         voteTally={discussion.voteValue}
         castUserVote={(voteValue) => voteForDiscussion({ voteValue, discussionId: discussion.id })}
       />
-      <ReplyDialogWrapper discussionId={discussion.id} onCreateNewComment={(_s) => { }} >
+      <ReplyDialogWrapper discussionId={discussion.id} onCreateNewComment={refreshDiscussion} >
         <button className="select-none flex items-center gap-1 text-slate-500 hover:text-slate-300">
           <span>Reply</span>
         </button>

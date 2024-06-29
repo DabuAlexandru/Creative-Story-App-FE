@@ -26,6 +26,7 @@ export type ThreadsContextProps = {
   currentPage: number;
   handleViewPage: (inView: boolean, page: number) => void;
   threadsDict: ThreadsDictType;
+  refreshDiscussion: () => void;
 }
 
 export type PageStateInfoType = {
@@ -48,7 +49,8 @@ export const ThreadsContext = createContext<ThreadsContextProps>({
   paginationCount: undefined,
   currentPage: 0,
   handleViewPage: () => { },
-  threadsDict: {}
+  threadsDict: {},
+  refreshDiscussion: () => { }
 });
 
 

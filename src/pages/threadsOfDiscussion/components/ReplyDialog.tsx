@@ -32,10 +32,11 @@ const ReplyDialog = ({
 
   const onSubmit = (values: z.infer<typeof replyNoteSchema>) => {
     const payload = { content: values.content, discussionId, mainThreadId }
-    makeRequest({ 
-      request: () => createNewDiscussionThread(payload), 
+    makeRequest({
+      request: () => createNewDiscussionThread(payload),
       setIsLoading,
-      onReceiveResponse: onSubmitEffect
+      onReceiveResponse: onSubmitEffect,
+      onSuccessEffect: () => form.reset()
     })
   }
 

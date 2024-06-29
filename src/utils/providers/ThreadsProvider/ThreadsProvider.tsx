@@ -50,6 +50,10 @@ const ThreadsProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(false)
   }, [])
 
+  const refreshDiscussion = useCallback(() => {
+    prepareNewDiscussion(discussionId)
+  }, [discussionId])
+
   useEffect(() => {
     if (!discussionId) {
       return;
@@ -62,7 +66,7 @@ const ThreadsProvider = ({ children }: { children: ReactNode }) => {
   }, [currentPage])
 
   const storeForProvider: ThreadsContextProps = {
-    discussionId, setDiscussionId, isLoading, paginationCount, currentPage, handleViewPage, threadsDict
+    discussionId, setDiscussionId, isLoading, paginationCount, currentPage, handleViewPage, threadsDict, refreshDiscussion
   }
 
   return (
@@ -72,5 +76,4 @@ const ThreadsProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export { ThreadsContext };
 export default ThreadsProvider

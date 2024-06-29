@@ -78,7 +78,7 @@ export const DiscussionCardVoteState = ({
         voteTally={discussion.voteValue}
         castUserVote={(voteValue) => voteForDiscussion({ voteValue, discussionId: discussion.id })}
       />
-      <ReplyDialogWrapper discussionId={discussion.id} >
+      <ReplyDialogWrapper discussionId={discussion.id} onCreateNewComment={(_s) => { }} >
         <button className="select-none flex items-center gap-1 text-slate-500 hover:text-slate-300">
           <span>Reply</span>
         </button>

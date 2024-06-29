@@ -1,7 +1,7 @@
 import { getAllThreadsOfMainThreadPaginate } from "@/requests/discussion.thread.requests"
 import { makeRequest } from "@/requests/request.handler"
 import { DiscussionThreadType } from "@/utils/types/discussion.types"
-import { Paginated } from "@/utils/types/general.types"
+import { Paginated, StateSetter } from "@/utils/types/general.types"
 import { ReactNode, useEffect, useState } from "react"
 import { CommentComponent } from "./CommentComponent"
 import { Button } from "@/components/ui/button"
@@ -28,15 +28,18 @@ const CommentThreadComponent = ({
   commentsCount,
   level,
   discussionId,
+  comments,
+  setComments
 }: {
   commentId: number,
   commentsCount: number,
   level: number
   discussionId: number | string
+  comments: DiscussionThreadType[]
+  setComments: StateSetter<DiscussionThreadType[]>
 }) => {
   const [lastPage, setLastPage] = useState<number>(0)
   const [isLoadingNewPage, setIsLoadingNewPage] = useState<boolean>(false)
-  const [comments, setComments] = useState<DiscussionThreadType[]>([])
 
   const pageCount = Math.ceil(commentsCount / COMMENTS_PAGE_SIZE)
   const hasMorePages = lastPage < pageCount - 1

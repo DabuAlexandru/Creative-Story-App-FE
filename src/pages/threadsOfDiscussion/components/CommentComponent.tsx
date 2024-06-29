@@ -18,12 +18,19 @@ export const CommentComponent = ({
   discussionId: number | string
 }) => {
   const [showComments, setShowComments] = useState<boolean>(false);
+  const [commentsCount, setCommentsCount] = useState<number>(comment?.commentsCount || 0)
+  const [comments, setComments] = useState<DiscussionThreadType[]>([]);
+  const threadHasComments = commentsCount > 0
 
   const handleToggleComments = () => {
+    setComments([])
     setShowComments(!showComments);
   };
 
-  const threadHasComments = Boolean(comment?.commentsCount)
+  const onCreateNewComment = (newComment: DiscussionThreadType) => {
+    setComments((oldComments) => ([newComment, ...oldComments]))
+    setCommentsCount(oldCount => oldCount + 1)
+  }
 
   return (
     <>
@@ -44,7 +51,7 @@ export const CommentComponent = ({
                 voteTally={comment.voteValue}
                 castUserVote={(voteValue) => voteForDiscussionThread({ voteValue, threadId: comment.id })}
               />
-              <ReplyDialogWrapper discussionId={discussionId} mainThreadId={comment.id}>
+              <ReplyDialogWrapper discussionId={discussionId} mainThreadId={comment.id} onCreateNewComment={onCreateNewComment}>
                 <button className="select-none flex items-center gap-1 text-slate-500 hover:text-slate-300">
                   <span>Reply</span>
                 </button>
@@ -61,7 +68,17 @@ export const CommentComponent = ({
           </div>
         </div>
       </div>
-      {showComments ? <CommentThreadComponent discussionId={discussionId} commentId={comment.id} commentsCount={comment.commentsCount} level={level + 1} /> : null}
+      {showComments
+        ? <CommentThreadComponent
+          discussionId={discussionId}
+          commentId={comment.id}
+          commentsCount={comment.commentsCount}
+          level={level + 1}
+          comments={comments}
+          setComments={setComments}
+        />
+        : null
+      }
     </>
   );
 };

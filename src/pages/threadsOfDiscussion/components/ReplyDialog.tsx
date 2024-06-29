@@ -10,13 +10,16 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { formFieldStyle, replyNoteSchema } from "../utils"
+import { DiscussionThreadType } from "@/utils/types/discussion.types"
 
 const ReplyDialog = ({
   discussionId,
-  mainThreadId
+  mainThreadId,
+  onSubmitEffect
 }: {
   discussionId: number | string
   mainThreadId?: number | string | undefined
+  onSubmitEffect: (newComment: DiscussionThreadType) => void
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -27,9 +30,13 @@ const ReplyDialog = ({
     },
   })
 
-  const onSubmit = async (values: z.infer<typeof replyNoteSchema>) => {
+  const onSubmit = (values: z.infer<typeof replyNoteSchema>) => {
     const payload = { content: values.content, discussionId, mainThreadId }
-    makeRequest({ request: () => createNewDiscussionThread(payload), setIsLoading })
+    makeRequest({ 
+      request: () => createNewDiscussionThread(payload), 
+      setIsLoading,
+      onReceiveResponse: onSubmitEffect
+    })
   }
 
   return (

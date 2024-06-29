@@ -105,24 +105,26 @@ const SectionsExplorer = () => {
     if (active.id !== over.id) {
       const oldIndex = sections.findIndex((section) => section.id === active.id);
       const newIndex = sections.findIndex((section) => section.id === over.id);
-      const newSections = arrayMove(sections, oldIndex, newIndex).map((section, index) => ({...section, displayOrder: index + 1}));
+      const newSections = arrayMove(sections, oldIndex, newIndex).map((section, index) => ({ ...section, displayOrder: index + 1 }));
       setSections(newSections);
       makeRequest<SectionType[]>({ request: () => updateSectionList(newSections) });
     }
   };
 
   return (
-    <div className="w-[12.5vw] h-[100vh] px-1 pt-14 bg-slate-300 text-slate-900">
+    <div className="w-[12.5vw] h-[100vh] px-1 pt-14 mt-[-3px] bg-slate-300 text-slate-900">
       <h1 className="text-2xl text-center mb-6">Sections</h1>
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={sections} strategy={verticalListSortingStrategy}>
-          <div>
-            {(sections || []).map((section) => (
-              <SortableItem key={section.id} section={section} setSection={onEditSection} />
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
+      <div className="max-h-[60vh] overflow-hidden">
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={sections} strategy={verticalListSortingStrategy}>
+            <div className="max-w-full max-h-full relative overflow-y-auto overflow-x-hidden">
+              {(sections || []).map((section) => (
+                <SortableItem key={section.id} section={section} setSection={onEditSection} />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
+      </div>
       <div className="w-full flex justify-center mt-4">
         <Button onClick={onAddNewSection}>New Section +</Button>
       </div>
